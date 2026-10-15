@@ -25,11 +25,7 @@ md-to-slides/
 │       └── invalid-mermaid.md
 │
 ├── docs/                     # 文件
-│   ├── spec/                        # 規格文件
-│   │   ├── SDD-v2.0.md      # 系統設計文件 (v2.0)
-│   │   ├── SDD-v1.0.md      # 系統設計文件 (v1.0, 歷史參考)
 │   ├── ARCHITECTURE.md      # 本文件 - 專案結構說明
-│   ├── PROJECTIZATION_PLAN.md       # v3.0 路線規劃
 │
 ├── data/                     # Markdown 資料目錄
 │
@@ -243,19 +239,7 @@ sudo apt-get install fonts-noto-cjk fonts-noto-cjk-extra
 
 ---
 
-## 效能優化方向（v3.0）
-
-- [ ] Watch mode（檔案變更自動重建）
-- [ ] 批量處理目錄
-- [ ] 快取 Mermaid 渲染結果（避免重複轉圖）
-- [ ] 並行處理多檔案
-- [ ] 自訂 Mermaid 主題與配置
-
----
-
 ## 相關文件
 
 - [README.md](../README.md) — 使用者指南
-- [docs/spec/SDD-v2.0.md](spec/SDD-v2.0.md) — 系統設計文件
-- [docs/PROJECTIZATION_PLAN.md](PROJECTIZATION_PLAN.md) — v3.0 路線規劃
 - [.github/workflows/ci.yml](../.github/workflows/ci.yml) — CI/CD 工作流

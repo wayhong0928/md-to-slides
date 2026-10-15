@@ -158,7 +158,7 @@ function preprocessMermaid(options) {
   } = options;
 
   logger.log('╔════════════════════════════════════════╗');
-  logger.log('║   Mermaid Pre-Renderer  (SDD v2.0)     ║');
+  logger.log('║   Mermaid Pre-Renderer  (v2.0)         ║');
   logger.log('╚════════════════════════════════════════╝\n');
   logger.log(`📥 輸入：${input}`);
   logger.log(`📤 輸出：${output}\n`);

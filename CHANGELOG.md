@@ -22,4 +22,3 @@
 - 固定讀取 content.md
 - 支援 HTML / PDF / PPTX 輸出
 - 支援 CJK 字體與自訂 CSS 注入
-- 詳細資料請查看 [SDD-v2.0](docs/spec/SDD-v2.0.md)

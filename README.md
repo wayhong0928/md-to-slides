@@ -174,10 +174,6 @@ md-to-slides/
 │
 ├── docs/
 │   ├── ARCHITECTURE.md    # 專案架構說明
-│   ├── PROJECTIZATION_PLAN.md    # v3.0 路線規劃
-│   ├── spec/
-│   │   ├── SDD-v2.0.md           # 系統設計文件
-│   │   ├── SDD-v1.0.md           # 歷史參考
 │
 ├── data/                   # Markdown 原始內容
 │
@@ -251,7 +247,6 @@ nvm install 18 && nvm use 18
 
 ---
 
-## Architecture Planning
+## Architecture
 
-- [Projectization Plan](docs/PROJECTIZATION_PLAN.md)
-- [System Design](docs/spec/SDD-v2.0.md)
+- [Architecture](docs/ARCHITECTURE.md)
