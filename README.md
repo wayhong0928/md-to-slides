@@ -303,7 +303,7 @@ thesis-defense-scholar/
 ├── prompts.md                       # 可以直接複製的 prompt：起手、換主題、加一頁、精簡文字、新手與專業視角審查
 ├── AGENTS.md                        # 給 AI 的常駐規則：可用版型、每頁字數上限、不能改的地方
 ├── .github/copilot-instructions.md  # 跟 AGENTS.md 逐位元相同
-├── CLAUDE.md                        # 只有一行 @AGENTS.md，讓 Claude Code 一定讀到規則
+├── CLAUDE.md                        # 標題加 @AGENTS.md 匯入，讓 Claude Code 透過匯入讀到規則
 ├── .vscode/settings.json            # 讓 Marp for VS Code 認得 themes/ 的 8 個主題並顯示 HTML
 └── themes/                          # 8 個主題的 CSS
 ```
@@ -312,7 +312,7 @@ thesis-defense-scholar/
 
 - GitHub Copilot（VS Code）：專案層級的指示檔可以是 `.github/copilot-instructions.md` 或 `AGENTS.md`。兩份都讀到時同樣的規則會出現兩次，官方建議移除重複的指示。見 [Use custom instructions in VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)。
 - Codex：開工前讀 `AGENTS.md`，從專案根目錄一路讀到工作目錄，合計上限預設 32 KiB。起手包的 `AGENTS.md` 約 8 KB。見 [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)。
-- Claude Code：讀起手包的 `CLAUDE.md`，再透過裡面的 `@AGENTS.md` 匯入規則。官方文件寫 v2.1.277 以上在工作目錄和上層目錄都沒有 `CLAUDE.md` 時會直接讀 `AGENTS.md`，而且 `~/.claude/CLAUDE.md` 不算在內；但 Windows 上的 v2.1.302 實測，有 `~/.claude/CLAUDE.md` 的帳號把資料夾放在家目錄底下時，`AGENTS.md` 沒有被讀到，同一份資料夾放在另一顆磁碟就有讀到（原因推測跟 `~/.claude/CLAUDE.md` 有關，沒有查到官方說明），所以起手包多放這個 `CLAUDE.md`。官方文件說用 `CLAUDE.md` 匯入 `AGENTS.md` 不會讓它讀兩次。見 [How Claude remembers your project](https://code.claude.com/docs/en/memory#agents-md)。
+- Claude Code：讀起手包的 `CLAUDE.md`，再透過裡面的 `@AGENTS.md` 匯入規則。官方文件寫 v2.1.277 以上在工作目錄和上層目錄都沒有 `CLAUDE.md` 時會直接讀 `AGENTS.md`，而且 `~/.claude/CLAUDE.md` 不算在內；但在一台 Windows 電腦上用 v2.1.302 測試（`claude -p --setting-sources project,local`），資料夾放在家目錄底下的 `AppData\Local\Temp` 裡時，`AGENTS.md` 沒有被讀到。那個帳號有 `~/.claude/CLAUDE.md`，推測跟它有關。官方文件說 `~/.claude/CLAUDE.md` 不算，也說工作目錄上層的 `.claude/CLAUDE.md` 算，資料夾在家目錄底下時兩條會重疊，文件沒有說哪條優先。所以起手包多放這個 `CLAUDE.md`。官方文件說用 `CLAUDE.md` 匯入 `AGENTS.md` 不會讓它讀兩次。見 [How Claude remembers your project](https://code.claude.com/docs/en/memory#agents-md)。
 
 在 VS Code 打開時，要開整個資料夾，不要只開 `slides.md`，`.vscode/settings.json` 才會生效。VS Code 問要不要信任這個資料夾時選信任。沒有信任的資料夾裡，Marp for VS Code 只提供基本預覽，HTML 元件一律不顯示，`themes/` 的自訂主題也不會載入（見 [Marp for VS Code 的 Workspace Trust 說明](https://github.com/marp-team/marp-vscode#workspace-trust)）。
 
@@ -426,7 +426,8 @@ nvm install 18 && nvm use 18
 - **v2**：任意路徑輸入、Mermaid 圖表渲染、單一 data/ 資料區
 - **v2.1**：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
 - **v2.2**：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
-- **v2.3**（當前）：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
+- **v2.3**：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
+- **v2.4**（當前）：5 個場合的填空範本起手包（`npm run starter`）、`npm run scenarios`、`check` 的 R5 分成兩級
 
 ---
 

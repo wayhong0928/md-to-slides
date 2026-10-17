@@ -1,8 +1,8 @@
 'use strict';
 
 // 起手包產生器：讀場合範本、版型目錄、主題，組出一個可以直接用 VS Code 打開的資料夾。
-// 結構見 ROADMAP 第七節：slides.md、example.md、themes/、.vscode/settings.json、
-// .github/copilot-instructions.md、AGENTS.md、prompts.md。
+// 結構見 README 的「填空範本起手包（starter）」：slides.md、example.md、themes/、.vscode/settings.json、
+// .github/copilot-instructions.md、AGENTS.md、CLAUDE.md、prompts.md。
 
 const fs = require('fs');
 const path = require('path');
@@ -73,7 +73,7 @@ function starterFiles(scenario, theme, { catalog = loadCatalog(), themesDir = TH
     { name: 'slides.md', data: frontmatter(theme) + scenario.blank.trimEnd() + '\n' },
     { name: 'example.md', data: frontmatter(theme) + scenario.example.trimEnd() + '\n' },
     { name: 'AGENTS.md', data: rules },
-    // Claude Code 在家目錄底下（例如下載資料夾）會因為 ~/.claude/CLAUDE.md 而不讀 AGENTS.md（2.1.302 實測），
+    // 在一台 Windows 電腦上用 Claude Code 2.1.302 測試，資料夾在家目錄底下時沒有讀到 AGENTS.md（原因還沒確認），
     // 所以另外放一份只匯入 AGENTS.md 的 CLAUDE.md。官方文件說保留匯入不會讓 AGENTS.md 讀兩次。
     { name: 'CLAUDE.md', data: CLAUDE_MD },
     { name: '.github/copilot-instructions.md', data: rules },
