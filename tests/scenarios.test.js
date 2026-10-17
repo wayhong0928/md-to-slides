@@ -11,7 +11,8 @@ const { validateScenarios } = require('../scripts/validate-scenarios');
 
 const themesDir = path.resolve(__dirname, '..', 'themes');
 const catalog = loadCatalog();
-const original = fs.readFileSync(path.join(DEFAULT_DIR, 'course-report.md'), 'utf-8');
+// Windows 上 git 可能轉成 CRLF，轉回 LF 才能用含 \n 的字串替換
+const original = fs.readFileSync(path.join(DEFAULT_DIR, 'course-report.md'), 'utf-8').replace(/\r\n/g, '\n');
 
 // 把改過的 course-report.md 放進暫存資料夾驗證，回傳錯誤訊息陣列
 function errorsFor(text) {

@@ -1,5 +1,22 @@
 # 更動日誌
 
+## [2.4.0] - 2026-10-17
+
+### 新增
+- 填空範本起手包：`npm run starter` 產生 5 個場合（論文口試、課堂報告、工作坊、商業提案、技術分享）與推薦主題的 6 個組合，輸出到 `output/starters/`，加 `--zip` 另外打包。每份有 `slides.md`（要填的範本）、`example.md`（填好虛構內容的樣子）、`prompts.md`（六段 prompt）、`AGENTS.md`、`.github/copilot-instructions.md`、`.vscode/settings.json` 和 8 個主題的 CSS
+- `AGENTS.md` 與 `.github/copilot-instructions.md` 由 `starter/rules.md` 產生，兩檔逐位元相同，版型清單從 `catalog/` 填入
+- 場合範本 `scenarios/<id>.md`，每個有填空版與範例版。`npm run scenarios` 檢查版型 id、主題、頁數、class 和佔位格式，有問題 exit 1 並指出檔案
+- zip 不加依賴，用 Node 內建的 zlib 寫，同樣的內容每次產生的 zip 逐位元相同
+- CI 的 Ubuntu 工作多一步，產生 6 份起手包 zip 並用 `unzip -t` 檢查
+
+### 改動
+- 佔位的正式格式改成 `【填：…】`。R5 只把 `【填：…】` 當 warning（`--strict` 變 error），其他的 `【…】` 降成 info，舊格式佔位和內文本來就有的括號不再讓 `--strict` 失敗
+- 版型目錄骨架的 275 處佔位改成新格式，第一個全形冒號換成逗號，例如 `【標題：A】` 變成 `【填：標題，A】`。`examples/showcase.md` 取自範例，沒有變動
+
+### 不變
+- `build` 的參數與輸出、8 個主題、版型 class 都和 2.3.0 相同
+
+---
 ## [2.3.0] - 2026-10-17
 
 ### 新增

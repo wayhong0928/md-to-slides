@@ -8,7 +8,7 @@
 
 ## Features
 
-| 功能                                      | v1  | v2.3（當前） |
+| 功能                                      | v1  | v2.4（當前） |
 | ----------------------------------------- | :-: | :--------: |
 | Markdown → HTML 投影片（Marp slide deck） | ✅  |     ✅     |
 | Markdown → PDF (16:9 簡報)                | ✅  |     ✅     |
@@ -20,6 +20,7 @@
 | **內建 8 個主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
 | **相對路徑圖片（HTML、PDF、PPTX）**       | ❌  |     ✅     |
 | **`check` 匯出前版面檢查（R1–R5）**       | ❌  |     ✅     |
+| **填空範本起手包（5 個場合）**            | ❌  |     ✅     |
 
 ---
 
@@ -138,6 +139,10 @@ npm run thumbnails
 # 匯出前檢查
 npm run check -- data/slides.md
 
+# 驗證場合範本 / 產生填空範本起手包
+npm run scenarios
+npm run starter
+
 # 僅檢查正式環境依賴安全
 npm run audit:prod
 ```
@@ -247,10 +252,10 @@ npm run check -- data/slides.md --json
 | R2 黏頁 | 以 `<` 開頭的 HTML 行，下一行直接接 `---`（Markdown 會把 `---` 吃掉，兩頁黏成一頁） | error |
 | R3 破圖 | Markdown 圖片、`<img src>`、CSS `url()` 指到的本機檔案找不到 | 前兩種 error，CSS `url()` 是 warning |
 | R4 未定義 class | `class="…"`、`<!-- _class: … -->` 用到的 class，在主題和 frontmatter `style:` 裡都沒有。內建主題以版型目錄為準，會附上相近的 class；用到舊名 `col` 只提醒改成 `column` | warning（舊名是 info） |
-| R5 未填佔位 | 程式碼區塊和 HTML 註解以外出現 `【…】` | warning（`--strict` 變 error） |
+| R5 未填佔位 | 程式碼區塊和 HTML 註解以外出現 `【填：…】`；其他形式的 `【…】` 可能是舊格式的佔位，也可能是內文本來就有的括號，只提醒 | `【填：…】` 是 warning（`--strict` 變 error），其他是 info |
 
 - 每一條發現都印出頁碼、行號、規則和說明；有 error 時 exit code 是 1，用法錯誤是 2。info 只是提醒，不影響 exit code，加 `--strict` 也一樣。
-- `--strict` 讓 R5 變 error，`--no-browser` 跳過 R1，`--theme-set <路徑>` 指定額外的主題。
+- `--strict` 讓 `【填：…】` 的 R5 變 error（其他 `【…】` 仍是 info），`--no-browser` 跳過 R1，`--theme-set <路徑>` 指定額外的主題。
 - R1 需要瀏覽器，不會另外下載。有設環境變數 `CHROME_PATH` 就只用它指定的瀏覽器，路徑不存在時不會改找別的；沒設才找系統上的 Chrome 或 Edge。找不到時會印出「R1 沒有檢查」，這不等於通過。
 - R1 會在輸入檔旁邊產生一個暫存 HTML，量完就刪，所以簡報要放在可寫入的資料夾。
 
@@ -259,7 +264,7 @@ npm run check -- data/slides.md --json
 `catalog/` 收了 35 個版型，分成 structure（5）、core（18）、academic（5）、teaching（7）四包，每個版型一個檔案，內容是名稱、用途、適用情境、用到的 class、可複製的骨架和一個完整範例。`themes/src/_base.css` 裡不屬於任何版型的 class，列在 `catalog/_utilities.md`。
 
 - 找版型：先開 `examples/showcase.md`（36 頁，第一頁是說明，之後每頁示範一個版型），用 classic 主題轉成 HTML 或 PDF 看效果，再到 `catalog/<包名>/<id>.md` 找對應檔案。
-- 複製骨架：打開該檔案的「骨架」區塊，整段貼進簡報，把【】標出的地方換成自己的內容。骨架只有一頁，不含 `---` 分頁線。
+- 複製骨架：打開該檔案的「骨架」區塊，整段貼進簡報，把 `【填：…】` 換成自己的內容，`【填：` 後面的文字是這一格要填什麼的提示。骨架只有一頁，不含 `---` 分頁線。
 - 同一組 class 的細節（哪些 class 搭配、哪個是舊名）寫在檔案開頭的欄位裡。
 
 ```bash
@@ -269,6 +274,50 @@ npm run showcase -- --check     # 只比對 examples/showcase.md 是不是最新
 ```
 
 examples/showcase.md 是產物，不要直接修改，改 `catalog/` 之後重新執行 `npm run showcase`。
+
+### 填空範本起手包（starter）
+
+起手包是一個用 VS Code 打開就能用的資料夾。裡面的 `slides.md` 照場合排好了頁面，要填的地方寫成 `【填：…】`，可以自己填，也可以交給 GitHub Copilot、Codex 或 Claude Code 照資料夾裡的規則填。目前有 5 個場合：
+
+| 場合 id | 場合 | 推薦主題 | 頁數 |
+| ---- | ---- | ---- | ---- |
+| `thesis-defense` | 論文口試／計畫書口試 | scholar | 14 |
+| `course-report` | 課堂期中、期末報告 | classic | 13 |
+| `workshop` | 工作坊教學 | classroom、midnight | 12 |
+| `business-proposal` | 商業提案 | mono | 11 |
+| `tech-talk` | 技術分享 | midnight | 11 |
+
+```bash
+npm run starter                                           # 6 個場合與推薦主題的組合，輸出到 output/starters/
+npm run starter -- --zip                                  # 同上，每份另外打包成 zip
+npm run starter -- thesis-defense --theme midnight --zip  # 只產生一份，主題可以不是推薦的那個
+npm run scenarios                                         # 驗證 scenarios/ 的場合檔
+```
+
+產生的資料夾長這樣：
+
+```text
+thesis-defense-scholar/
+├── slides.md                        # 要填的範本
+├── example.md                       # 同一份範本填好虛構內容的樣子
+├── prompts.md                       # 可以直接複製的 prompt：起手、換主題、加一頁、精簡文字、新手與專業視角審查
+├── AGENTS.md                        # 給 AI 的常駐規則：可用版型、每頁字數上限、不能改的地方
+├── .github/copilot-instructions.md  # 跟 AGENTS.md 逐位元相同
+├── .vscode/settings.json            # 讓 Marp for VS Code 認得 themes/ 的 8 個主題並顯示 HTML
+└── themes/                          # 8 個主題的 CSS
+```
+
+會讀規則檔的工具：
+
+- GitHub Copilot（VS Code）：專案層級的指示檔可以是 `.github/copilot-instructions.md` 或 `AGENTS.md`。兩份都讀到時同樣的規則會出現兩次，官方建議移除重複的指示。見 [Use custom instructions in VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)。
+- Codex：開工前讀 `AGENTS.md`，從專案根目錄一路讀到工作目錄，合計上限預設 32 KiB。起手包的 `AGENTS.md` 約 8 KB。見 [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)。
+- Claude Code（v2.1.277 以上）：工作目錄和它的上層目錄都沒有 `CLAUDE.md`、`.claude/CLAUDE.md`、`CLAUDE.local.md` 時，直接讀 `AGENTS.md`。起手包放進已經有 `CLAUDE.md` 的資料夾底下，Claude Code 就只讀 `CLAUDE.md`，要在那份 `CLAUDE.md` 加一行 `@AGENTS.md` 匯入。`~/.claude/CLAUDE.md` 不影響這個判斷。見 [How Claude remembers your project](https://code.claude.com/docs/en/memory#agents-md)。
+
+在 VS Code 打開時，要開整個資料夾，不要只開 `slides.md`，`.vscode/settings.json` 才會生效。VS Code 問要不要信任這個資料夾時選信任。沒有信任的資料夾裡，Marp for VS Code 只提供基本預覽，HTML 元件一律不顯示，`themes/` 的自訂主題也不會載入（見 [Marp for VS Code 的 Workspace Trust 說明](https://github.com/marp-team/marp-vscode#workspace-trust)）。
+
+起手包裡沒有 `check`。要檢查版面，可以把填好的 `slides.md` 拿回本工具跑 `npm run check`，或至少在 VS Code 搜尋 `【填：`，確認都填完了。
+
+場合範本放在 `scenarios/<id>.md`，一個檔案有 frontmatter（場合 id、中文名、推薦主題、每段用哪些版型與幾頁）和「填空版」「範例版」兩段。`npm run scenarios` 會檢查版型 id 都在目錄裡、頁數等於各段加總、用到的 class 屬於列出的版型、填空版的佔位都寫成 `【填：…】`、範例版沒有 `【`。規則檔的來源是 `starter/rules.md`，版型清單由產生腳本從 `catalog/` 填入。
 
 ---
 
@@ -282,6 +331,8 @@ md-to-slides/
 │   │   └── check-cli.js           # check 指令入口
 │   ├── check/                     # R1–R5 檢查規則
 │   ├── catalog/                   # 讀取版型目錄（check 與腳本共用）
+│   ├── scenarios/                 # 讀取場合範本
+│   ├── starter/                   # 產生起手包資料夾與 zip
 │   └── steps/
 │       ├── preprocess-mermaid.js  # Mermaid block → PNG
 │       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
@@ -292,6 +343,8 @@ md-to-slides/
 │   └── TOKENS.md                  # 53 個 token 的說明、對比配對表、classic 例外
 │
 ├── catalog/                       # 版型目錄（35 個版型＋_utilities.md）
+├── scenarios/                     # 場合範本 ×5（填空版＋範例版）
+├── starter/                       # 起手包的規則來源 rules.md 與 prompts.md
 ├── examples/
 │   └── showcase.md                # 由 npm run showcase 產生
 │
@@ -301,6 +354,8 @@ md-to-slides/
 │   ├── build-showcase.js          # 產生 examples/showcase.md
 │   ├── check-contrast.js          # 8 個主題的 WCAG 對比檢查
 │   ├── build-thumbnails.js        # 8 個主題的縮圖總表（要 Chrome）
+│   ├── validate-scenarios.js      # 驗證場合範本
+│   ├── build-starter.js           # 產生起手包
 │   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件

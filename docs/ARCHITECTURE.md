@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.3)
+# 專案架構說明 (v2.4)
 
 ## 目錄結構
 
@@ -13,6 +13,11 @@ md-to-slides/
 │   │   └── rules/                   # R1–R5，每條規則一個檔案
 │   ├── catalog/
 │   │   └── index.js                 # 讀取版型目錄（loadCatalog 等），check 與腳本共用
+│   ├── scenarios/
+│   │   └── index.js                 # 讀取場合範本（loadScenarios、splitPages）
+│   ├── starter/
+│   │   ├── index.js                 # 組出起手包的檔案清單、寫資料夾
+│   │   └── zip.js                   # 不加依賴的 zip 寫入（deflate＋CRC32）
 │   └── steps/
 │       ├── preprocess-mermaid.js    # 前置處理：Mermaid block → PNG
 │       └── render-html.js           # 本機圖片複製與改寫、Marp 呼叫、HTML 輸出
@@ -23,6 +28,8 @@ md-to-slides/
 │   └── TOKENS.md             # 53 個 token、49 組對比配對、classic 例外表
 │
 ├── catalog/                  # 版型目錄：<包名>/<id>.md ×35＋_utilities.md
+├── scenarios/                # 場合範本：<id>.md ×5
+├── starter/                  # 起手包規則來源 rules.md、prompts.md
 ├── examples/
 │   └── showcase.md           # 由 scripts/build-showcase.js 產生，每個版型一頁
 │
@@ -32,6 +39,8 @@ md-to-slides/
 │   ├── build-showcase.js     # 產生 examples/showcase.md；--check 比對是不是最新
 │   ├── check-contrast.js     # 每個主題的 WCAG 對比檢查；--tokens 指定另一份 TOKENS.md
 │   ├── build-thumbnails.js   # 8 個主題的縮圖總表（puppeteer-core，要 Chrome 或 Edge）
+│   ├── validate-scenarios.js # 驗證場合範本
+│   ├── build-starter.js      # 產生起手包資料夾與 zip
 │   └── run-tests.js
 │
 ├── tests/                    # 測試套件
@@ -151,6 +160,18 @@ R4 判斷 class 有沒有定義時分兩種主題。內建主題（repo 的 `the
 - 目錄讀不到或有問題時，R4 退回解析主題 CSS，check 不會因此失敗。
 - 輸出依頁碼、行號、規則代號排序，同一條規則再依 error、warning、info；`check-cli.js` 只有 info 大於 0 才在摘要加「N 個 info」。
 
+### R5 的兩級佔位
+
+佔位的正式格式是 `【填：…】`，`【填：` 後面寫這一格要填什麼。R5 對程式碼區塊和 HTML 註解以外的 `【…】` 分兩級。以 `【填：` 開頭的是 warning，加 `--strict` 變 error；其他的 `【…】` 可能是 2.3.0 以前的舊格式佔位，也可能是內文本來就有的括號（例如書名、資料來源），一律是 info。版型目錄的骨架在 2.4.0 全部改成新格式（275 處，第一個全形冒號換成逗號，例如 `【標題：A】` 變成 `【填：標題，A】`）。
+
+### 場合範本與起手包
+
+`scenarios/<id>.md` 一個檔案是一個場合。frontmatter 有 `id`、`name_zh`、`themes`（推薦主題）、`sections`（每段的標題、頁數、用到的版型 id），內文有「## 填空版」「## 範例版」兩段，各是一份用 `---` 分頁的完整簡報，不含 frontmatter。`src/scenarios/index.js` 的 `splitPages()` 切頁時略過程式碼區塊裡的 `---`。
+
+`npm run scenarios`（`scripts/validate-scenarios.js`）逐檔檢查：欄位齊全、id 是 kebab-case 且等於檔名、主題的 CSS 存在、`sections` 的版型都在目錄裡、兩段的頁數都等於 `slides` 加總、兩段用到的 class 都屬於列出的版型或工具 class、填空版至少有一個佔位而且全部是 `【填：…】`、範例版沒有 `【`。
+
+`src/starter/index.js` 把一個場合和一個主題組成起手包。`slides.md`、`example.md` 是填空版、範例版前面加上 `marp: true`、`theme:`、`paginate: true` 的 frontmatter；`AGENTS.md` 與 `.github/copilot-instructions.md` 都由 `starter/rules.md` 產生，`{{THEMES}}`、`{{LAYOUTS}}` 換成主題清單與目錄的版型表，兩檔逐位元相同；`.vscode/settings.json` 用相對路徑列出 8 個主題並設 `markdown.marp.html: "all"`。範本讀進來時一律把 CRLF 轉成 LF。產生資料夾時只覆寫起手包自己的檔案，不清空資料夾。zip 用 `zlib.deflateRawSync` 加自己算的 CRC32，時間戳固定，同樣的內容每次產生的 zip 逐位元相同。CI 的 Ubuntu 工作會產生 6 份 zip 並用 `unzip -t` 檢查。
+
 ---
 
 ## 核心模組說明
@@ -228,6 +249,8 @@ renderHtml(options); // 主要 HTML 渲染邏輯
 | legacy-compat.test.js      | 整合 | 舊稿輸出與 2.0 基準一致    | 暫存資料夾            |
 | check.test.js              | 單元 | splitSlides、R2–R5         | —                     |
 | check-cli.test.js          | 整合 | `check` 指令、R1、exit code | —                     |
+| scenarios.test.js          | 單元 | 場合範本驗證擋得下的錯誤   | 暫存資料夾            |
+| starter.test.js            | 整合 | 6 個起手包的內容、build、check、zip | 暫存資料夾    |
 
 ### 執行方式
 
@@ -266,6 +289,8 @@ ls -la output/
 | `npm run catalog`      | 驗證版型目錄                             |
 | `npm run showcase`     | 產生 examples/showcase.md；加 `-- --check` 只比對 |
 | `npm run contrast`     | 檢查 8 個主題的文字對比                  |
+| `npm run scenarios`    | 驗證場合範本                             |
+| `npm run starter`      | 產生起手包到 output/starters/；加 `-- --zip` 另外打包 |
 | `npm run thumbnails`   | 產生 output/thumbnails/（要 Chrome 或 Edge） |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |
