@@ -21,8 +21,10 @@ test('舊稿（沒有 theme、樣式內嵌在 style:）的 HTML 輸出跟 2.0 �
       'html',
     ]);
     assert.equal(result.code, 0, result.output);
-    const actual = normalizeNewlines(fs.readFileSync(path.join(out, 'legacy-inline-style.html'), 'utf-8'));
-    const baseline = normalizeNewlines(
+    // Marp 沒指定 lang 時會用系統 locale 填 lang 屬性（Windows 是 en-US，Ubuntu runner 是 C），比對前拿掉
+    const normalize = (s) => normalizeNewlines(s).replace(/\blang="[^"]*"/g, 'lang=""');
+    const actual = normalize(fs.readFileSync(path.join(out, 'legacy-inline-style.html'), 'utf-8'));
+    const baseline = normalize(
       fs.readFileSync(path.join(fixturesDir, 'baseline', 'legacy-inline-style.html'), 'utf-8')
     );
     if (actual !== baseline) {
