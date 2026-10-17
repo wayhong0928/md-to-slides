@@ -12,7 +12,8 @@ function splitSlides(content) {
   return parseDocument(content).slides;
 }
 
-const SEVERITY_ORDER = { error: 0, warning: 1 };
+// info 只是提醒，不影響 exit code，連 --strict 也一樣。
+const SEVERITY_ORDER = { error: 0, warning: 1, info: 2 };
 
 // options: { browser = true, strict = false, themeSets = [] }
 // 回傳 { file, findings, skipped }；skipped 列出沒檢查的規則和原因，不能當成通過。

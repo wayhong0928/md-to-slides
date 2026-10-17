@@ -1,5 +1,22 @@
 # 更動日誌
 
+## [2.2.0] - 2026-10-17
+
+### 新增
+- 版型目錄 `catalog/`：35 個版型，分成 structure（5）、core（18）、academic（5）、teaching（7）四包。每個版型一個檔案，有名稱、用途、適用情境、用到的 class、可複製的骨架和一個虛構內容的完整範例。`catalog/_utilities.md` 列出不屬於任何版型的工具 class 和元件，`themes/src/_base.css` 的 153 個 class 全部有歸屬
+- `npm run catalog`：驗證目錄，檢查欄位、id、骨架與 classes 是否一致、class 是否都在 `_base.css` 定義，以及目錄和 `_base.css` 的 class 集合是否完全相同；有問題 exit 1 並指出檔案
+- `npm run showcase`：從目錄產生 `examples/showcase.md`（36 頁，每個版型一頁）；加 `--check` 只比對產物是不是最新
+- `check` 新增 info 等級的提醒，不影響 exit code，連 `--strict` 也一樣
+- 新的開發依賴 `js-yaml`（固定 ^4.1.1），只用來讀版型檔案的 frontmatter
+
+### 改動
+- R4 判斷內建主題的 class 時改以版型目錄為準。用到舊名 `col` 出 info，建議改成 `column`；拼錯的 class 仍是 warning，並附上目錄裡相近的 class 與中文名。第三方主題照舊解析自己的 CSS
+- `check` 的摘要行只有在 info 大於 0 時才多印「N 個 info」，沒有 info 時輸出和 2.1 相同
+
+### 不變
+- 舊簡報的輸出和 2.1.0 逐字相同，`col` 和 `column` 都繼續可用。`themes/` 沒有任何改動
+
+---
 ## [2.1.0] - 2026-10-17
 
 ### 新增

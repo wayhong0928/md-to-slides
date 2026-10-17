@@ -1,0 +1,7 @@
+.box { display: flex; }
+.box-item { padding: 4px; }
+.old-box { display: flex; }
+.code-wrap { margin: 0; }
+.muted { color: #888; }
+.legend { gap: 4px; }
+.legend-dot { width: 8px; }

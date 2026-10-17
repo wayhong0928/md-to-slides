@@ -8,7 +8,7 @@
 
 ## Features
 
-| 功能                                      | v1  | v2.1（當前） |
+| 功能                                      | v1  | v2.2（當前） |
 | ----------------------------------------- | :-: | :--------: |
 | Markdown → HTML 投影片（Marp slide deck） | ✅  |     ✅     |
 | Markdown → PDF (16:9 簡報)                | ✅  |     ✅     |
@@ -209,13 +209,29 @@ npm run check -- data/slides.md --json
 | R1 超框 | 用 Marp 產生 HTML，在瀏覽器裡量每一頁，內容元素超出投影片範圍 | error |
 | R2 黏頁 | 以 `<` 開頭的 HTML 行，下一行直接接 `---`（Markdown 會把 `---` 吃掉，兩頁黏成一頁） | error |
 | R3 破圖 | Markdown 圖片、`<img src>`、CSS `url()` 指到的本機檔案找不到 | 前兩種 error，CSS `url()` 是 warning |
-| R4 未定義 class | `class="…"`、`<!-- _class: … -->` 用到的 class，在主題 CSS 和 frontmatter `style:` 裡都沒有 | warning |
+| R4 未定義 class | `class="…"`、`<!-- _class: … -->` 用到的 class，在主題和 frontmatter `style:` 裡都沒有。內建主題以版型目錄為準，會附上相近的 class；用到舊名 `col` 只提醒改成 `column` | warning（舊名是 info） |
 | R5 未填佔位 | 程式碼區塊和 HTML 註解以外出現 `【…】` | warning（`--strict` 變 error） |
 
-- 每一條發現都印出頁碼、行號、規則和說明；有 error 時 exit code 是 1，用法錯誤是 2。
+- 每一條發現都印出頁碼、行號、規則和說明；有 error 時 exit code 是 1，用法錯誤是 2。info 只是提醒，不影響 exit code，加 `--strict` 也一樣。
 - `--strict` 讓 R5 變 error，`--no-browser` 跳過 R1，`--theme-set <路徑>` 指定額外的主題。
 - R1 需要瀏覽器，不會另外下載。有設環境變數 `CHROME_PATH` 就只用它指定的瀏覽器，路徑不存在時不會改找別的；沒設才找系統上的 Chrome 或 Edge。找不到時會印出「R1 沒有檢查」，這不等於通過。
 - R1 會在輸入檔旁邊產生一個暫存 HTML，量完就刪，所以簡報要放在可寫入的資料夾。
+
+### 版型目錄（catalog）
+
+`catalog/` 收了 35 個版型，分成 structure（5）、core（18）、academic（5）、teaching（7）四包，每個版型一個檔案，內容是名稱、用途、適用情境、用到的 class、可複製的骨架和一個完整範例。`themes/src/_base.css` 裡不屬於任何版型的 class，列在 `catalog/_utilities.md`。
+
+- 找版型：先開 `examples/showcase.md`（36 頁，第一頁是說明，之後每頁示範一個版型），用 classic 主題轉成 HTML 或 PDF 看效果，再到 `catalog/<包名>/<id>.md` 找對應檔案。
+- 複製骨架：打開該檔案的「骨架」區塊，整段貼進簡報，把【】標出的地方換成自己的內容。骨架只有一頁，不含 `---` 分頁線。
+- 同一組 class 的細節（哪些 class 搭配、哪個是舊名）寫在檔案開頭的欄位裡。
+
+```bash
+npm run catalog                 # 驗證目錄的欄位、骨架與 classes 是否一致、class 是否都在 _base.css 有定義
+npm run showcase                # 從目錄重新產生 examples/showcase.md
+npm run showcase -- --check     # 只比對 examples/showcase.md 是不是最新
+```
+
+examples/showcase.md 是產物，不要直接修改，改 `catalog/` 之後重新執行 `npm run showcase`。
 
 ---
 
@@ -228,6 +244,7 @@ md-to-slides/
 │   │   ├── build-cli.js           # 統一 CLI 入口
 │   │   └── check-cli.js           # check 指令入口
 │   ├── check/                     # R1–R5 檢查規則
+│   ├── catalog/                   # 讀取版型目錄（check 與腳本共用）
 │   └── steps/
 │       ├── preprocess-mermaid.js  # Mermaid block → PNG
 │       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
@@ -236,8 +253,14 @@ md-to-slides/
 │   ├── src/                       # _base.css（版型）、classic.css（token）
 │   └── classic.css                # 產生的單檔主題（進版控）
 │
+├── catalog/                       # 版型目錄（35 個版型＋_utilities.md）
+├── examples/
+│   └── showcase.md                # 由 npm run showcase 產生
+│
 ├── scripts/
 │   ├── build-themes.js            # 合併主題
+│   ├── validate-catalog.js        # 驗證版型目錄
+│   ├── build-showcase.js          # 產生 examples/showcase.md
 │   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件
@@ -305,7 +328,8 @@ nvm install 18 && nvm use 18
 
 - **v1**：Markdown → HTML / PDF / PPTX，固定讀取 `content.md`
 - **v2**：任意路徑輸入、Mermaid 圖表渲染、單一 data/ 資料區
-- **v2.1**（當前）：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
+- **v2.1**：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
+- **v2.2**（當前）：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
 
 ---
 

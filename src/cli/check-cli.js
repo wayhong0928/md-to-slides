@@ -31,7 +31,7 @@ Options:
   --theme-set <path> 額外的主題 CSS 檔或資料夾，可重複
   --help, -h         顯示說明
 
-exit code：0 沒有 error；1 有 error；2 用法錯誤
+exit code：0 沒有 error；1 有 error；2 用法錯誤（info 只是提醒，不影響 exit code）
 `.trim());
 }
 
@@ -45,12 +45,15 @@ function formatText(result) {
   for (const s of result.skipped) lines.push(`${s.rule} 沒有檢查：${s.reason}`);
 
   const errors = result.findings.filter((f) => f.severity === 'error').length;
-  const warnings = result.findings.length - errors;
+  const warnings = result.findings.filter((f) => f.severity === 'warning').length;
+  const infos = result.findings.filter((f) => f.severity === 'info').length;
   if (result.findings.length === 0 && result.skipped.length === 0) {
     lines.push('全部通過：R1–R5 沒有發現問題。');
   } else {
     const tail = result.skipped.length > 0 ? `；${result.skipped.map((s) => s.rule).join('、')} 沒有檢查，不能當成通過` : '';
-    lines.push(`${errors} 個 error、${warnings} 個 warning${tail}`);
+    // info 是 0 時不印，避免改動 2.1 既有的輸出
+    const infoPart = infos > 0 ? `、${infos} 個 info` : '';
+    lines.push(`${errors} 個 error、${warnings} 個 warning${infoPart}${tail}`);
   }
   return lines.join('\n');
 }

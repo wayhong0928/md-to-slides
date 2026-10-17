@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.1)
+# 專案架構說明 (v2.2)
 
 ## 目錄結構
 
@@ -11,6 +11,8 @@ md-to-slides/
 │   ├── check/
 │   │   ├── index.js                 # checkFile、splitSlides
 │   │   └── rules/                   # R1–R5，每條規則一個檔案
+│   ├── catalog/
+│   │   └── index.js                 # 讀取版型目錄（loadCatalog 等），check 與腳本共用
 │   └── steps/
 │       ├── preprocess-mermaid.js    # 前置處理：Mermaid block → PNG
 │       └── render-html.js           # 本機圖片複製與改寫、Marp 呼叫、HTML 輸出
@@ -19,8 +21,14 @@ md-to-slides/
 │   ├── src/                  # _base.css（版型與元件）、classic.css（token）
 │   └── classic.css           # scripts/build-themes.js 產生的單檔主題
 │
+├── catalog/                  # 版型目錄：<包名>/<id>.md ×35＋_utilities.md
+├── examples/
+│   └── showcase.md           # 由 scripts/build-showcase.js 產生，每個版型一頁
+│
 ├── scripts/
 │   ├── build-themes.js       # 合併主題；--check 比對產物是不是最新
+│   ├── validate-catalog.js   # 驗證版型目錄
+│   ├── build-showcase.js     # 產生 examples/showcase.md；--check 比對是不是最新
 │   └── run-tests.js
 │
 ├── tests/                    # 測試套件
@@ -107,6 +115,28 @@ md-to-slides/
     ▼
 findings（頁碼、行號、規則、等級、說明）＋ skipped（沒檢查的規則與原因）
 ````
+
+### 版型目錄
+
+版型目錄是版型的單一來源。`catalog/<包名>/<id>.md` 每檔一個版型，包名是 structure、core、academic、teaching 其中之一。檔案由 YAML frontmatter 加兩個區塊組成。
+
+- frontmatter 欄位：`id`（英文 kebab-case，要跟檔名一致）、`name_zh`、`name_en`、`pack`（要跟所在資料夾一致）、`purpose`、`scenes`、`classes`、`aliases`（舊名對新名，沒有就寫 `{}`）。
+- 「## 骨架」：一頁的可複製內容，包在程式碼區塊裡；骨架本身含程式碼區塊時，外層改用四個反引號。骨架用到的 class 必須跟 `classes` 完全相同。
+- 「## 範例」：一頁填好虛構內容的完整例子，用到的 class 必須是 `classes` 的子集。骨架和範例都不能有 `---` 分頁線。
+- `catalog/_utilities.md` 有「工具 class」和「未歸版型的元件」兩段，每個項目用反引號標出 class 名稱。
+
+`npm run catalog`（`scripts/validate-catalog.js`）逐檔檢查上面的規則，並確認「所有版型的 classes＋_utilities.md 兩段＋別名舊名」的集合，跟 `themes/src/_base.css` 解析出來的 class 集合完全相同。任何一邊多或少都 exit 1，並指出是哪個檔案的哪個問題。`src/catalog/index.js` 的 `loadCatalog()` 在目錄存在時不丟例外，檔案層級的問題收在回傳的 `problems`；目錄不存在會丟 `ENOENT`，R4 接住後退回解析主題 CSS。
+
+`npm run showcase`（`scripts/build-showcase.js`）把每個版型的範例依包別、檔名排序接成 `examples/showcase.md`，頁與頁之間 `---` 前後各留一個空行，避免 R2 黏頁。
+
+### R4 與版型目錄
+
+R4 判斷 class 有沒有定義時分兩種主題。內建主題（repo 的 `themes/`）以版型目錄為準，已定義的 class 是所有版型的 `classes`、`_utilities.md` 兩段和別名舊名，加上 Marp 的 `lead`、`invert` 與 frontmatter `style:`。第三方主題（`--theme-set` 或輸入檔旁的 CSS）照舊解析 CSS，不給建議。
+
+- 用到別名舊名（目前只有 `col`，新名 `column`）是 info，只提醒改名，不影響 exit code，輸出照舊。
+- 找不到的 class 仍是 warning，內建主題會再附最多 3 個編輯距離 2 以內的目錄 class 和中文名；距離必須小於兩個名稱中較短的長度，舊名不當建議。一個 class 屬於多個版型時，中文名先取包別在前的版型（structure、core、academic、teaching），同包再取 `classes` 最少的，都一樣照目錄順序，例如 `column` 對到雙欄對照、`hflow` 對到橫向流程。
+- 目錄讀不到或有問題時，R4 退回解析主題 CSS，check 不會因此失敗。
+- 輸出依頁碼、行號、規則代號排序，同一條規則再依 error、warning、info；`check-cli.js` 只有 info 大於 0 才在摘要加「N 個 info」。
 
 ---
 
@@ -220,6 +250,8 @@ ls -la output/
 | `npm test`             | 執行所有測試                             |
 | `npm run themes`       | 合併 themes/src/ 產生 themes/<name>.css；加 `-- --check` 只比對 |
 | `npm run check`        | 匯出前檢查 R1–R5（`-- <檔案>`）          |
+| `npm run catalog`      | 驗證版型目錄                             |
+| `npm run showcase`     | 產生 examples/showcase.md；加 `-- --check` 只比對 |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |
 | `npm run audit:prod`   | 正式環境依賴檢查                         |
