@@ -12,15 +12,15 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：好的提示詞有哪幾個部分】
+# 【填：標題，好的提示詞有哪幾個部分】
 
 <div class="prompt wide">
-<div class="pr"><span class="tag b">【角色】</span><span class="tx">【你要 AI 扮演誰】</span></div>
-<div class="pr"><span class="tag g">【目標】</span><span class="tx">【你要它完成什麼】</span></div>
-<div class="pr"><span class="tag o">【背景】</span><span class="tx">【它需要知道的前提】</span></div>
-<div class="pr"><span class="tag p">【限制】</span><span class="tx">【不能做什麼、字數上限】</span></div>
-<div class="pr"><span class="tag r">【格式】</span><span class="tx">【輸出的樣子】</span></div>
-<div class="pr"><span class="tag k">【範例】</span><span class="tx">【給它一個參考答案】</span></div>
+<div class="pr"><span class="tag b">【填：角色】</span><span class="tx">【填：你要 AI 扮演誰】</span></div>
+<div class="pr"><span class="tag g">【填：目標】</span><span class="tx">【填：你要它完成什麼】</span></div>
+<div class="pr"><span class="tag o">【填：背景】</span><span class="tx">【填：它需要知道的前提】</span></div>
+<div class="pr"><span class="tag p">【填：限制】</span><span class="tx">【填：不能做什麼、字數上限】</span></div>
+<div class="pr"><span class="tag r">【填：格式】</span><span class="tx">【填：輸出的樣子】</span></div>
+<div class="pr"><span class="tag k">【填：範例】</span><span class="tx">【填：給它一個參考答案】</span></div>
 </div>
 ```
 

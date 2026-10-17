@@ -12,20 +12,20 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：研究架構，說出主要關係】
+# 【填：標題，研究架構，說出主要關係】
 
 <div class="hflow">
 <div class="hcol">
-<div class="hbox blue"><b>【自變數一】</b><span>【操作型定義簡述】</span></div>
-<div class="hbox blue"><b>【自變數二】</b><span>【操作型定義簡述】</span></div>
+<div class="hbox blue"><b>【填：自變數一】</b><span>【填：操作型定義簡述】</span></div>
+<div class="hbox blue"><b>【填：自變數二】</b><span>【填：操作型定義簡述】</span></div>
 </div>
 <div class="harrow">➜</div>
-<div class="hbox orange"><b>【中介變數】</b><span>【說明】</span></div>
+<div class="hbox orange"><b>【填：中介變數】</b><span>【填：說明】</span></div>
 <div class="harrow">➜</div>
-<div class="hbox green"><b>【依變數】</b><span>【說明】</span></div>
+<div class="hbox green"><b>【填：依變數】</b><span>【填：說明】</span></div>
 </div>
 
-<div class="hback">【調節變數：說明它調節哪一段關係】</div>
+<div class="hback">【填：調節變數，說明它調節哪一段關係】</div>
 ```
 
 ## 範例

@@ -12,13 +12,13 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：四個層級的共同標準】
+# 【填：標題，四個層級的共同標準】
 
 <div class="ladder">
-<div class="rung r0"><b>【層級 0：名稱】</b> <span>【說明】</span></div>
-<div class="rung r1"><b>【層級 1：名稱】</b> <span>【說明】</span></div>
-<div class="rung r2"><b>【層級 2：名稱】</b> <span>【說明】</span></div>
-<div class="rung r3"><b>【層級 3：名稱】</b> <span>【說明】</span></div>
+<div class="rung r0"><b>【填：層級 0，名稱】</b> <span>【填：說明】</span></div>
+<div class="rung r1"><b>【填：層級 1，名稱】</b> <span>【填：說明】</span></div>
+<div class="rung r2"><b>【填：層級 2，名稱】</b> <span>【填：說明】</span></div>
+<div class="rung r3"><b>【填：層級 3，名稱】</b> <span>【填：說明】</span></div>
 </div>
 ```
 

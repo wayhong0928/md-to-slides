@@ -56,7 +56,7 @@ test('只有 warning 時 exit 0，加 --strict 後 R5 變 error 而 exit 1', asy
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'md-to-slides-strict-'));
   try {
     const file = path.join(dir, 'warn.md');
-    fs.writeFileSync(file, '---\nmarp: true\n---\n\n# 標題\n\n【待補】\n');
+    fs.writeFileSync(file, '---\nmarp: true\n---\n\n# 標題\n\n【填：標題】\n');
     const plain = await runCheck([file, '--no-browser']);
     assert.equal(plain.code, 0, plain.output);
     const strict = await runCheck([file, '--no-browser', '--strict']);

@@ -12,12 +12,12 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：完成這件事的步驟】
+# 【填：標題，完成這件事的步驟】
 
 <div class="steps">
-<div class="st"><div class="n">1</div><div class="cmd">【指令或操作】</div><div class="cmd say">【對 AI 說的話或說明】</div></div>
-<div class="st"><div class="n">2</div><div class="cmd">【指令或操作】</div><div class="cmd say">【對 AI 說的話或說明】</div></div>
-<div class="st"><div class="n">3</div><div class="cmd">【指令或操作】</div><div class="cmd say">【對 AI 說的話或說明】</div></div>
+<div class="st"><div class="n">1</div><div class="cmd">【填：指令或操作】</div><div class="cmd say">【填：對 AI 說的話或說明】</div></div>
+<div class="st"><div class="n">2</div><div class="cmd">【填：指令或操作】</div><div class="cmd say">【填：對 AI 說的話或說明】</div></div>
+<div class="st"><div class="n">3</div><div class="cmd">【填：指令或操作】</div><div class="cmd say">【填：對 AI 說的話或說明】</div></div>
 </div>
 ```
 

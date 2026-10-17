@@ -12,15 +12,15 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：練習的名稱】
+# 【填：標題，練習的名稱】
 
-<span class="timer">⏱ 【時間，例如 10 分鐘】</span>
+<span class="timer">⏱ 【填：時間，例如 10 分鐘】</span>
 
-<div class="flow-step"><h3>【步驟一】</h3><p>【要做什麼】</p></div>
-<div class="flow-step"><h3>【步驟二】</h3><p>【要做什麼】</p></div>
-<div class="flow-step"><h3>【步驟三】</h3><p>【要做什麼】</p></div>
+<div class="flow-step"><h3>【填：步驟一】</h3><p>【填：要做什麼】</p></div>
+<div class="flow-step"><h3>【填：步驟二】</h3><p>【填：要做什麼】</p></div>
+<div class="flow-step"><h3>【填：步驟三】</h3><p>【填：要做什麼】</p></div>
 
-<div class="done">【完成標準：做到什麼程度就可以舉手】</div>
+<div class="done">【填：完成標準，做到什麼程度就可以舉手】</div>
 ```
 
 ## 範例

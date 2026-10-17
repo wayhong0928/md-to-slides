@@ -12,14 +12,14 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【目錄標題，例如「今天的內容」】
+# 【填：目錄標題，例如「今天的內容」】
 
 <div class="toc-grid">
-<div class="toc-item"><span class="no">01</span><span class="t">【章節名稱】<small>【一句說明】</small></span><span class="pg">p.【頁碼】</span></div>
-<div class="toc-item"><span class="no">02</span><span class="t">【章節名稱】<small>【一句說明】</small></span><span class="pg">p.【頁碼】</span></div>
-<div class="toc-item"><span class="no">03</span><span class="t">【章節名稱】<small>【一句說明】</small></span><span class="pg">p.【頁碼】</span></div>
-<div class="toc-item"><span class="no">04</span><span class="t">【章節名稱】<small>【一句說明】</small></span><span class="pg">p.【頁碼】</span></div>
-<div class="toc-item extra"><span class="no">附</span><span class="t">【附錄名稱】</span><span class="pg">p.【頁碼】</span></div>
+<div class="toc-item"><span class="no">01</span><span class="t">【填：章節名稱】<small>【填：一句說明】</small></span><span class="pg">p.【填：頁碼】</span></div>
+<div class="toc-item"><span class="no">02</span><span class="t">【填：章節名稱】<small>【填：一句說明】</small></span><span class="pg">p.【填：頁碼】</span></div>
+<div class="toc-item"><span class="no">03</span><span class="t">【填：章節名稱】<small>【填：一句說明】</small></span><span class="pg">p.【填：頁碼】</span></div>
+<div class="toc-item"><span class="no">04</span><span class="t">【填：章節名稱】<small>【填：一句說明】</small></span><span class="pg">p.【填：頁碼】</span></div>
+<div class="toc-item extra"><span class="no">附</span><span class="t">【填：附錄名稱】</span><span class="pg">p.【填：頁碼】</span></div>
 </div>
 ```
 

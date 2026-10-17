@@ -12,14 +12,14 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式，說出數字代表什麼】
+# 【填：標題，結論式，說出數字代表什麼】
 
 <div class="stat-grid">
-<div class="stat-box"><span class="stat-num">【數字】</span><span class="stat-label">【說明】</span></div>
-<div class="stat-box green"><span class="stat-num">【數字】</span><span class="stat-label">【說明】</span></div>
-<div class="stat-box orange"><span class="stat-num">【數字】</span><span class="stat-label">【說明】</span></div>
-<div class="stat-box red"><span class="stat-num">【數字】</span><span class="stat-label">【說明】</span></div>
-<div class="stat-box purple"><span class="stat-num">【數字】</span><span class="stat-label">【說明】</span></div>
+<div class="stat-box"><span class="stat-num">【填：數字】</span><span class="stat-label">【填：說明】</span></div>
+<div class="stat-box green"><span class="stat-num">【填：數字】</span><span class="stat-label">【填：說明】</span></div>
+<div class="stat-box orange"><span class="stat-num">【填：數字】</span><span class="stat-label">【填：說明】</span></div>
+<div class="stat-box red"><span class="stat-num">【填：數字】</span><span class="stat-label">【填：說明】</span></div>
+<div class="stat-box purple"><span class="stat-num">【填：數字】</span><span class="stat-label">【填：說明】</span></div>
 </div>
 ```
 

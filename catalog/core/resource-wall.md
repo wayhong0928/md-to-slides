@@ -14,11 +14,11 @@ aliases: {}
 ```markdown
 <!-- _class: shot -->
 
-# 【標題：這組推薦的共同點】
+# 【填：標題，這組推薦的共同點】
 
 <div class="shot-wrap"><div class="rgrid">
-<figure><img class="av" src="images/【頭像一】.png"><figcaption>【名稱】<span>【網址】</span></figcaption></figure>
-<figure><img class="av" src="images/【頭像二】.png"><figcaption>【名稱】<span>【網址】</span></figcaption></figure>
+<figure><img class="av" src="images/【填：頭像一】.png"><figcaption>【填：名稱】<span>【填：網址】</span></figcaption></figure>
+<figure><img class="av" src="images/【填：頭像二】.png"><figcaption>【填：名稱】<span>【填：網址】</span></figcaption></figure>
 </div></div>
 ```
 

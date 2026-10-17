@@ -12,11 +12,11 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：本研究要回答的問題】
+# 【填：標題，本研究要回答的問題】
 
-<div class="card-accent"><b>RQ1</b>　【研究問題一，一句話】</div>
-<div class="card-accent"><b>RQ2</b>　【研究問題二，一句話】</div>
-<div class="card-accent"><b>RQ3</b>　【研究問題三，一句話】</div>
+<div class="card-accent"><b>RQ1</b>　【填：研究問題一，一句話】</div>
+<div class="card-accent"><b>RQ2</b>　【填：研究問題二，一句話】</div>
+<div class="card-accent"><b>RQ3</b>　【填：研究問題三，一句話】</div>
 ```
 
 ## 範例

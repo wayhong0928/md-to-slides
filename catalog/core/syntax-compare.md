@@ -12,13 +12,13 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：這組語法的重點】
+# 【填：標題，這組語法的重點】
 
 <table class="mdpair">
-<tr><th>【寫法】</th><th>【呈現結果或說明】</th></tr>
-<tr><td>【語法一】</td><td>【說明一】</td></tr>
-<tr><td>【語法二】</td><td>【說明二】</td></tr>
-<tr><td>【語法三】</td><td>【說明三】</td></tr>
+<tr><th>【填：寫法】</th><th>【填：呈現結果或說明】</th></tr>
+<tr><td>【填：語法一】</td><td>【填：說明一】</td></tr>
+<tr><td>【填：語法二】</td><td>【填：說明二】</td></tr>
+<tr><td>【填：語法三】</td><td>【填：說明三】</td></tr>
 </table>
 ```
 

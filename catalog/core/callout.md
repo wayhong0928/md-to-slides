@@ -12,11 +12,11 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式】
+# 【填：標題，結論式】
 
-<div class="tip">【小技巧：做了會更好的事】</div>
-<div class="warning">【注意：容易忽略的條件】</div>
-<div class="danger">【禁止：做了會出問題的事】</div>
+<div class="tip">【填：小技巧，做了會更好的事】</div>
+<div class="warning">【填：注意，容易忽略的條件】</div>
+<div class="danger">【填：禁止，做了會出問題的事】</div>
 ```
 
 ## 範例

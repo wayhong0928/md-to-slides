@@ -14,10 +14,10 @@ aliases: {}
 ```markdown
 <!-- _class: cover -->
 
-<div class="cover-title">【簡報標題：一句話講主題，20 字內】</div>
-<div class="cover-subtitle">【副標題：對象與場合】</div>
+<div class="cover-title">【填：簡報標題，一句話講主題，20 字內】</div>
+<div class="cover-subtitle">【填：副標題，對象與場合】</div>
 <hr>
-<div class="cover-meta">【講者姓名】｜【日期】</div>
+<div class="cover-meta">【填：講者姓名】｜【填：日期】</div>
 ```
 
 ## 範例

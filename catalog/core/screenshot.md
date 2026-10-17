@@ -14,12 +14,12 @@ aliases: {}
 ```markdown
 <!-- _class: shot -->
 
-# 【標題：這張圖要讓觀眾看到什麼】
+# 【填：標題，這張圖要讓觀眾看到什麼】
 
-<div class="shot-wrap"><div class="shot-todo shot-big">【截圖 16:9：操作畫面或資料來源，圖準備好後換成 img】</div></div>
+<div class="shot-wrap"><div class="shot-todo shot-big">【填：截圖 16:9，操作畫面或資料來源，圖準備好後換成 img】</div></div>
 
-<p class="shot-cap">【一句話說明圖的重點】</p>
-<p class="shot-src">【來源：網站或文件名稱、擷取日期】</p>
+<p class="shot-cap">【填：一句話說明圖的重點】</p>
+<p class="shot-src">【填：來源，網站或文件名稱、擷取日期】</p>
 ```
 
 ## 範例

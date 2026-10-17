@@ -12,12 +12,12 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：假說檢定的整體結果】
+# 【填：標題，假說檢定的整體結果】
 
 <ul class="lst">
-<li><span class="y">✔</span><b>H1</b>【假說敘述】<span>【證據：係數與顯著性】</span></li>
-<li><span class="y">✔</span><b>H2</b>【假說敘述】<span>【證據：係數與顯著性】</span></li>
-<li><span class="x">✘</span><b>H3</b>【假說敘述】<span>【證據：係數與顯著性】</span></li>
+<li><span class="y">✔</span><b>H1</b>【填：假說敘述】<span>【填：證據，係數與顯著性】</span></li>
+<li><span class="y">✔</span><b>H2</b>【填：假說敘述】<span>【填：證據，係數與顯著性】</span></li>
+<li><span class="x">✘</span><b>H3</b>【填：假說敘述】<span>【填：證據，係數與顯著性】</span></li>
 </ul>
 ```
 

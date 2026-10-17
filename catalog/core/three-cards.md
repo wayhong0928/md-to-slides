@@ -12,12 +12,12 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式】
+# 【填：標題，結論式】
 
 <div class="tri">
-<div class="card card-blue"><h3>【名稱一】</h3><p class="who">【一句定位】</p><b class="k">【小標】</b><p>【說明，30 字內】</p></div>
-<div class="card card-green"><h3>【名稱二】</h3><p class="who">【一句定位】</p><b class="k">【小標】</b><p>【說明，30 字內】</p></div>
-<div class="card card-orange"><h3>【名稱三】</h3><p class="who">【一句定位】</p><b class="k">【小標】</b><p>【說明，30 字內】</p></div>
+<div class="card card-blue"><h3>【填：名稱一】</h3><p class="who">【填：一句定位】</p><b class="k">【填：小標】</b><p>【填：說明，30 字內】</p></div>
+<div class="card card-green"><h3>【填：名稱二】</h3><p class="who">【填：一句定位】</p><b class="k">【填：小標】</b><p>【填：說明，30 字內】</p></div>
+<div class="card card-orange"><h3>【填：名稱三】</h3><p class="who">【填：一句定位】</p><b class="k">【填：小標】</b><p>【填：說明，30 字內】</p></div>
 </div>
 ```
 

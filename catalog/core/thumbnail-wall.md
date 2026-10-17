@@ -14,13 +14,13 @@ aliases: {}
 ```markdown
 <!-- _class: shot -->
 
-# 【標題：這組資源的共同點】
+# 【填：標題，這組資源的共同點】
 
 <div class="shot-wrap"><div class="rgrid c4">
-<figure><img class="th" src="images/【縮圖一】.png"><figcaption><a class="vt" href="【網址】">【標題】</a><span>【來源】</span></figcaption></figure>
-<figure><img class="th" src="images/【縮圖二】.png"><figcaption><a class="vt" href="【網址】">【標題】</a><span>【來源】</span></figcaption></figure>
-<figure><img class="th" src="images/【縮圖三】.png"><figcaption><a class="vt" href="【網址】">【標題】</a><span>【來源】</span></figcaption></figure>
-<figure><img class="th" src="images/【縮圖四】.png"><figcaption><a class="vt" href="【網址】">【標題】</a><span>【來源】</span></figcaption></figure>
+<figure><img class="th" src="images/【填：縮圖一】.png"><figcaption><a class="vt" href="【填：網址】">【填：標題】</a><span>【填：來源】</span></figcaption></figure>
+<figure><img class="th" src="images/【填：縮圖二】.png"><figcaption><a class="vt" href="【填：網址】">【填：標題】</a><span>【填：來源】</span></figcaption></figure>
+<figure><img class="th" src="images/【填：縮圖三】.png"><figcaption><a class="vt" href="【填：網址】">【填：標題】</a><span>【填：來源】</span></figcaption></figure>
+<figure><img class="th" src="images/【填：縮圖四】.png"><figcaption><a class="vt" href="【填：網址】">【填：標題】</a><span>【填：來源】</span></figcaption></figure>
 </div></div>
 ```
 

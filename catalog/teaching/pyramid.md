@@ -12,12 +12,12 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：三層的共同邏輯】
+# 【填：標題，三層的共同邏輯】
 
 <div class="pyramid">
-<div class="top"><b>【頂層】</b>【說明】</div>
-<div class="mid"><b>【中層】</b>【說明】</div>
-<div class="bot"><b>【底層】</b>【說明】</div>
+<div class="top"><b>【填：頂層】</b>【填：說明】</div>
+<div class="mid"><b>【填：中層】</b>【填：說明】</div>
+<div class="bot"><b>【填：底層】</b>【填：說明】</div>
 </div>
 ```
 

@@ -12,15 +12,15 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式，說出圖要傳達的關係】
+# 【填：標題，結論式，說出圖要傳達的關係】
 
 <svg class="loop-svg" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
 <rect x="40" y="170" width="220" height="100" rx="12" fill="#eaf4fb" stroke="#2980b9" stroke-width="2"/>
-<text x="150" y="228" text-anchor="middle" font-size="24">【節點一】</text>
+<text x="150" y="228" text-anchor="middle" font-size="24">【填：節點一】</text>
 <rect x="540" y="170" width="220" height="100" rx="12" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
-<text x="650" y="228" text-anchor="middle" font-size="24">【節點二】</text>
+<text x="650" y="228" text-anchor="middle" font-size="24">【填：節點二】</text>
 <line x1="260" y1="220" x2="540" y2="220" stroke="#445566" stroke-width="3"/>
-<text x="400" y="205" text-anchor="middle" font-size="20">【關係】</text>
+<text x="400" y="205" text-anchor="middle" font-size="20">【填：關係】</text>
 </svg>
 ```
 

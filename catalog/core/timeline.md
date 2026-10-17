@@ -12,13 +12,13 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式，說出時程的重點】
+# 【填：標題，結論式，說出時程的重點】
 
 <div class="timeline">
-<div class="tl-step"><div class="tl-dot">1</div><div class="tl-label"><strong>【時間點】</strong><span>【事件】</span></div></div>
-<div class="tl-step"><div class="tl-dot">2</div><div class="tl-label"><strong>【時間點】</strong><span>【事件】</span></div></div>
-<div class="tl-step"><div class="tl-dot">3</div><div class="tl-label"><strong>【時間點】</strong><span>【事件】</span></div></div>
-<div class="tl-step"><div class="tl-dot">4</div><div class="tl-label"><strong>【時間點】</strong><span>【事件】</span></div></div>
+<div class="tl-step"><div class="tl-dot">1</div><div class="tl-label"><strong>【填：時間點】</strong><span>【填：事件】</span></div></div>
+<div class="tl-step"><div class="tl-dot">2</div><div class="tl-label"><strong>【填：時間點】</strong><span>【填：事件】</span></div></div>
+<div class="tl-step"><div class="tl-dot">3</div><div class="tl-label"><strong>【填：時間點】</strong><span>【填：事件】</span></div></div>
+<div class="tl-step"><div class="tl-dot">4</div><div class="tl-label"><strong>【填：時間點】</strong><span>【填：事件】</span></div></div>
 </div>
 ```
 

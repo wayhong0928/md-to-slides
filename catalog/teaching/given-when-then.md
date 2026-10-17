@@ -12,12 +12,12 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：這個情境要驗證什麼】
+# 【填：標題，這個情境要驗證什麼】
 
 <div class="gwt">
-<div class="g"><b class="k">GIVEN</b><span>【前提：事情發生前的狀態】</span><div class="ex">【例子】</div></div>
-<div class="w"><b class="k">WHEN</b><span>【動作：使用者做了什麼】</span><div class="ex">【例子】</div></div>
-<div class="t"><b class="k">THEN</b><span>【結果：預期看到什麼】</span><div class="ex">【例子】</div></div>
+<div class="g"><b class="k">GIVEN</b><span>【填：前提，事情發生前的狀態】</span><div class="ex">【填：例子】</div></div>
+<div class="w"><b class="k">WHEN</b><span>【填：動作，使用者做了什麼】</span><div class="ex">【填：例子】</div></div>
+<div class="t"><b class="k">THEN</b><span>【填：結果，預期看到什麼】</span><div class="ex">【填：例子】</div></div>
 </div>
 ```
 

@@ -14,9 +14,9 @@ aliases: {}
 ```markdown
 <!-- _class: section-slide -->
 
-<div class="section-label">【章節編號，例如 PART 1】</div>
+<div class="section-label">【填：章節編號，例如 PART 1】</div>
 
-# 【章節標題】
+# 【填：章節標題】
 ```
 
 ## 範例

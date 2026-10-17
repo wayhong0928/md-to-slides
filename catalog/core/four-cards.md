@@ -12,15 +12,15 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式】
+# 【填：標題，結論式】
 
 <div class="columns">
-<div class="column"><div class="card card-blue"><h3>【卡片一】</h3><p>【說明】</p></div></div>
-<div class="column"><div class="card card-green"><h3>【卡片二】</h3><p>【說明】</p></div></div>
+<div class="column"><div class="card card-blue"><h3>【填：卡片一】</h3><p>【填：說明】</p></div></div>
+<div class="column"><div class="card card-green"><h3>【填：卡片二】</h3><p>【填：說明】</p></div></div>
 </div>
 <div class="columns" style="margin-top: 12px;">
-<div class="column"><div class="card card-red"><h3>【卡片三】</h3><p>【說明】</p></div></div>
-<div class="column"><div class="card card-orange"><h3>【卡片四】</h3><p>【說明】</p></div></div>
+<div class="column"><div class="card card-red"><h3>【填：卡片三】</h3><p>【填：說明】</p></div></div>
+<div class="column"><div class="card card-orange"><h3>【填：卡片四】</h3><p>【填：說明】</p></div></div>
 </div>
 ```
 

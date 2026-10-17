@@ -87,6 +87,22 @@ test('R5 未填佔位：warning，加 strict 變 error', async () => {
   assert.equal(strict[0].severity, 'error');
 });
 
+test('R5 兩級：【填：…】是 warning，其他【…】是 info，strict 也不升級 info', async () => {
+  const file = path.join(fixturesDir, 'check-r5-levels.md');
+  const hits = only(await staticFindings(file), 'R5');
+  assert.deepEqual(
+    hits.map((f) => [f.severity, f.message]),
+    [
+      ['warning', '還沒填的佔位：【填：結論，一句話】'],
+      ['info', '可能是舊格式的佔位：【換頁】'],
+      ['info', '可能是舊格式的佔位：【生成式AI導論 2024】'],
+    ],
+  );
+
+  const strict = only(await staticFindings(file, { strict: true }), 'R5');
+  assert.deepEqual(strict.map((f) => f.severity), ['error', 'info', 'info']);
+});
+
 test('check-good.md：靜態規則沒有任何誤報', async () => {
   const findings = await staticFindings(good);
   assert.deepEqual(findings, []);

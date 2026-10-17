@@ -12,13 +12,13 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：這頁介紹哪幾個構念】
+# 【填：標題，這頁介紹哪幾個構念】
 
-<p><span class="construct-badge">【構念一】</span> 【一句說明】</p>
-<p><span class="construct-badge-red">【構念二】</span> 【一句說明】</p>
-<p><span class="construct-badge-green">【構念三】</span> 【一句說明】</p>
-<p><span class="construct-badge-orange">【構念四】</span> 【一句說明】</p>
-<p><span class="construct-badge-purple">【構念五】</span> 【一句說明】</p>
+<p><span class="construct-badge">【填：構念一】</span> 【填：一句說明】</p>
+<p><span class="construct-badge-red">【填：構念二】</span> 【填：一句說明】</p>
+<p><span class="construct-badge-green">【填：構念三】</span> 【填：一句說明】</p>
+<p><span class="construct-badge-orange">【填：構念四】</span> 【填：一句說明】</p>
+<p><span class="construct-badge-purple">【填：構念五】</span> 【填：一句說明】</p>
 ```
 
 ## 範例

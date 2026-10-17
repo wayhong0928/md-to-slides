@@ -12,10 +12,10 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：這幾個構念怎麼測量】
+# 【填：標題，這幾個構念怎麼測量】
 
-<div class="opdef"><span class="construct-badge">【構念一】</span><br>【操作型定義：用什麼工具、幾題、怎麼計分】</div>
-<div class="opdef"><span class="construct-badge">【構念二】</span><br>【操作型定義：用什麼工具、幾題、怎麼計分】</div>
+<div class="opdef"><span class="construct-badge">【填：構念一】</span><br>【填：操作型定義，用什麼工具、幾題、怎麼計分】</div>
+<div class="opdef"><span class="construct-badge">【填：構念二】</span><br>【填：操作型定義，用什麼工具、幾題、怎麼計分】</div>
 ```
 
 ## 範例

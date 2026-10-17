@@ -12,23 +12,23 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式，說出流程的重點】
+# 【填：標題，結論式，說出流程的重點】
 
 <div class="hflow">
-<div class="hbox red"><b>【步驟一】</b><span>【說明】</span></div>
+<div class="hbox red"><b>【填：步驟一】</b><span>【填：說明】</span></div>
 <div class="harrow">➜</div>
-<div class="hbox yellow"><b>【步驟二】</b><span>【說明】</span></div>
+<div class="hbox yellow"><b>【填：步驟二】</b><span>【填：說明】</span></div>
 <div class="harrow">➜</div>
-<div class="hbox gray"><b>【步驟三】</b><span>【說明】</span></div>
+<div class="hbox gray"><b>【填：步驟三】</b><span>【填：說明】</span></div>
 </div>
 
 <div class="hflow big">
-<div class="hbox bad"><b>【改善前】</b><span>【問題的樣子】</span></div>
+<div class="hbox bad"><b>【填：改善前】</b><span>【填：問題的樣子】</span></div>
 <div class="harrow">➜</div>
-<div class="hbox good"><b>【改善後】</b><span>【解決後的樣子】</span></div>
+<div class="hbox good"><b>【填：改善後】</b><span>【填：解決後的樣子】</span></div>
 </div>
 
-<div class="cloud-bar">【補充：流程以外的共同條件或環境】</div>
+<div class="cloud-bar">【填：補充，流程以外的共同條件或環境】</div>
 ```
 
 ## 範例

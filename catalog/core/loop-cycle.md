@@ -12,15 +12,15 @@ aliases: {}
 ## 骨架
 
 ```markdown
-# 【標題：結論式，說出循環的重點】
+# 【填：標題，結論式，說出循環的重點】
 
 <div class="loop-row">
-<span class="step-pill">【步驟一】</span><span class="step-arrow">➜</span>
-<span class="step-pill hl">【重點步驟】</span><span class="step-arrow">➜</span>
-<span class="step-pill">【步驟三】</span><span class="step-arrow">↺</span>
+<span class="step-pill">【填：步驟一】</span><span class="step-arrow">➜</span>
+<span class="step-pill hl">【填：重點步驟】</span><span class="step-arrow">➜</span>
+<span class="step-pill">【填：步驟三】</span><span class="step-arrow">↺</span>
 </div>
 
-<div class="loop-note">【說明：為什麼要重複，或每一輪改變了什麼】</div>
+<div class="loop-note">【填：說明，為什麼要重複，或每一輪改變了什麼】</div>
 ```
 
 ## 範例
