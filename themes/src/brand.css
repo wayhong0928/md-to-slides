@@ -1,0 +1,76 @@
+/* brand 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/brand.css。
+   大色塊、粗體無襯線，品牌色只要改 --theme-brand 一個 token。 */
+section {
+  /* 品牌色：只改這一個。簡報 frontmatter 加 style: section { --theme-brand: #xxxxxx; } 就能換 */
+  --theme-brand: #aa0c26;
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 4px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #ffffff;
+  --theme-surface: #f5f5f7;
+  --theme-surface-sunken: #f1f1f1;
+  --theme-row-alt: #ebebed;
+  --theme-code-bg: #e7e8ea;
+  --theme-cmd-bg: #eeeef0;
+  --theme-opdef-bg: #f2e5e9;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #111418;
+  --theme-heading: var(--theme-brand);
+  --theme-text-soft: #545659;
+  --theme-text-mid: #45484b;
+  --theme-muted: #67696b;
+  --theme-subtle: #707274;
+  --theme-faint: #6b6c6e;
+  --theme-code-text: #111418;
+  --theme-strong: #b71c1c;
+  --theme-em: var(--theme-brand);
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #ebc8d0;
+  /* 邊框與線 */
+  --theme-border: #d1d1d3;
+  --theme-border-dashed: #9ea0a2;
+  --theme-line: #bebfc1;
+  --theme-divider: #e5e5e7;
+  --theme-divider-soft: #dedee1;
+  /* 強調與語意色 */
+  --theme-primary: var(--theme-brand);
+  --theme-green: #2e7d32;
+  --theme-red: #b71c1c;
+  --theme-orange: #a85400;
+  --theme-purple: #5e35b1;
+  --theme-gray: #5f6368;
+  --theme-yellow: #f2c400;
+  --theme-amber: #8f4700;
+  --theme-orange-deep: #974c00;
+  --theme-red-deep: #a11919;
+  /* 淡底 */
+  --theme-primary-tint: #f1e0e5;
+  --theme-green-tint: #e3eae5;
+  --theme-red-tint: #efe1e3;
+  --theme-orange-tint: #eee7e1;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: none;
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 900; }
+.stat-num { font-weight: 900; }
+section:not(.cover):not(.section-slide):not(.thankyou):not(.appendix-divider) { box-shadow: inset 0 14px 0 var(--theme-brand); }
+section.cover, section.section-slide, section.thankyou { box-shadow: inset 36px 0 0 var(--theme-brand); }
+a { color: var(--theme-primary); }

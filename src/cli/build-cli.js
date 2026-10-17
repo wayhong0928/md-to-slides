@@ -60,7 +60,7 @@ Options:
   --out,  -o <dir>       輸出目錄（預設 output）
   --stem, -s <name>      輸出檔名主幹（預設取自輸入檔名）
   --format   <formats>   輸出格式，逗號分隔：html,pdf,pptx（預設全部）
-  --theme-set <path>     額外的主題 CSS 檔或資料夾，可重複（內建 8 個主題一律可用）
+  --theme-set <path>     額外的主題 CSS 檔或資料夾，可重複（內建 20 個主題一律可用）
   --help, -h             顯示說明
 
 範例：

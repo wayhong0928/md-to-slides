@@ -1,7 +1,7 @@
 ---
 id: business-proposal
 name_zh: 商業提案
-themes: [mono]
+themes: [mono, consulting]
 sections:
   - title: 開場
     slides: 2

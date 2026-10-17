@@ -1,0 +1,72 @@
+/* consulting 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/consulting.css。
+   結論式標題、左側色條，適合顧問報告與專案提案。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 0px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #ffffff;
+  --theme-surface: #f6f7f9;
+  --theme-surface-sunken: #f1f2f2;
+  --theme-row-alt: #ecedef;
+  --theme-code-bg: #e9eaec;
+  --theme-cmd-bg: #eff1f3;
+  --theme-opdef-bg: #e5edf2;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #1b1f24;
+  --theme-heading: #0b2a4a;
+  --theme-text-soft: #5b5e61;
+  --theme-text-mid: #4d5054;
+  --theme-muted: #696c6e;
+  --theme-subtle: #717376;
+  --theme-faint: #6c6d70;
+  --theme-code-text: #1b1f24;
+  --theme-strong: #b3261e;
+  --theme-em: #00629b;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #c5cdd5;
+  /* 邊框與線 */
+  --theme-border: #d3d4d7;
+  --theme-border-dashed: #a3a5a8;
+  --theme-line: #c1c3c6;
+  --theme-divider: #e7e8ea;
+  --theme-divider-soft: #e0e1e4;
+  /* 強調與語意色 */
+  --theme-primary: #00629b;
+  --theme-green: #2a7a3b;
+  --theme-red: #b3261e;
+  --theme-orange: #a95a00;
+  --theme-purple: #5b3f8c;
+  --theme-gray: #5b6570;
+  --theme-yellow: #e0b100;
+  --theme-amber: #904c00;
+  --theme-orange-deep: #985100;
+  --theme-red-deep: #9e211a;
+  /* 淡底 */
+  --theme-primary-tint: #e0eaf1;
+  --theme-green-tint: #e4ece8;
+  --theme-red-tint: #f0e4e5;
+  --theme-orange-tint: #efe9e3;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='0' width='12' height='540' fill='%2300629b'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; }
+table { font-size: 0.8em; }
+a { color: var(--theme-primary); }

@@ -14,13 +14,16 @@ const catalog = loadCatalog();
 const outDir = mkTmp('md-to-slides-starter-');
 const combos = allCombos();
 const built = combos.map(({ scenario, theme }) => buildStarter(scenario, theme, { outDir, zip: true, catalog }));
+// 開瀏覽器的 check 只跑每個場合的第一個推薦主題，其他組合由 CI 的 npm run matrix 跑（SDD-v2.6 D8）
+const firstThemes = built.filter((b, i) => combos[i].theme === combos[i].scenario.themes[0]);
 
 test.after(() => fs.rmSync(outDir, { recursive: true, force: true }));
 
 const read = (dir, name) => fs.readFileSync(path.join(dir, name), 'utf-8');
 
-test('產生 6 個組合，每份都有起手包的 8 種檔案與 zip', () => {
-  assert.equal(built.length, 6);
+test('產生 26 個組合，每份都有起手包的 8 種檔案與 zip', () => {
+  assert.equal(built.length, 26);
+  assert.equal(firstThemes.length, 12);
   for (const b of built) {
     for (const name of ['slides.md', 'example.md', 'AGENTS.md', 'CLAUDE.md', 'prompts.md', '.github/copilot-instructions.md', '.vscode/settings.json']) {
       assert.equal(fs.existsSync(path.join(b.dir, name)), true, `${b.name} 缺少 ${name}`);
@@ -54,12 +57,12 @@ test('.vscode/settings.json 是合法 JSON，列的主題路徑都存在，並�
     const settings = JSON.parse(read(b.dir, '.vscode/settings.json'));
     assert.equal(settings['markdown.marp.html'], 'all');
     const themes = settings['markdown.marp.themes'];
-    assert.equal(themes.length, 8);
+    assert.equal(themes.length, listThemes().length);
     for (const t of themes) assert.equal(fs.existsSync(path.join(b.dir, t)), true, `${b.name} 找不到 ${t}`);
   }
 });
 
-test('6 個組合的 slides.md 與 example.md 都能 build 成 HTML', async () => {
+test('26 個組合的 slides.md 與 example.md 都能 build 成 HTML', async () => {
   for (const b of built) {
     for (const name of ['slides.md', 'example.md']) {
       const stem = `${b.name}-${path.basename(name, '.md')}`;
@@ -70,8 +73,8 @@ test('6 個組合的 slides.md 與 example.md 都能 build 成 HTML', async () =
   }
 });
 
-test('check（開瀏覽器）：example.md 沒有 error，slides.md 只有 R5 的 warning，兩者都沒有略過的規則', async () => {
-  for (const b of built) {
+test('check（開瀏覽器，每個場合的第一個推薦主題）：example.md 沒有 error，slides.md 只有 R5 的 warning，兩者都沒有略過的規則', async () => {
+  for (const b of firstThemes) {
     const example = await checkFile(path.join(b.dir, 'example.md'));
     assert.deepEqual(example.skipped, [], `${b.name}/example.md 有規則沒檢查：${JSON.stringify(example.skipped)}`);
     const errors = example.findings.filter((f) => f.severity === 'error');
@@ -83,6 +86,16 @@ test('check（開瀏覽器）：example.md 沒有 error，slides.md 只有 R5 �
     assert.deepEqual(other, [], `${b.name}/slides.md`);
     assert.ok(slides.findings.length > 0, `${b.name}/slides.md 應該有未填的佔位`);
   }
+});
+
+test('notice：合約範本的 AGENTS.md 有提醒段落，其他場合沒有', () => {
+  for (const [i, b] of built.entries()) {
+    const text = read(b.dir, 'AGENTS.md');
+    const notice = combos[i].scenario.notice;
+    if (notice) assert.ok(text.includes(`> **這份範本的提醒**：${notice}`), b.name);
+    else assert.equal(text.includes('這份範本的提醒'), false, b.name);
+  }
+  assert.ok(combos.some((c) => c.scenario.id === 'contract-quote' && c.scenario.notice));
 });
 
 test('zip：CRC32 標準值正確，同樣的內容產生的 zip 逐位元相同', () => {

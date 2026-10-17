@@ -1,0 +1,72 @@
+/* civic 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/civic.css。
+   白底黑灰、章節序號加粗，適合專案計畫書與要列印的文件。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 0px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #ffffff;
+  --theme-surface: #f5f5f5;
+  --theme-surface-sunken: #f1f1f1;
+  --theme-row-alt: #ebebeb;
+  --theme-code-bg: #e8e8e8;
+  --theme-cmd-bg: #eeeeee;
+  --theme-opdef-bg: #e6e9ed;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #151515;
+  --theme-heading: #262626;
+  --theme-text-soft: #575757;
+  --theme-text-mid: #484848;
+  --theme-muted: #696969;
+  --theme-subtle: #727272;
+  --theme-faint: #6d6d6d;
+  --theme-code-text: #151515;
+  --theme-strong: #a52a22;
+  --theme-em: #1d4f86;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #cbccce;
+  /* 邊框與線 */
+  --theme-border: #d1d1d1;
+  --theme-border-dashed: #a0a0a0;
+  --theme-line: #bfbfbf;
+  --theme-divider: #e5e5e5;
+  --theme-divider-soft: #dfdfdf;
+  /* 強調與語意色 */
+  --theme-primary: #1d4f86;
+  --theme-green: #2d6a3a;
+  --theme-red: #a52a22;
+  --theme-orange: #9c5410;
+  --theme-purple: #553f7d;
+  --theme-gray: #595959;
+  --theme-yellow: #c79a00;
+  --theme-amber: #85470e;
+  --theme-orange-deep: #8c4c0e;
+  --theme-red-deep: #91251e;
+  /* 淡底 */
+  --theme-primary-tint: #e2e6eb;
+  --theme-green-tint: #e3e8e4;
+  --theme-red-tint: #eee3e2;
+  --theme-orange-tint: #ede7e0;
+  /* 陰影 */
+  --theme-shadow: none;
+  --theme-shadow-flat: none;
+  --theme-shadow-thin: none;
+  --theme-shadow-row: none;
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='60' y='512' width='840' height='1' fill='%23262626' fill-opacity='.35'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; }
+.section-label { font-size: 1.4em; font-weight: 700; }
+a { color: var(--theme-primary); }

@@ -1,0 +1,72 @@
+/* campus 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/campus.css。
+   學院綠、乾淨卡片，適合課堂報告與校內發表。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 10px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #f5f8f5;
+  --theme-surface: #ffffff;
+  --theme-surface-sunken: #e8ece8;
+  --theme-row-alt: #f5f5f5;
+  --theme-code-bg: #f1f2f2;
+  --theme-cmd-bg: #f8f9f8;
+  --theme-opdef-bg: #f0f5f2;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #1b2a21;
+  --theme-heading: #1f4d36;
+  --theme-text-soft: #58645c;
+  --theme-text-mid: #4b5750;
+  --theme-muted: #5d6761;
+  --theme-subtle: #656d68;
+  --theme-faint: #68706b;
+  --theme-code-text: #1b2a21;
+  --theme-strong: #bf3b2f;
+  --theme-em: #23744a;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #c9d4d1;
+  /* 邊框與線 */
+  --theme-border: #dbdddb;
+  --theme-border-dashed: #a8aeab;
+  --theme-line: #c8ccca;
+  --theme-divider: #eff0ef;
+  --theme-divider-soft: #e8eae9;
+  /* 強調與語意色 */
+  --theme-primary: #23744a;
+  --theme-green: #3d7f2a;
+  --theme-red: #bf3b2f;
+  --theme-orange: #ab5d0d;
+  --theme-purple: #5f4b9a;
+  --theme-gray: #5f6f66;
+  --theme-yellow: #d9b52a;
+  --theme-amber: #9d560d;
+  --theme-orange-deep: #a65b0e;
+  --theme-red-deep: #a83429;
+  /* 淡底 */
+  --theme-primary-tint: #ebf2ef;
+  --theme-green-tint: #eef3ec;
+  --theme-red-tint: #f9edec;
+  --theme-orange-tint: #f9f1e9;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='0' width='960' height='6' fill='%2323744a'/><rect x='0' y='6' width='960' height='2' fill='%2323744a' fill-opacity='.25'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; }
+.card, .stat-box { border: 1px solid var(--theme-border); }
+a { color: var(--theme-primary); }

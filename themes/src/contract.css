@@ -1,0 +1,73 @@
+/* contract 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/contract.css。
+   保守淺灰、表格加框線、頁尾小字，適合合約與報價說明。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 2px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #f4f5f6;
+  --theme-surface: #ffffff;
+  --theme-surface-sunken: #e7e8ea;
+  --theme-row-alt: #f5f5f5;
+  --theme-code-bg: #f2f2f2;
+  --theme-cmd-bg: #f8f8f9;
+  --theme-opdef-bg: #f1f3f6;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #1f2328;
+  --theme-heading: #2f3a45;
+  --theme-text-soft: #5b5e62;
+  --theme-text-mid: #4e5155;
+  --theme-muted: #606365;
+  --theme-subtle: #6a6c70;
+  --theme-faint: #696c6e;
+  --theme-code-text: #1f2328;
+  --theme-strong: #a8322a;
+  --theme-em: #35567a;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #cdd0d4;
+  /* 邊框與線 */
+  --theme-border: #dbdcdd;
+  --theme-border-dashed: #aaabad;
+  --theme-line: #c9cacb;
+  --theme-divider: #eff0f0;
+  --theme-divider-soft: #e9e9ea;
+  /* 強調與語意色 */
+  --theme-primary: #35567a;
+  --theme-green: #2f6f46;
+  --theme-red: #a8322a;
+  --theme-orange: #a85d12;
+  --theme-purple: #5a4b80;
+  --theme-gray: #5d6670;
+  --theme-yellow: #c9a227;
+  --theme-amber: #8f4f0f;
+  --theme-orange-deep: #975410;
+  --theme-red-deep: #942c25;
+  /* 淡底 */
+  --theme-primary-tint: #edf0f3;
+  --theme-green-tint: #ecf2ee;
+  --theme-red-tint: #f7edec;
+  --theme-orange-tint: #f7f0ea;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='0' width='960' height='3' fill='%2335567a'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; }
+table th, table td { border: 1px solid var(--theme-border); }
+footer { color: var(--theme-muted); font-size: 0.6em; }
+a { color: var(--theme-primary); }

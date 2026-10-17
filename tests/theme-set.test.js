@@ -34,7 +34,8 @@ test('theme: classic 三種格式都能 build，HTML 帶得到 classic 的主色
   }
 });
 
-test('8 個內建主題各 build 一次 HTML，HTML 帶得到該主題自己的底色 token', async () => {
+// 只測 2.3.0 的 8 個主題；2.6.0 新增的 12 個由 npm run matrix 各 build 一次
+test('原本 8 個內建主題各 build 一次 HTML，HTML 帶得到該主題自己的底色 token', async () => {
   const showcase = fs.readFileSync(path.join(__dirname, '..', 'examples', 'showcase.md'), 'utf-8');
   const work = mkTmp();
   try {

@@ -1,0 +1,73 @@
+/* blueprint 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/blueprint.css。
+   藍圖格線底、白線，適合系統架構與技術設計說明。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 2px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #123a6b;
+  --theme-surface: #174679;
+  --theme-surface-sunken: #1f4574;
+  --theme-row-alt: #214e7f;
+  --theme-code-bg: #245181;
+  --theme-cmd-bg: #1e4b7d;
+  --theme-opdef-bg: #215082;
+  --theme-placeholder-bg: #3f3024;
+  /* 文字 */
+  --theme-text: #f0f6ff;
+  --theme-heading: #ffffff;
+  --theme-text-soft: #b2c1d6;
+  --theme-text-mid: #bfcdde;
+  --theme-muted: #a8b8ce;
+  --theme-subtle: #97abc3;
+  --theme-faint: #a7b7cb;
+  --theme-code-text: #f0f6ff;
+  --theme-strong: #ffb0a0;
+  --theme-em: #a6d8ff;
+  --theme-on-accent: #0a203b;
+  --theme-on-dark: #0a203b;
+  --theme-on-dark-soft: #4d6b90;
+  /* 邊框與線 */
+  --theme-border: #3a628e;
+  --theme-border-dashed: #6989ac;
+  --theme-line: #4b7099;
+  --theme-divider: #265282;
+  --theme-divider-soft: #2d5886;
+  /* 強調與語意色 */
+  --theme-primary: #a6d8ff;
+  --theme-green: #9ff0c0;
+  --theme-red: #ffb0a0;
+  --theme-orange: #ffd08a;
+  --theme-purple: #d8c4ff;
+  --theme-gray: #c4d3e6;
+  --theme-yellow: #ffe680;
+  --theme-amber: #ffd79c;
+  --theme-orange-deep: #ffd596;
+  --theme-red-deep: #ffb9ab;
+  /* 淡底 */
+  --theme-primary-tint: #2a5383;
+  --theme-green-tint: #295779;
+  --theme-red-tint: #384d73;
+  --theme-orange-tint: #385270;
+  /* 陰影 */
+  --theme-shadow: 0 2px 10px rgba(0,0,0,.35);
+  --theme-shadow-flat: 0 2px 10px rgba(0,0,0,.30);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.30);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.35);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><g stroke='%23ffffff' stroke-width='1' opacity='.07'><line x1='24' y1='0' x2='24' y2='540'/><line x1='48' y1='0' x2='48' y2='540'/><line x1='72' y1='0' x2='72' y2='540'/><line x1='96' y1='0' x2='96' y2='540'/><line x1='120' y1='0' x2='120' y2='540'/><line x1='144' y1='0' x2='144' y2='540'/><line x1='168' y1='0' x2='168' y2='540'/><line x1='192' y1='0' x2='192' y2='540'/><line x1='216' y1='0' x2='216' y2='540'/><line x1='240' y1='0' x2='240' y2='540'/><line x1='264' y1='0' x2='264' y2='540'/><line x1='288' y1='0' x2='288' y2='540'/><line x1='312' y1='0' x2='312' y2='540'/><line x1='336' y1='0' x2='336' y2='540'/><line x1='360' y1='0' x2='360' y2='540'/><line x1='384' y1='0' x2='384' y2='540'/><line x1='408' y1='0' x2='408' y2='540'/><line x1='432' y1='0' x2='432' y2='540'/><line x1='456' y1='0' x2='456' y2='540'/><line x1='480' y1='0' x2='480' y2='540'/><line x1='504' y1='0' x2='504' y2='540'/><line x1='528' y1='0' x2='528' y2='540'/><line x1='552' y1='0' x2='552' y2='540'/><line x1='576' y1='0' x2='576' y2='540'/><line x1='600' y1='0' x2='600' y2='540'/><line x1='624' y1='0' x2='624' y2='540'/><line x1='648' y1='0' x2='648' y2='540'/><line x1='672' y1='0' x2='672' y2='540'/><line x1='696' y1='0' x2='696' y2='540'/><line x1='720' y1='0' x2='720' y2='540'/><line x1='744' y1='0' x2='744' y2='540'/><line x1='768' y1='0' x2='768' y2='540'/><line x1='792' y1='0' x2='792' y2='540'/><line x1='816' y1='0' x2='816' y2='540'/><line x1='840' y1='0' x2='840' y2='540'/><line x1='864' y1='0' x2='864' y2='540'/><line x1='888' y1='0' x2='888' y2='540'/><line x1='912' y1='0' x2='912' y2='540'/><line x1='936' y1='0' x2='936' y2='540'/><line x1='0' y1='24' x2='960' y2='24'/><line x1='0' y1='48' x2='960' y2='48'/><line x1='0' y1='72' x2='960' y2='72'/><line x1='0' y1='96' x2='960' y2='96'/><line x1='0' y1='120' x2='960' y2='120'/><line x1='0' y1='144' x2='960' y2='144'/><line x1='0' y1='168' x2='960' y2='168'/><line x1='0' y1='192' x2='960' y2='192'/><line x1='0' y1='216' x2='960' y2='216'/><line x1='0' y1='240' x2='960' y2='240'/><line x1='0' y1='264' x2='960' y2='264'/><line x1='0' y1='288' x2='960' y2='288'/><line x1='0' y1='312' x2='960' y2='312'/><line x1='0' y1='336' x2='960' y2='336'/><line x1='0' y1='360' x2='960' y2='360'/><line x1='0' y1='384' x2='960' y2='384'/><line x1='0' y1='408' x2='960' y2='408'/><line x1='0' y1='432' x2='960' y2='432'/><line x1='0' y1='456' x2='960' y2='456'/><line x1='0' y1='480' x2='960' y2='480'/><line x1='0' y1='504' x2='960' y2='504'/><line x1='0' y1='528' x2='960' y2='528'/></g><g stroke='%23ffffff' stroke-width='1' opacity='.12'><line x1='120' y1='0' x2='120' y2='540'/><line x1='240' y1='0' x2='240' y2='540'/><line x1='360' y1='0' x2='360' y2='540'/><line x1='480' y1='0' x2='480' y2='540'/><line x1='600' y1='0' x2='600' y2='540'/><line x1='720' y1='0' x2='720' y2='540'/><line x1='840' y1='0' x2='840' y2='540'/><line x1='0' y1='120' x2='960' y2='120'/><line x1='0' y1='240' x2='960' y2='240'/><line x1='0' y1='360' x2='960' y2='360'/><line x1='0' y1='480' x2='960' y2='480'/></g></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; letter-spacing: 0.02em; }
+.card, .stat-box { border: 1px solid var(--theme-border); }
+.loop-svg { background: #f5f6f8; border-radius: var(--theme-radius); }
+a { color: var(--theme-primary); }

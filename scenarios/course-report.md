@@ -1,7 +1,7 @@
 ---
 id: course-report
 name_zh: 課堂期中、期末報告
-themes: [classic]
+themes: [classic, campus]
 sections:
   - title: 開場
     slides: 2

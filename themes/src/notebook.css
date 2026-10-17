@@ -1,0 +1,72 @@
+/* notebook 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/notebook.css。
+   方格紙、螢光筆、楷體標題，適合讀書會筆記與學習分享。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: 'DFKai-SB', '標楷體', 'BiauKai', 'Kaiti TC', 'AR PL UKai TW', serif;
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 6px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #fdfdf7;
+  --theme-surface: #ffffff;
+  --theme-surface-sunken: #f0f1ec;
+  --theme-row-alt: #f5f6f6;
+  --theme-code-bg: #f2f3f3;
+  --theme-cmd-bg: #f8f9f9;
+  --theme-opdef-bg: #f0f3f9;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
+  --theme-text: #25303a;
+  --theme-heading: #1d3f72;
+  --theme-text-soft: #61696f;
+  --theme-text-mid: #555d64;
+  --theme-muted: #666c6f;
+  --theme-subtle: #6c7275;
+  --theme-faint: #6b6f71;
+  --theme-code-text: #25303a;
+  --theme-strong: #c0392b;
+  --theme-em: #2459a6;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #f4f6f8;
+  --theme-on-dark-soft: #c9d1dd;
+  /* 邊框與線 */
+  --theme-border: #dcdedf;
+  --theme-border-dashed: #acb0b4;
+  --theme-line: #cbcdd0;
+  --theme-divider: #f0f1f1;
+  --theme-divider-soft: #e9eaeb;
+  /* 強調與語意色 */
+  --theme-primary: #2459a6;
+  --theme-green: #2f7d3a;
+  --theme-red: #c0392b;
+  --theme-orange: #b15e0d;
+  --theme-purple: #6e4aa0;
+  --theme-gray: #5f6b75;
+  --theme-yellow: #f7e463;
+  --theme-amber: #9c530c;
+  --theme-orange-deep: #a6580d;
+  --theme-red-deep: #a93226;
+  /* 淡底 */
+  --theme-primary-tint: #ebf0f7;
+  --theme-green-tint: #ecf3ed;
+  --theme-red-tint: #f9edec;
+  --theme-orange-tint: #f9f1e9;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><g stroke='%237aa7d9' stroke-width='1' opacity='.22'><line x1='20' y1='0' x2='20' y2='540'/><line x1='40' y1='0' x2='40' y2='540'/><line x1='60' y1='0' x2='60' y2='540'/><line x1='80' y1='0' x2='80' y2='540'/><line x1='100' y1='0' x2='100' y2='540'/><line x1='120' y1='0' x2='120' y2='540'/><line x1='140' y1='0' x2='140' y2='540'/><line x1='160' y1='0' x2='160' y2='540'/><line x1='180' y1='0' x2='180' y2='540'/><line x1='200' y1='0' x2='200' y2='540'/><line x1='220' y1='0' x2='220' y2='540'/><line x1='240' y1='0' x2='240' y2='540'/><line x1='260' y1='0' x2='260' y2='540'/><line x1='280' y1='0' x2='280' y2='540'/><line x1='300' y1='0' x2='300' y2='540'/><line x1='320' y1='0' x2='320' y2='540'/><line x1='340' y1='0' x2='340' y2='540'/><line x1='360' y1='0' x2='360' y2='540'/><line x1='380' y1='0' x2='380' y2='540'/><line x1='400' y1='0' x2='400' y2='540'/><line x1='420' y1='0' x2='420' y2='540'/><line x1='440' y1='0' x2='440' y2='540'/><line x1='460' y1='0' x2='460' y2='540'/><line x1='480' y1='0' x2='480' y2='540'/><line x1='500' y1='0' x2='500' y2='540'/><line x1='520' y1='0' x2='520' y2='540'/><line x1='540' y1='0' x2='540' y2='540'/><line x1='560' y1='0' x2='560' y2='540'/><line x1='580' y1='0' x2='580' y2='540'/><line x1='600' y1='0' x2='600' y2='540'/><line x1='620' y1='0' x2='620' y2='540'/><line x1='640' y1='0' x2='640' y2='540'/><line x1='660' y1='0' x2='660' y2='540'/><line x1='680' y1='0' x2='680' y2='540'/><line x1='700' y1='0' x2='700' y2='540'/><line x1='720' y1='0' x2='720' y2='540'/><line x1='740' y1='0' x2='740' y2='540'/><line x1='760' y1='0' x2='760' y2='540'/><line x1='780' y1='0' x2='780' y2='540'/><line x1='800' y1='0' x2='800' y2='540'/><line x1='820' y1='0' x2='820' y2='540'/><line x1='840' y1='0' x2='840' y2='540'/><line x1='860' y1='0' x2='860' y2='540'/><line x1='880' y1='0' x2='880' y2='540'/><line x1='900' y1='0' x2='900' y2='540'/><line x1='920' y1='0' x2='920' y2='540'/><line x1='940' y1='0' x2='940' y2='540'/><line x1='0' y1='20' x2='960' y2='20'/><line x1='0' y1='40' x2='960' y2='40'/><line x1='0' y1='60' x2='960' y2='60'/><line x1='0' y1='80' x2='960' y2='80'/><line x1='0' y1='100' x2='960' y2='100'/><line x1='0' y1='120' x2='960' y2='120'/><line x1='0' y1='140' x2='960' y2='140'/><line x1='0' y1='160' x2='960' y2='160'/><line x1='0' y1='180' x2='960' y2='180'/><line x1='0' y1='200' x2='960' y2='200'/><line x1='0' y1='220' x2='960' y2='220'/><line x1='0' y1='240' x2='960' y2='240'/><line x1='0' y1='260' x2='960' y2='260'/><line x1='0' y1='280' x2='960' y2='280'/><line x1='0' y1='300' x2='960' y2='300'/><line x1='0' y1='320' x2='960' y2='320'/><line x1='0' y1='340' x2='960' y2='340'/><line x1='0' y1='360' x2='960' y2='360'/><line x1='0' y1='380' x2='960' y2='380'/><line x1='0' y1='400' x2='960' y2='400'/><line x1='0' y1='420' x2='960' y2='420'/><line x1='0' y1='440' x2='960' y2='440'/><line x1='0' y1='460' x2='960' y2='460'/><line x1='0' y1='480' x2='960' y2='480'/><line x1='0' y1='500' x2='960' y2='500'/><line x1='0' y1='520' x2='960' y2='520'/></g><line x1='72' y1='0' x2='72' y2='540' stroke='%23e57373' stroke-width='1.5' opacity='.6'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2 { font-weight: 700; }
+strong { background: linear-gradient(transparent 62%, #fbef8a 62%); }
+a { color: var(--theme-primary); }

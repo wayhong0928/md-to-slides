@@ -16,14 +16,26 @@ const THEMES_DIR = path.join(ROOT, 'themes');
 
 // 主題的底色與適合場合，跟 README 的主題表一致
 const THEME_NOTES = {
+  atelier: '灰褐、細字、大量留白，品牌簡介與作品集',
+  blueprint: '深藍底藍圖格線、白線，系統架構與技術計畫',
   boardroom: '深藍底搭金色，對主管或客戶報告',
+  brand: '白底大色塊，改一行 --theme-brand 就換品牌色',
+  campus: '淡綠白、學院綠卡片，課堂報告與校內發表',
+  chalkboard: '墨綠黑板底、粉筆黃，讀書會與課堂導讀',
+  civic: '白底黑灰、章節序號加粗，計畫書與要列印的文件',
   classic: '淺灰白，原本的預設外觀',
   classroom: '淡黃底、字大，上課與教學',
+  consulting: '白底深藍、左側色條，顧問提案與分析報告',
+  contract: '淺灰、表格加框線，合約與報價說明',
   editorial: '暖米色、襯線標題，讀書會與分享會',
+  lab: '白底細格線、色盲友善色盤，研究成果與數據報告',
   midnight: '近黑底搭青綠色，技術分享與暗室投影',
   mono: '白底、無圓角與裝飾，要列印或黑白輸出',
+  notebook: '方格紙、螢光筆、楷體標題，學習筆記與讀書會',
+  pastel: '粉彩、大圓角，活動企劃與社團招生',
   pitch: '淡紫白、紫色強調，提案與比賽',
   scholar: '米色、襯線標題，論文口試與研討會',
+  terminal: '黑底綠字、全部等寬字型，開發者 demo 與 CLI 教學',
 };
 
 function listThemes(themesDir = THEMES_DIR) {
@@ -51,9 +63,17 @@ function renderThemes(themes) {
 // Windows 上 git 可能把範本轉成 CRLF，一律轉回 LF，起手包裡的檔案不會混用換行
 const readTemplate = (name) => fs.readFileSync(path.join(STARTER_DIR, name), 'utf-8').replace(/\r\n/g, '\n');
 
-function renderRules({ catalog = loadCatalog(), themes = listThemes() } = {}) {
+// 場合有 notice 時，在開頭說明後面加一段提醒；沒有就把 {{NOTICE}} 那一行整行拿掉（SDD-v2.6 D6）
+function renderNotice(notice) {
+  return notice ? `\n> **這份範本的提醒**：${notice}\n` : '';
+}
+
+function renderRules({ catalog = loadCatalog(), themes = listThemes(), notice } = {}) {
   const template = readTemplate('rules.md');
-  return template.replace('{{LAYOUTS}}', renderLayouts(catalog)).replace('{{THEMES}}', renderThemes(themes));
+  return template
+    .replace('{{NOTICE}}\n', renderNotice(notice))
+    .replace('{{LAYOUTS}}', renderLayouts(catalog))
+    .replace('{{THEMES}}', renderThemes(themes));
 }
 
 const CLAUDE_MD = '# Claude Code 專案指示\n\n規則寫在 AGENTS.md，跟 .github/copilot-instructions.md 是同一份，這裡用匯入的方式讀進來。\n\n@AGENTS.md\n';
@@ -64,7 +84,7 @@ const frontmatter = (theme) => `---\nmarp: true\ntheme: ${theme}\npaginate: true
 function starterFiles(scenario, theme, { catalog = loadCatalog(), themesDir = THEMES_DIR } = {}) {
   const themes = listThemes(themesDir);
   if (!themes.includes(theme)) throw new Error(`找不到主題「${theme}」`);
-  const rules = renderRules({ catalog, themes });
+  const rules = renderRules({ catalog, themes, notice: scenario.notice });
   const settings = {
     'markdown.marp.themes': themes.map((t) => `themes/${t}.css`),
     'markdown.marp.html': 'all',

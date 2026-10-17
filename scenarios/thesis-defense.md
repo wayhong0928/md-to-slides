@@ -1,7 +1,7 @@
 ---
 id: thesis-defense
 name_zh: 論文口試／計畫書口試
-themes: [scholar]
+themes: [scholar, lab]
 sections:
   - title: 開場
     slides: 2

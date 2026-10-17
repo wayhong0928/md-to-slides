@@ -8,11 +8,13 @@ const path = require('path');
 const { loadCatalog } = require('../src/catalog');
 const { loadScenarios, splitPages, DEFAULT_DIR } = require('../src/scenarios');
 const { validateScenarios } = require('../scripts/validate-scenarios');
+const { renderRules } = require('../src/starter');
 
 const themesDir = path.resolve(__dirname, '..', 'themes');
 const catalog = loadCatalog();
 // Windows 上 git 可能轉成 CRLF，轉回 LF 才能用含 \n 的字串替換
 const original = fs.readFileSync(path.join(DEFAULT_DIR, 'course-report.md'), 'utf-8').replace(/\r\n/g, '\n');
+const THEMES_LINE = /^themes:.*$/m;
 
 // 把改過的 course-report.md 放進暫存資料夾驗證，回傳錯誤訊息陣列
 function errorsFor(text) {
@@ -25,14 +27,14 @@ function errorsFor(text) {
   }
 }
 
-test('第一批 5 個場合全部通過驗證，共 6 個組合', () => {
+test('12 個場合全部通過驗證，共 26 個組合', () => {
   const loaded = loadScenarios();
-  assert.deepEqual(
-    loaded.scenarios.map((s) => s.id),
-    ['business-proposal', 'course-report', 'tech-talk', 'thesis-defense', 'workshop']
-  );
+  assert.deepEqual(loaded.scenarios.map((s) => s.id), [
+    'book-club', 'brand-intro', 'business-proposal', 'contract-quote', 'course-report', 'product-launch',
+    'project-plan', 'results-report', 'startup-pitch', 'tech-talk', 'thesis-defense', 'workshop',
+  ]);
   assert.deepEqual(validateScenarios(loaded, catalog, themesDir), []);
-  assert.equal(loaded.scenarios.reduce((n, s) => n + s.themes.length, 0), 6);
+  assert.equal(loaded.scenarios.reduce((n, s) => n + s.themes.length, 0), 26);
 });
 
 test('sections 放一個不存在的版型 id 會被擋下', () => {
@@ -52,13 +54,27 @@ test('填空版的舊格式佔位、範例版的【、頁數不符、主題不�
     original.slice(0, blankStart) +
     original.slice(blankStart, exampleStart).replace('【填：觀察到的現象】', '【觀察到的現象】') +
     original.slice(exampleStart).replace('歡迎提問', '【待補】');
-  text = text.replace('themes: [classic]', 'themes: [classic, no-such-theme]');
+  text = text.replace(THEMES_LINE, 'themes: [classic, no-such-theme]');
   text = text.replace('    slides: 2\n    layouts: [section, conclusion-bar]', '    slides: 3\n    layouts: [section, conclusion-bar]');
   const errors = errorsFor(text);
   assert.ok(errors.some((m) => m.includes('要寫成【填：…】：【觀察到的現象】')), errors.join('\n'));
   assert.ok(errors.some((m) => m.startsWith('範例版不能有【')), errors.join('\n'));
   assert.ok(errors.some((m) => m.includes('填空版有 13 頁，sections 加總是 14 頁')), errors.join('\n'));
   assert.ok(errors.some((m) => m.includes('主題「no-such-theme」找不到')), errors.join('\n'));
+});
+
+test('notice：第一頁沒有那段文字會被擋下；起手包規則在開頭說明後加一段提醒，前後各一個空行', () => {
+  const errors = errorsFor(original.replace(THEMES_LINE, '$&\nnotice: 這是測試用的提醒'));
+  assert.ok(errors.some((m) => m.includes('填空版的第一頁沒有 notice 的文字')), errors.join('\n'));
+  assert.ok(errors.some((m) => m.includes('範例版的第一頁沒有 notice 的文字')), errors.join('\n'));
+  assert.ok(errorsFor(original.replace(THEMES_LINE, '$&\nnotice: ""')).includes('notice 必須是非空字串'));
+
+  const plain = renderRules({ catalog });
+  const withNotice = renderRules({ catalog, notice: '這是測試用的提醒' });
+  assert.equal(plain.includes('{{NOTICE}}'), false);
+  assert.equal(plain.includes('這份範本的提醒'), false);
+  assert.match(withNotice, /prompt。\n\n> \*\*這份範本的提醒\*\*：這是測試用的提醒\n\n## 要做的事/);
+  assert.equal(withNotice.replace('\n> **這份範本的提醒**：這是測試用的提醒\n', ''), plain);
 });
 
 test('splitPages：程式碼區塊裡的 --- 不算分頁', () => {

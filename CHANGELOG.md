@@ -1,5 +1,28 @@
 # 更動日誌
 
+## [2.6.0] - 2026-10-17
+
+### 新增
+- 12 個內建主題：`campus`、`lab`、`notebook`、`chalkboard`、`pastel`、`consulting`、`civic`、`contract`、`brand`、`atelier`、`blueprint`、`terminal`，加上原本的 8 個共 20 個。版型和 class 名稱不變，每個主題都宣告全部 53 個 token，`npm run contrast` 全部達標
+- `brand` 的標題、連結和強調字都讀 `--theme-brand`，frontmatter 加一行 `style: section { --theme-brand: #xxxxxx; }` 就整份換色。這個 token 登記在 `themes/TOKENS.md` 新的「主題自己加的 token」表
+- 7 個場合：讀書會導讀、專案計畫書、成果報告、新創募資、產品簡報、品牌簡介、合約與報價說明，加上原本的 5 個共 12 個，場合與推薦主題的組合從 6 個變成 26 個
+- 場合檔可以加選填的 `notice` 欄位，有的話填空版和範例版的第一頁都要有那段文字，產生的 `AGENTS.md` 開頭也多一段提醒。目前只有合約與報價說明用，寫明它是說明用簡報，不是法律文件
+- `npm run matrix`：每個主題 build 一份含 35 個版型範例的簡報並跑 `check`，共 700 組，再檢查 26 組起手包。有 error、對比不過、有規則沒檢查或找不到瀏覽器都 exit 1。`tests/matrix.test.js` 只用一個主題測判定，完整的檢查在 CI 的 Ubuntu 工作跑
+- 樣式畫廊的主題頁選 `brand` 時多一個品牌色欄位，挑了顏色預覽跟著換，對比不夠的配對會列出名稱與數值，另給一行可以複製的 `style:`
+
+### 改動
+- 原本 4 個場合多了推薦主題：論文口試加 lab、課堂報告加 campus、商業提案加 consulting、技術分享加 terminal 和 blueprint。`npm run starter -- <場合>` 會為每個推薦主題各產生一份，課堂報告從 1 份變 2 份
+- 起手包帶的主題 CSS、`AGENTS.md` 的主題清單和 `.vscode/settings.json` 都變成 20 個主題，所以每份起手包的 zip 都跟 2.5.0 不同
+- `npm run contrast` 會先解析 `var(--theme-…)` 再算對比，循環引用或引用沒宣告的 token 都算失敗
+- 樣式畫廊有 240 份場合預覽和 240 份起手包 zip。token 表裡寫成 `var()` 的值列出解析後的顏色，色塊也用那個顏色
+- 樣式畫廊打開時，場合範本頁先選商業提案（配 mono），版型頁和主題頁先選 classic。2.5.0 是清單裡的第一個
+- CI 的 Ubuntu 工作多一步跑 `npm run matrix`，時限從 25 分鐘放寬到 45 分鐘。起手包 zip、畫廊的主題 CSS 與預覽的數量改成從場合和主題算，不再寫死。PDF 字型檢查多了 notebook 和 terminal
+- 測試的數字更新到 20 個主題、12 個場合、26 個組合，主題清單與部分檔案數改成從資料算。`tests/starter.test.js` 開瀏覽器跑 `check` 時只測每個場合的第一個推薦主題，其他組合由 `npm run matrix` 檢查
+
+### 不變
+- `build`、`check` 的參數與輸出，原本 8 個主題的 CSS 和版型 class 都跟 2.5.0 相同
+
+---
 ## [2.5.0] - 2026-10-17
 
 ### 新增

@@ -5,6 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const { repoRoot, mkTmp, copyDirSync, runNode, normalizeNewlines } = require('./_helpers');
+const { listThemes } = require('../src/starter');
 
 test('themes/classic.css 存在、自帶 @theme 標記，而且沒有 @import 其他自家檔案', () => {
   const css = fs.readFileSync(path.join(repoRoot, 'themes', 'classic.css'), 'utf-8');
@@ -22,9 +23,9 @@ test('themes/src 分成 _base.css（版型）和 classic.css（token）', () => 
   assert.doesNotMatch(tokens, /section\.cover/);
 });
 
-const THEME_IDS = ['classic', 'scholar', 'classroom', 'mono', 'boardroom', 'pitch', 'editorial', 'midnight'];
+const THEME_IDS = listThemes();
 
-test('8 個主題的產物都存在、自帶 @theme 標記，而且 TOKENS.md 列的 token 都有定義', () => {
+test('每個主題的產物都存在、自帶 @theme 標記，而且 TOKENS.md 列的 token 都有定義', () => {
   const tokensMd = fs.readFileSync(path.join(repoRoot, 'themes', 'TOKENS.md'), 'utf-8');
   const required = [...new Set([...tokensMd.split('## 固定不換')[0].matchAll(/^\|\s*`(--theme-[a-z0-9-]+)`\s*\|/gm)].map((m) => m[1]))];
   assert.ok(required.length >= 50, `TOKENS.md 應該列出全部 token，只讀到 ${required.length} 個`);

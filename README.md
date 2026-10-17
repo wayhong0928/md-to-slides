@@ -17,10 +17,10 @@
 | **指定任意檔案路徑轉檔**                  | ❌  |     ✅     |
 | **Mermaid 圖表渲染**                      | ❌  |     ✅     |
 | CJK 中文字型支援                          | ✅  |     ✅     |
-| **內建 8 個主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
+| **內建 20 個主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
 | **相對路徑圖片（HTML、PDF、PPTX）**       | ❌  |     ✅     |
 | **`check` 匯出前版面檢查（R1–R5）**       | ❌  |     ✅     |
-| **填空範本起手包（5 個場合）**            | ❌  |     ✅     |
+| **填空範本起手包（12 個場合）**           | ❌  |     ✅     |
 
 ---
 
@@ -112,7 +112,7 @@ npm run clean
 | `--out, -o <dir>`   | 輸出目錄                              | `output`        |
 | `--stem, -s <name>` | 輸出檔名主幹                          | 取自輸入檔名    |
 | `--format <list>`   | 輸出格式（逗號分隔：`html,pdf,pptx`） | `html,pdf,pptx` |
-| `--theme-set <path>` | 額外的主題 CSS 檔或資料夾，可重複（內建 8 個主題一律可用） | —               |
+| `--theme-set <path>` | 額外的主題 CSS 檔或資料夾，可重複（內建 20 個主題一律可用） | —               |
 | `--help, -h`        | 顯示說明                              | —               |
 
 ### npm scripts 捷徑
@@ -132,9 +132,12 @@ npm test
 npm run themes
 npm run themes -- --check
 
-# 檢查 8 個主題的文字對比 / 產生縮圖總表（要 Chrome 或 Edge）
+# 檢查每個主題的文字對比 / 產生縮圖總表（要 Chrome 或 Edge）
 npm run contrast
 npm run thumbnails
+
+# 每個主題配每個版型、每個場合配推薦主題，全部跑一次 check（要 Chrome 或 Edge）
+npm run matrix
 
 # 匯出前檢查
 npm run check -- data/slides.md
@@ -179,7 +182,7 @@ npm run audit:prod
 
 ### 主題
 
-內建 8 個主題，卡片、統計數字、提示框、流程圖等元件都已經寫好，frontmatter 只要一行：
+內建 20 個主題，卡片、統計數字、提示框、流程圖等元件都已經寫好，frontmatter 只要一行：
 
 ```markdown
 ---
@@ -198,6 +201,18 @@ theme: scholar
 | `pitch` | 淡紫白 | 紫色強調 | 提案、比賽 |
 | `editorial` | 暖米色 | 襯線標題，磚紅強調 | 讀書會、分享會 |
 | `midnight` | 近黑 | 深色底搭青綠色 | 技術分享、暗室投影 |
+| `campus` | 淡綠白 | 學院綠卡片 | 課堂報告、校內發表 |
+| `lab` | 白 | 細格線，色盲友善的色盤 | 研究成果、數據報告 |
+| `notebook` | 方格紙 | 螢光筆底線，楷體標題 | 學習筆記、讀書會 |
+| `chalkboard` | 墨綠 | 黑板底搭粉筆黃 | 讀書會、課堂導讀 |
+| `pastel` | 粉彩 | 圓角大 | 活動企劃、社團招生 |
+| `consulting` | 白 | 深藍，左側色條 | 顧問提案、分析報告 |
+| `civic` | 白 | 黑灰，章節序號加粗 | 計畫書、要列印的文件 |
+| `contract` | 淺灰 | 表格加框線 | 合約、報價說明 |
+| `brand` | 白 | 大色塊，品牌色改一個 token 就換 | 品牌簡介、產品簡報 |
+| `atelier` | 灰褐 | 細字，留白多 | 品牌簡介、作品集 |
+| `blueprint` | 深藍 | 藍圖格線與白線 | 系統架構、技術計畫 |
+| `terminal` | 黑 | 綠字，全部用等寬字型 | 開發者 demo、CLI 教學 |
 
 字型照下面的順序找，找到第一個裝了的就用：
 
@@ -207,14 +222,18 @@ theme: scholar
 | macOS | 蘋方（PingFang TC） | Georgia（英數）、宋體（Songti TC） |
 | Linux | Noto Sans CJK TC（要先裝 `fonts-noto-cjk`） | Noto Serif CJK TC |
 
+notebook 的標題用楷體，Windows 是標楷體，macOS 找 BiauKai 或 Kaiti TC，Linux 要另外裝 AR PL UKai，都沒有就用襯線字。terminal 的內文用等寬字型，但 Consolas 沒有中文字，中文由系統的後備字型顯示，不會真的等寬。
+
 macOS 那一列是照字型清單推的，沒有在 Mac 上實測。classic 的字型清單是 `'Helvetica Neue', '微軟正黑體', sans-serif`，沒有 Noto 備援，在 Linux 上中文用哪個字型由系統的 sans-serif 設定決定。
 
-換主題只換外觀，版型與 class 名稱都不變，同一份 Markdown 可以直接換 `theme:` 重新輸出。`npm run thumbnails` 會把 8 個主題的前幾頁排成 `output/thumbnails/all.png` 對照。
+換主題只換外觀，版型與 class 名稱都不變，同一份 Markdown 可以直接換 `theme:` 重新輸出。`npm run thumbnails` 會把 20 個主題的前幾頁排成 `output/thumbnails/all.png` 對照。
 
 - 不寫 `theme:` 的簡報照 Marp 預設處理，不會套任何內建主題。
 - 顏色、字型、字級、圓角是 CSS 變數（`--theme-primary`、`--theme-font` 等，共 53 個，說明在 [themes/TOKENS.md](themes/TOKENS.md)），要換配色可以在 frontmatter 的 `style:` 覆寫，或用 `--theme-set` 加自己的主題。
+- `brand` 的標題、連結和強調字都用 `--theme-brand` 這個顏色，在 frontmatter 加一行 `style: section { --theme-brand: #17603a; }` 就整份換色。淡底和文字色不會跟著變，換成很淺的顏色時字會看不清楚，可以先到樣式畫廊的主題頁試色，那裡會算對比。
 - `themes/<主題>.css` 由 `themes/src/` 合併產生，改了 `themes/src/` 之後執行 `npm run themes`；`npm run themes -- --check` 比對產物是不是最新，也會檢查每個主題的 token 有沒有宣告齊全。
-- `npm run contrast` 對每個主題的 49 組前景與背景配對算對比，一般文字要 4.5、大字要 3。classic 有 15 組沿用舊色的例外，登記在 `themes/TOKENS.md`。
+- `npm run contrast` 對每個主題的 49 組前景與背景配對算對比，一般文字要 4.5、大字要 3。classic 有 15 組沿用舊色的例外，登記在 `themes/TOKENS.md`，其他 19 個主題全部達標。
+- `npm run matrix` 把 35 個版型的範例各放一頁拼成一份簡報，每個主題 build 一次並跑 `check`，共 700 組，接著檢查每個場合配推薦主題的 26 組起手包。有一組出現 error、對比不過或有規則沒檢查就 exit 1，找不到瀏覽器也算失敗。在本機跑大約 6 分鐘。CI 在 push 到 main 或手動執行時由 Ubuntu 的 smoke-build 工作跑，PR 不跑。
 
 #### 在 VS Code 預覽（Marp for VS Code）
 
@@ -230,13 +249,25 @@ macOS 那一列是照字型清單推的，沒有在 Mac 上實測。classic 的�
     "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/boardroom.css",
     "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/pitch.css",
     "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/editorial.css",
-    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/midnight.css"
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/midnight.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/campus.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/lab.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/notebook.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/chalkboard.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/pastel.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/consulting.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/civic.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/contract.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/brand.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/atelier.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/blueprint.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/terminal.css"
   ],
   "markdown.marp.html": "all"
 }
 ```
 
-陣列裡列了 8 個主題，簡報的 `theme:` 寫哪個就用哪個；只用其中幾個的話，刪掉不需要的網址即可。
+陣列裡列了 20 個主題，簡報的 `theme:` 寫哪個就用哪個；只用其中幾個的話，刪掉不需要的網址即可。
 
 `@main` 會跟著最新版更新，想固定版本可以把 `@main` 換成某個 commit 的雜湊值。`markdown.marp.themes` 也可以填工作區裡的相對路徑，例如 `themes/classic.css`。`markdown.marp.html` 設成 `all` 才會渲染簡報裡的內嵌 HTML（卡片、流程圖都是 HTML），請只對自己信任的檔案這樣設。
 
@@ -278,19 +309,27 @@ examples/showcase.md 是產物，不要直接修改，改 `catalog/` 之後重�
 
 ### 填空範本起手包（starter）
 
-起手包是一個用 VS Code 打開就能用的資料夾。裡面的 `slides.md` 照場合排好了頁面，要填的地方寫成 `【填：…】`，可以自己填，也可以交給 GitHub Copilot、Codex 或 Claude Code 照資料夾裡的規則填。目前有 5 個場合：
+起手包是一個用 VS Code 打開就能用的資料夾。裡面的 `slides.md` 照場合排好了頁面，要填的地方寫成 `【填：…】`，可以自己填，也可以交給 GitHub Copilot、Codex 或 Claude Code 照資料夾裡的規則填。目前有 12 個場合：
 
 | 場合 id | 場合 | 推薦主題 | 頁數 |
 | ---- | ---- | ---- | ---- |
-| `thesis-defense` | 論文口試／計畫書口試 | scholar | 14 |
-| `course-report` | 課堂期中、期末報告 | classic | 13 |
+| `thesis-defense` | 論文口試／計畫書口試 | scholar、lab | 14 |
+| `course-report` | 課堂期中、期末報告 | classic、campus | 13 |
 | `workshop` | 工作坊教學 | classroom、midnight | 12 |
-| `business-proposal` | 商業提案 | mono | 11 |
-| `tech-talk` | 技術分享 | midnight | 11 |
+| `business-proposal` | 商業提案 | mono、consulting | 11 |
+| `tech-talk` | 技術分享 | midnight、terminal、blueprint | 11 |
+| `book-club` | 讀書會導讀 | chalkboard、notebook | 11 |
+| `project-plan` | 專案計畫書 | civic、boardroom | 12 |
+| `results-report` | 成果報告 | boardroom、lab | 12 |
+| `startup-pitch` | 新創募資 | pitch、mono | 13 |
+| `product-launch` | 產品簡報 | pitch、brand | 11 |
+| `brand-intro` | 品牌簡介 | brand、editorial、atelier | 11 |
+| `contract-quote` | 合約與報價說明 | contract、mono | 11 |
 
 ```bash
-npm run starter                                           # 6 個場合與推薦主題的組合，輸出到 output/starters/
+npm run starter                                           # 12 個場合與推薦主題的 26 個組合，輸出到 output/starters/
 npm run starter -- --zip                                  # 同上，每份另外打包成 zip
+npm run starter -- course-report                          # 一個場合，每個推薦主題各一份（課堂報告是 classic、campus 兩份）
 npm run starter -- thesis-defense --theme midnight --zip  # 只產生一份，主題可以不是推薦的那個
 npm run scenarios                                         # 驗證 scenarios/ 的場合檔
 ```
@@ -305,8 +344,8 @@ thesis-defense-scholar/
 ├── AGENTS.md                        # 給 AI 的常駐規則：可用版型、每頁字數上限、不能改的地方
 ├── .github/copilot-instructions.md  # 跟 AGENTS.md 逐位元相同
 ├── CLAUDE.md                        # 標題加 @AGENTS.md 匯入，讓 Claude Code 透過匯入讀到規則
-├── .vscode/settings.json            # 讓 Marp for VS Code 認得 themes/ 的 8 個主題並顯示 HTML
-└── themes/                          # 8 個主題的 CSS
+├── .vscode/settings.json            # 讓 Marp for VS Code 認得 themes/ 的 20 個主題並顯示 HTML
+└── themes/                          # 20 個主題的 CSS
 ```
 
 會讀規則檔的工具：
@@ -317,17 +356,21 @@ thesis-defense-scholar/
 
 在 VS Code 打開時，要開整個資料夾，不要只開 `slides.md`，`.vscode/settings.json` 才會生效。VS Code 問要不要信任這個資料夾時選信任。沒有信任的資料夾裡，Marp for VS Code 只提供基本預覽，HTML 元件一律不顯示，`themes/` 的自訂主題也不會載入（見 [Marp for VS Code 的 Workspace Trust 說明](https://github.com/marp-team/marp-vscode#workspace-trust)）。
 
+`contract-quote` 的填空版和範例版第一頁都寫著「這是說明用簡報，不是法律文件」，產生的 `AGENTS.md` 開頭也多一段同樣的提醒。其他場合要加這類提醒，在場合檔的 frontmatter 加 `notice` 欄位即可。
+
 起手包裡沒有 `check`。要檢查版面，可以把填好的 `slides.md` 拿回本工具跑 `npm run check`，或至少在 VS Code 搜尋 `【填：`，確認都填完了。
 
-場合範本放在 `scenarios/<id>.md`，一個檔案有 frontmatter（場合 id、中文名、推薦主題、每段用哪些版型與幾頁）和「填空版」「範例版」兩段。`npm run scenarios` 會檢查版型 id 都在目錄裡、頁數等於各段加總、用到的 class 屬於列出的版型、填空版的佔位都寫成 `【填：…】`、範例版沒有 `【`。規則檔的來源是 `starter/rules.md`，版型清單由產生腳本從 `catalog/` 填入。
+場合範本放在 `scenarios/<id>.md`，一個檔案有 frontmatter（場合 id、中文名、推薦主題、每段用哪些版型與幾頁）和「填空版」「範例版」兩段。`npm run scenarios` 會檢查版型 id 都在目錄裡、頁數等於各段加總、用到的 class 屬於列出的版型、填空版的佔位都寫成 `【填：…】`、範例版沒有 `【`，有 `notice` 的場合兩版的第一頁都要有那段文字。規則檔的來源是 `starter/rules.md`，版型清單由產生腳本從 `catalog/` 填入。
 
 ### 樣式畫廊（site）
 
 `npm run site` 會在 `output/site/` 產生一個靜態網站，有三頁：
 
-- 場合範本（`index.html`）：選場合和主題，看整份範例版，下載對應的起手包 zip。5 個場合配 8 個主題，共 40 份。
+- 場合範本（`index.html`）：選場合和主題，看整份範例版，下載對應的起手包 zip。12 個場合配 20 個主題，共 240 份。
 - 版型（`layouts.html`）：35 個版型各一張卡片，可以換主題預覽，按「複製語法」複製骨架。
-- 主題（`themes.html`）：看主題的預覽和 53 個 token 的值，複製一段 VS Code 設定，直接套用這個 repo 的主題。
+- 主題（`themes.html`）：看主題的預覽和 53 個 token 的值，寫成 `var()` 的 token 會列出它指到的顏色。可以複製一段 VS Code 設定，直接套用這個 repo 的主題。選 `brand` 時多一個品牌色欄位，挑了顏色預覽就跟著換，對比不夠的配對會列出來，下面那行 `style:` 可以複製貼進 frontmatter。
+
+打開網站時，場合範本頁先選商業提案（配 mono），版型頁和主題頁先選 classic。網址帶 `?scenario=…&theme=…` 就打開指定的組合。
 
 預覽是 build 時用 marp-core 渲染好的投影片，瀏覽器裡不跑 Marp。起手包 zip 跟 `npm run starter -- <場合> --theme <主題> --zip` 產生的檔案逐位元相同。
 
@@ -362,12 +405,12 @@ md-to-slides/
 │       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
 │
 ├── themes/
-│   ├── src/                       # _base.css（版型）、<主題>.css（token）×8
-│   ├── <主題>.css                 # 產生的單檔主題 ×8（進版控）
-│   └── TOKENS.md                  # 53 個 token 的說明、對比配對表、classic 例外
+│   ├── src/                       # _base.css（版型）、<主題>.css（token）×20
+│   ├── <主題>.css                 # 產生的單檔主題 ×20（進版控）
+│   └── TOKENS.md                  # 53 個 token 與主題自己加的 token、對比配對表、classic 例外
 │
 ├── catalog/                       # 版型目錄（35 個版型＋_utilities.md）
-├── scenarios/                     # 場合範本 ×5（填空版＋範例版）
+├── scenarios/                     # 場合範本 ×12（填空版＋範例版）
 ├── starter/                       # 起手包的規則來源 rules.md 與 prompts.md
 ├── site/                          # 樣式畫廊的頁面（3 頁 HTML、site.css、site.js）
 ├── examples/
@@ -377,8 +420,9 @@ md-to-slides/
 │   ├── build-themes.js            # 合併主題
 │   ├── validate-catalog.js        # 驗證版型目錄
 │   ├── build-showcase.js          # 產生 examples/showcase.md
-│   ├── check-contrast.js          # 8 個主題的 WCAG 對比檢查
-│   ├── build-thumbnails.js        # 8 個主題的縮圖總表（要 Chrome）
+│   ├── check-contrast.js          # 每個主題的 WCAG 對比檢查
+│   ├── check-matrix.js            # 主題 × 版型與場合推薦組合的全組合檢查（要 Chrome）
+│   ├── build-thumbnails.js        # 每個主題的縮圖總表（要 Chrome）
 │   ├── validate-scenarios.js      # 驗證場合範本
 │   ├── build-starter.js           # 產生起手包
 │   ├── build-site.js              # 產生樣式畫廊
@@ -454,7 +498,8 @@ nvm install 18 && nvm use 18
 - **v2.2**：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
 - **v2.3**：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
 - **v2.4**：5 個場合的填空範本起手包（`npm run starter`）、`npm run scenarios`、`check` 的 R5 分成兩級
-- **v2.5**（當前）：樣式畫廊（`npm run site`，場合範本、版型、主題三頁）、手動執行的 GitHub Pages 部署
+- **v2.5**：樣式畫廊（`npm run site`，場合範本、版型、主題三頁）、手動執行的 GitHub Pages 部署
+- **v2.6**（當前）：主題增加到 20 個、場合增加到 12 個、`npm run matrix` 全組合檢查、畫廊的品牌色欄位
 
 ---
 

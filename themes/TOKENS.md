@@ -2,7 +2,7 @@
 
 每個主題在 `themes/src/<id>.css` 裡只改這份清單的 token（必要時在後面加一小段只改外觀的裝飾 CSS），版型與 class 全部在 `themes/src/_base.css`。改完執行 `npm run themes` 產生 `themes/<id>.css`。
 
-- `npm run themes -- --check` 會檢查每個主題都定義了這份清單的全部 token。
+- `npm run themes -- --check` 會檢查每個主題都定義了「固定不換」之前列的全部 token。
 - `npm run contrast` 照下面的「對比配對表」算每個主題的 WCAG 對比。
 - 下表的「classic 的值」是 classic 主題的實際值，也等於 2.2.0 以前寫死在 `_base.css` 的值。
 - 要加新 token，先加到這份清單與 `themes/src/classic.css`，再補其他主題，最後重跑上面兩個指令。
@@ -114,6 +114,14 @@
 
 `.term` 的終端機視窗（`_base.css` 的 `.term`、`.term .bar`、`.term pre` 到 `.term .mark` 那一組）模擬編輯器外觀，所有主題用同一組顏色與字型，不開 token。包含底色 `#1e1e1e`、字色 `#d4d4d4`、標題列 `#3c3c3c`、紅黃綠三個圓點，以及 `.u`、`.p`、`.b`、`.c`、`.ok`、`.er`、`.dim`、`.mark` 的語法色。
 
+## 主題自己加的 token
+
+這一節的 token 只有某個主題用，不算進上面的必備清單，`npm run themes -- --check` 不檢查它們。主題裡的 token 可以寫成 `var(--theme-…)` 引用同一個主題的另一個 token，`npm run contrast` 會先解析再算對比，循環引用或引用沒宣告的 token 會報錯。
+
+| token | 主題 | 用途 |
+|---|---|---|
+| `--theme-brand` | brand | 品牌色。`--theme-primary`、`--theme-heading`、`--theme-em` 都寫成 `var(--theme-brand)`，簡報 frontmatter 加 `style: section { --theme-brand: #xxxxxx; }` 就能整份換色 |
+
 ## 對比配對表
 
 文字 token 對底色 token，每一對一個門檻。一般文字 4.5，大字 3（WCAG 的大字是 24px 以上，或 18.66px 以上加粗，例如標題與 `.stat-num`）。只當裝飾、不承載文字的顏色（邊框、底線、圓點）不列。`npm run contrast` 讀這張表。
@@ -172,7 +180,7 @@
 
 ## classic 例外
 
-classic 的值不能改（改了舊稿的外觀就變了），所以下列配對未達門檻但照樣保留。`npm run contrast` 對 classic 印出數值並標「例外」，不算失敗。清單由腳本輸出整理，數值和現算不一致、或列了但已達標，腳本會報錯。其他 7 個主題沒有例外。classic 要不要另出一版改善對比，是之後的決定。
+classic 的值不能改（改了舊稿的外觀就變了），所以下列配對未達門檻但照樣保留。`npm run contrast` 對 classic 印出數值並標「例外」，不算失敗。清單由腳本輸出整理，數值和現算不一致、或列了但已達標，腳本會報錯。其他 19 個主題沒有例外。classic 要不要另出一版改善對比，是之後的決定。
 
 | 文字 | 底色 | 對比 | 為什麼不改 |
 |---|---|---|---|

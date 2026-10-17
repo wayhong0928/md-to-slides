@@ -1,0 +1,72 @@
+/* terminal 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/terminal.css。
+   黑底綠字、全部用等寬字型，適合技術分享與 CLI 教學。 */
+section {
+  /* 字型 */
+  --theme-font: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-heading: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 0px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #0b100b;
+  --theme-surface: #111a12;
+  --theme-surface-sunken: #161e16;
+  --theme-row-alt: #19241a;
+  --theme-code-bg: #1c271d;
+  --theme-cmd-bg: #172117;
+  --theme-opdef-bg: #152a1a;
+  --theme-placeholder-bg: #3f3024;
+  /* 文字 */
+  --theme-text: #c9f5c6;
+  --theme-heading: #4dff88;
+  --theme-text-soft: #94b592;
+  --theme-text-mid: #9fc39d;
+  --theme-muted: #85a383;
+  --theme-subtle: #799577;
+  --theme-faint: #728c70;
+  --theme-code-text: #c9f5c6;
+  --theme-strong: #ff7a6b;
+  --theme-em: #4dff88;
+  --theme-on-accent: #060906;
+  --theme-on-dark: #060906;
+  --theme-on-dark-soft: #1c4c2a;
+  /* 邊框與線 */
+  --theme-border: #2e3d2f;
+  --theme-border-dashed: #576d56;
+  --theme-line: #3d4f3d;
+  --theme-divider: #1e291f;
+  --theme-divider-soft: #233024;
+  /* 強調與語意色 */
+  --theme-primary: #4dff88;
+  --theme-green: #7dff9f;
+  --theme-red: #ff7a6b;
+  --theme-orange: #ffb35c;
+  --theme-purple: #c9a6ff;
+  --theme-gray: #93a894;
+  --theme-yellow: #e8f06a;
+  --theme-amber: #ffbe74;
+  --theme-orange-deep: #ffbb6c;
+  --theme-red-deep: #ff8a7d;
+  /* 淡底 */
+  --theme-primary-tint: #16361f;
+  --theme-green-tint: #1d3623;
+  --theme-red-tint: #32211a;
+  --theme-orange-tint: #322a18;
+  /* 陰影 */
+  --theme-shadow: 0 2px 10px rgba(0,0,0,.35);
+  --theme-shadow-flat: 0 2px 10px rgba(0,0,0,.30);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.30);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.35);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='0' width='960' height='18' fill='%234dff88' fill-opacity='.12'/><circle cx='14' cy='9' r='4' fill='%23ff7a6b'/><circle cx='28' cy='9' r='4' fill='%23ffb35c'/><circle cx='42' cy='9' r='4' fill='%234dff88'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1::before, h2::before { content: '> '; color: var(--theme-primary); }
+.loop-svg { background: #f5f6f8; border-radius: var(--theme-radius); }
+a { color: var(--theme-primary); }

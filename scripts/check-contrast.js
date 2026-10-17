@@ -86,6 +86,30 @@ function loadTokens(file) {
   return tokens;
 }
 
+// 把 `var(--theme-xxx)` 換成同一主題裡那個 token 的值，可以連續引用（SDD-v2.6 D3）。
+// 回傳 { values, errors }：找不到的 token 和循環引用都記進 errors，對應的值是 null。
+function resolveVars(tokens) {
+  const values = {};
+  const errors = new Set();
+  const visit = (name, chain) => {
+    if (name in values) return values[name];
+    if (chain.includes(name)) {
+      errors.add(`循環引用：${[...chain.slice(chain.indexOf(name)), name].join(' → ')}`);
+      return null;
+    }
+    if (!(name in tokens)) {
+      errors.add(`${chain[chain.length - 1]} 引用的 ${name} 沒有宣告`);
+      return null;
+    }
+    const m = /^var\(\s*(--theme-[a-z0-9-]+)\s*\)$/.exec(tokens[name]);
+    const value = m ? visit(m[1], [...chain, name]) : tokens[name];
+    values[name] = value;
+    return value;
+  };
+  for (const name of Object.keys(tokens)) visit(name, []);
+  return { values, errors: [...errors] };
+}
+
 function listThemeFiles(dir) {
   return fs
     .readdirSync(dir)
@@ -116,8 +140,12 @@ function main(argv) {
   const unusedExceptions = new Set(exceptions.map((e) => `${e.fg}|${e.bg}`));
 
   for (const theme of themes) {
-    const tokens = loadTokens(theme.file);
+    const { values: tokens, errors } = resolveVars(loadTokens(theme.file));
     console.log(`\n== ${theme.name}（${pairs.length} 對）==`);
+    for (const message of errors) {
+      failures++;
+      console.log(`  ✗ ${message}`);
+    }
     let ok = 0;
     for (const pair of pairs) {
       const label = `${pair.fg.replace('--theme-', '')} / ${pair.bg.replace('--theme-', '')}`;
@@ -165,7 +193,7 @@ function main(argv) {
   return failures === 0 ? 0 : 1;
 }
 
-module.exports = { contrast, parseHex, loadPairs, loadTokens, main };
+module.exports = { contrast, parseHex, loadPairs, loadTokens, resolveVars, main };
 
 if (require.main === module) {
   process.exitCode = main(process.argv.slice(2));

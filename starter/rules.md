@@ -1,6 +1,7 @@
 # 簡報填空範本的規則
 
 這個資料夾是一份 Marp 簡報範本。`slides.md` 是要填的範本，`example.md` 是同一份範本填好虛構內容的樣子，`themes/` 放主題 CSS，`prompts.md` 是可以直接複製的 prompt。
+{{NOTICE}}
 
 ## 要做的事
 

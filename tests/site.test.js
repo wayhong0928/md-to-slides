@@ -1,6 +1,6 @@
 'use strict';
 
-// 樣式畫廊（SDD-v2.5）：渲染模組、npm run site 的產出、三頁在瀏覽器裡的行為。
+// 樣式畫廊（SDD-v2.5、v2.6）：渲染模組、npm run site 的產出、三頁在瀏覽器裡的行為。
 // 瀏覽器測試把網站掛在 /md-to-slides/ 底下（跟 GitHub Pages 一樣），找不到瀏覽器時失敗而不是略過。
 
 const test = require('node:test');
@@ -16,7 +16,8 @@ const { listThemes } = require('../src/starter');
 const { createRenderer } = require('../src/site/render');
 const { findBrowser } = require('../src/check/rules/r1-overflow');
 const { listRequiredTokens } = require('../scripts/build-themes');
-const { buildSite } = require('../scripts/build-site');
+const { buildSite, DEFAULTS } = require('../scripts/build-site');
+const { contrast, parseHex } = require('../scripts/check-contrast');
 const { mkTmp } = require('./_helpers');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -36,9 +37,9 @@ test.after(() => {
 const sha256 = (data) => crypto.createHash('sha256').update(data).digest('hex');
 const listFiles = (dir) => fs.readdirSync(path.join(out, dir)).sort();
 
-test('render：8 個主題都渲染得出來，投影片數等於頁數，CSS 跟內容無關', () => {
+test('render：20 個主題都渲染得出來，投影片數等於頁數，CSS 跟內容無關', () => {
   const render = createRenderer();
-  assert.equal(themes.length, 8);
+  assert.equal(themes.length, 20);
   for (const theme of themes) {
     const css = new Set();
     for (const s of scenarios) {
@@ -70,19 +71,32 @@ test('npm run site：檔案數，starters/ 只有 zip', () => {
   assert.equal(site.tokens.length, listRequiredTokens(path.join(ROOT, 'themes')).length);
 });
 
-test('AC-2：40 個 zip 跟 npm run starter -- --theme <主題> --zip 的產出逐位元相同', () => {
-  for (const theme of themes) {
-    const dir = path.join(baseline, theme);
-    const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-starter.js'), '--theme', theme, '--zip', '--out', dir], {
-      cwd: ROOT,
-      encoding: 'utf-8',
-    });
+// 只比對每個場合的第一個推薦主題，加上課堂報告的全部主題（SDD-v2.6 D8）
+test('AC-2：網站的 zip 跟 npm run starter 的產出逐位元相同（每個場合的第一個推薦主題、課堂報告的全部主題）', () => {
+  const starter = (args) => {
+    const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts', 'build-starter.js'), ...args, '--zip', '--out', baseline], { cwd: ROOT, encoding: 'utf-8' });
     assert.equal(r.status, 0, r.stderr);
-    for (const s of scenarios) {
-      const name = `${s.id}-${theme}.zip`;
-      assert.equal(sha256(fs.readFileSync(path.join(out, 'starters', name))), sha256(fs.readFileSync(path.join(dir, name))), name);
-    }
+  };
+  starter([]);
+  for (const theme of themes) starter(['course-report', '--theme', theme]);
+  const names = new Set([...scenarios.map((s) => `${s.id}-${s.themes[0]}.zip`), ...themes.map((t) => `course-report-${t}.zip`)]);
+  assert.equal(names.size, scenarios.length + themes.length - 1);
+  for (const name of names) {
+    assert.equal(sha256(fs.readFileSync(path.join(out, 'starters', name))), sha256(fs.readFileSync(path.join(baseline, name))), name);
   }
+});
+
+test('site.json：預設選項（D10），brand 的調色資料與 var() 解析', () => {
+  const site = JSON.parse(fs.readFileSync(path.join(out, 'data', 'site.json'), 'utf-8'));
+  assert.deepEqual(site.defaults, { scenario: 'business-proposal', theme: 'classic' });
+  assert.deepEqual(site.defaults, DEFAULTS);
+  const brand = site.themes.find((t) => t.id === 'brand');
+  assert.equal(brand.values['--theme-heading'], 'var(--theme-brand)');
+  assert.equal(brand.resolved['--theme-heading'], brand.values['--theme-brand']);
+  assert.deepEqual([...brand.tuner.bound].sort(), ['--theme-em', '--theme-heading', '--theme-primary']);
+  assert.ok(brand.tuner.pairs.length > 0);
+  for (const p of brand.tuner.pairs) assert.ok(brand.tuner.bound.includes(p.fg) || brand.tuner.bound.includes(p.bg), `${p.fg} / ${p.bg}`);
+  assert.deepEqual(site.themes.filter((t) => t.tuner).map((t) => t.id), ['brand']);
 });
 
 test('主題設定片段：jsDelivr 網址固定在 commit，開啟 html', () => {
@@ -174,9 +188,23 @@ test('瀏覽器：三頁的切換、下載、複製、375px 寬與對比（AC-1�
   const themeCss = () => page.$eval('#theme-css', (link) => ({ href: link.getAttribute('href'), loaded: Boolean(link.sheet) }));
 
   try {
+    await t.test('預設選項（D10）：場合頁是 business-proposal 帶出 mono，主題頁與版型頁是 classic', async () => {
+      const proposal = scenarios.find((s) => s.id === 'business-proposal');
+      assert.equal(proposal.themes[0], 'mono');
+      await page.goto(url('index.html'), { waitUntil: 'load' });
+      await waitRendered('business-proposal/mono');
+      assert.equal(await page.$eval('#scenario', (s) => s.value), 'business-proposal');
+      assert.equal(await page.$eval('#theme', (s) => s.value), 'mono');
+      for (const file of ['themes.html', 'layouts.html']) {
+        await page.goto(url(file), { waitUntil: 'load' });
+        await waitRendered('classic');
+        assert.equal(await page.$eval('#theme', (s) => s.value), 'classic', file);
+      }
+    });
+
     await t.test('場合範本頁：切場合與主題，預覽頁數、樣式與下載的 zip 都對', async () => {
       const first = scenarios[0];
-      await page.goto(url('index.html'), { waitUntil: 'load' });
+      await page.goto(url('index.html', `?scenario=${first.id}`), { waitUntil: 'load' });
       await waitRendered(`${first.id}/${first.themes[0]}`);
       const combos = [
         ...themes.map((theme) => ({ scenario: first, theme })),
@@ -250,10 +278,78 @@ test('瀏覽器：三頁的切換、下載、複製、375px 寬與對比（AC-1�
       assert.equal(await readClipboard(), await page.$eval('#snippet', (pre) => pre.textContent));
     });
 
+    await t.test('調色欄位（D4）：只有 brand 有；改顏色後預覽換色、低對比列出配對、複製的片段含新顏色；token 表色塊有顏色', async () => {
+      await page.goto(url('themes.html', '?theme=classic'), { waitUntil: 'load' });
+      await waitRendered('classic');
+      assert.equal(await page.$eval('#tuner', (el) => el.hidden), true);
+
+      await page.goto(url('themes.html', '?theme=brand'), { waitUntil: 'load' });
+      await waitRendered('brand');
+      assert.equal(await page.$eval('#tuner', (el) => el.hidden), false);
+      const site = JSON.parse(fs.readFileSync(path.join(out, 'data', 'site.json'), 'utf-8'));
+      const brand = site.themes.find((x) => x.id === 'brand');
+      assert.equal(await page.$eval('#brand-color', (el) => el.value), brand.tuner.value);
+      assert.match(await page.$eval('#brand-warnings', (el) => el.textContent), /都達標/);
+
+      // token 表：寫成 var() 的列，色塊是解析後的顏色
+      const row = await page.$$eval('#tokens tbody tr', (rows) => {
+        const r = rows.find((x) => x.cells[0].textContent === '--theme-heading');
+        return { text: r.cells[2].textContent, swatch: r.querySelector('.g-swatch') && getComputedStyle(r.querySelector('.g-swatch')).backgroundColor };
+      });
+      assert.equal(row.text, `var(--theme-brand) → ${brand.tuner.value}`);
+      assert.equal(row.swatch, 'rgb(170, 12, 38)');
+
+      const setColor = async (value) => {
+        await page.$eval('#brand-color', (el, v) => {
+          el.value = v;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        }, value);
+        await page.waitForFunction((v) => document.body.dataset.tuned === v, {}, value);
+      };
+      // 預覽每一頁的 --theme-brand 與綁到它的 --theme-heading（計算值已經把 var() 換掉）
+      const headingColor = async () => {
+        const seen = await page.$$eval('#preview section', (secs) => [
+          ...new Set(secs.map((s) => `${getComputedStyle(s).getPropertyValue('--theme-brand').trim()}|${getComputedStyle(s).getPropertyValue('--theme-heading').trim()}`)),
+        ]);
+        assert.equal(seen.length, 1, seen.join(', '));
+        const [brandValue, heading] = seen[0].split('|');
+        assert.equal(heading, brandValue);
+        return brandValue;
+      };
+
+      await setColor('#17603a');
+      assert.equal(await headingColor(), '#17603a');
+      assert.match(await page.$eval('#brand-warnings', (el) => el.textContent), /都達標/);
+      await page.click('#copy-brand');
+      await page.waitForFunction(() => document.querySelector('#brand-status').textContent === '已複製');
+      assert.equal(await readClipboard(), 'style: section { --theme-brand: #17603a; }');
+
+      // 很淺的品牌色：跟淺底的對比不夠，警告列出配對名稱；列出的配對跟用 check-contrast 的公式算的一樣
+      await setColor('#ffd6e0');
+      assert.equal(await headingColor(), '#ffd6e0');
+      const items = await page.$$eval('#brand-warnings li', (li) => li.map((x) => x.textContent));
+      const resolve = (name) => (brand.tuner.bound.includes(name) ? '#ffd6e0' : brand.resolved[name]);
+      const expected = brand.tuner.pairs
+        .filter((p) => contrast(parseHex(resolve(p.fg)), parseHex(resolve(p.bg))) < p.min)
+        .map((p) => `${p.fg.replace('--theme-', '')} / ${p.bg.replace('--theme-', '')}`);
+      assert.ok(expected.includes('heading / bg'), expected.join('、'));
+      assert.deepEqual(items.map((x) => x.split(' 是 ')[0]), expected);
+      assert.equal(await page.$eval('#brand-warnings', (el) => el.className), 'g-error');
+      assert.equal(await page.$eval('#brand-snippet', (pre) => pre.textContent), 'style: section { --theme-brand: #ffd6e0; }');
+
+      // 換到別的主題，調色不殘留
+      await page.select('#theme', 'classic');
+      await waitRendered('classic');
+      assert.equal(await page.$eval('#brand-style', (el) => el.textContent), '');
+      assert.equal(await page.$eval('#tuner', (el) => el.hidden), true);
+    });
+
+    const proposal = scenarios.find((s) => s.id === DEFAULTS.scenario);
     const pages = [
-      ['index.html', `${scenarios[0].id}/${scenarios[0].themes[0]}`],
-      ['layouts.html', themes[0]],
-      ['themes.html', themes[0]],
+      ['index.html', `${proposal.id}/${proposal.themes[0]}`],
+      ['layouts.html', DEFAULTS.theme],
+      ['themes.html', DEFAULTS.theme],
+      ['themes.html?theme=brand', 'brand'],
     ];
 
     await t.test('375px 寬時三頁都沒有橫向捲動', async () => {

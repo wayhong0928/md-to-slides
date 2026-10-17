@@ -1,0 +1,72 @@
+/* chalkboard 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/chalkboard.css。
+   墨綠黑板、粉筆白與粉筆黃，適合讀書會與課堂講解。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 6px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #24392e;
+  --theme-surface: #2d4538;
+  --theme-surface-sunken: #304439;
+  --theme-row-alt: #364d40;
+  --theme-code-bg: #394f42;
+  --theme-cmd-bg: #334a3d;
+  --theme-opdef-bg: #3b503d;
+  --theme-placeholder-bg: #3f3024;
+  /* 文字 */
+  --theme-text: #f1efe4;
+  --theme-heading: #f4e07a;
+  --theme-text-soft: #b8bcb1;
+  --theme-text-mid: #c4c7bc;
+  --theme-muted: #abb0a6;
+  --theme-subtle: #9ba398;
+  --theme-faint: #abb1a8;
+  --theme-code-text: #f1efe4;
+  --theme-strong: #ff9e8c;
+  --theme-em: #f4e07a;
+  --theme-on-accent: #141f19;
+  --theme-on-dark: #141f19;
+  --theme-on-dark-soft: #586341;
+  /* 邊框與線 */
+  --theme-border: #4c6054;
+  --theme-border-dashed: #778679;
+  --theme-line: #5c6e61;
+  --theme-divider: #3b5144;
+  --theme-divider-soft: #415649;
+  /* 強調與語意色 */
+  --theme-primary: #f4e07a;
+  --theme-green: #a6e3a1;
+  --theme-red: #ff9e8c;
+  --theme-orange: #ffc27a;
+  --theme-purple: #d4b8ff;
+  --theme-gray: #b8c4bb;
+  --theme-yellow: #f4e07a;
+  --theme-amber: #ffcb8e;
+  --theme-orange-deep: #ffc887;
+  --theme-red-deep: #ffaa9a;
+  /* 淡底 */
+  --theme-primary-tint: #45543a;
+  --theme-green-tint: #395440;
+  --theme-red-tint: #47493d;
+  --theme-orange-tint: #474f3a;
+  /* 陰影 */
+  --theme-shadow: 0 2px 10px rgba(0,0,0,.35);
+  --theme-shadow-flat: 0 2px 10px rgba(0,0,0,.30);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.30);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.35);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='520' width='960' height='20' fill='%235b4630'/><rect x='120' y='508' width='70' height='10' rx='3' fill='%23f1efe4' fill-opacity='.8'/><rect x='210' y='510' width='44' height='8' rx='3' fill='%23f4e07a' fill-opacity='.8'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; letter-spacing: 0.02em; }
+.loop-svg { background: #f5f6f8; border-radius: var(--theme-radius); }
+a { color: var(--theme-primary); }

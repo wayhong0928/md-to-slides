@@ -90,6 +90,18 @@ function validateScenarios(loaded, catalog, themesDir) {
     if (typeof s.example === 'string' && s.example.includes('【')) {
       add(file, '範例版不能有【，要填成完整的虛構內容');
     }
+
+    // 選填的 notice：起手包的 AGENTS.md 會加這段提醒，填空版與範例版的第一頁也要看得到（SDD-v2.6 D6）
+    if (s.notice !== undefined) {
+      if (typeof s.notice !== 'string' || !s.notice.trim()) add(file, 'notice 必須是非空字串');
+      else {
+        for (const [key, label] of [['blank', '填空版'], ['example', '範例版']]) {
+          if (typeof s[key] !== 'string') continue;
+          const first = splitPages(s[key])[0] || '';
+          if (!first.includes(s.notice)) add(file, `${label}的第一頁沒有 notice 的文字「${s.notice}」`);
+        }
+      }
+    }
   }
   return errors;
 }

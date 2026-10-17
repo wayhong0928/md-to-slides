@@ -6,6 +6,7 @@
   <title>主題 · md-to-slides 樣式畫廊</title>
   <link rel="stylesheet" href="site.css">
   <link rel="stylesheet" id="theme-css">
+  <style id="brand-style"></style>
 </head>
 <body data-page="themes">
   <header class="g-header">
@@ -35,12 +36,29 @@
       <span id="snippet-status" class="g-status" aria-live="polite"></span>
     </div>
 
+    <section id="tuner" hidden>
+      <h2>換品牌色</h2>
+      <p class="g-muted">這個主題的標題、連結、強調字都跟著一個品牌色。挑一個顏色，下面的預覽會跟著換，並重算這幾個顏色跟其他 token 的對比。</p>
+      <div class="g-controls">
+        <label>品牌色
+          <input type="color" id="brand-color">
+        </label>
+      </div>
+      <div id="brand-warnings" class="g-muted" role="status"></div>
+      <p class="g-muted">滿意的話，把這一行貼進投影片開頭 frontmatter（兩個 <code>---</code> 之間）。</p>
+      <pre id="brand-snippet"></pre>
+      <div class="g-actions">
+        <button type="button" id="copy-brand" class="g-button">複製片段</button>
+        <span id="brand-status" class="g-status" aria-live="polite"></span>
+      </div>
+    </section>
+
     <h2>預覽</h2>
     <p class="g-muted">examples/showcase.md 的前 6 頁。</p>
     <div id="preview" class="g-preview g-preview-grid"></div>
 
     <h2>Token</h2>
-    <p class="g-muted">每個主題都要定義的 CSS 變數（<code>themes/TOKENS.md</code>），值取自 <code>themes/src/</code> 裡這個主題的檔案。</p>
+    <p class="g-muted">每個主題都要定義的 CSS 變數（<code>themes/TOKENS.md</code>），值取自 <code>themes/src/</code> 裡這個主題的檔案，寫成 <code>var()</code> 的列出它指到的顏色。</p>
     <div class="g-table-wrap">
       <table id="tokens">
         <thead><tr><th scope="col">Token</th><th scope="col">用途</th><th scope="col">值</th></tr></thead>

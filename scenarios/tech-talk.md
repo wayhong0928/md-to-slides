@@ -1,7 +1,7 @@
 ---
 id: tech-talk
 name_zh: 技術分享
-themes: [midnight]
+themes: [midnight, terminal, blueprint]
 sections:
   - title: 開場
     slides: 2
