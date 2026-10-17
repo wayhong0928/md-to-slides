@@ -14,7 +14,7 @@
 ### 改動
 - 暫存的 Markdown 改放在輸入檔旁邊，檔名 `.md-to-slides-<stem>-<pid>.md`，不論成功或失敗都會刪掉。相對路徑的圖片在 PDF、PPTX 裡因此找得到；同時 build 兩份簡報也不會互相覆蓋。輸入資料夾必須可以寫入
 - Mermaid 圖仍輸出到 `<out>/assets/diagrams/`，暫存檔改用相對於輸入檔資料夾的路徑引用
-- 呼叫 Marp 改成直接用 node 執行套件裡的 marp-cli，不經 shell，路徑含空白或中文也不會被拆開
+- 呼叫 Marp 改成直接用 node 執行套件裡的 marp-cli，不經 shell，路徑含空白或中文也不會被拆開（找不到本機的 marp-cli 時才退回 `npx`）
 - 沒有 `theme:` 的簡報不套任何自訂主題，輸出跟 2.0 一致
 
 ### 移除

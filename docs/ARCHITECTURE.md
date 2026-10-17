@@ -39,11 +39,6 @@ md-to-slides/
 │
 ├── data/                     # Markdown 資料目錄
 │
-├── assets/                   # 靜態資源
-│   ├── css/                 # 自訂樣式檔
-│   ├── fonts/               # 中文字型
-│   └── diagrams/            # Mermaid 渲染 PNG (自動生成)
-│
 ├── output/                   # 建置產物（自動生成）
 ├── .github/workflows/        # CI/CD 流程
 │   └── ci.yml               # GitHub Actions 工作流程
@@ -151,7 +146,7 @@ preprocessMermaid(options); // 主導出函式
 
 - 支援多個 Mermaid 區塊的正確順序替換（避免全域副作用）
 - 若渲染失敗，保留原始區塊作為降級方案
-- 生成 PNG 存儲於 `assets/diagrams/diagram-N.png`
+- 生成的 PNG 存到 `<out>/assets/diagrams/`
 
 ### src/steps/render-html.js
 

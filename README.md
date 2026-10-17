@@ -1,6 +1,6 @@
 # md-to-slides
 
-> 以 Markdown 為單一來源，一鍵輸出 HTML、PDF、PPTX — 支援 Mermaid 圖表、自訂 CSS 注入、CJK 中文字型
+> 以 Markdown 為單一來源，一鍵輸出 HTML、PDF、PPTX — 支援 Mermaid 圖表、內建與自訂主題、CJK 中文字型
 
 ![alt text](image.png)
 
@@ -8,12 +8,12 @@
 
 ## Features
 
-| 功能                                      | v1  | v2（當前） |
+| 功能                                      | v1  | v2.1（當前） |
 | ----------------------------------------- | :-: | :--------: |
 | Markdown → HTML 投影片（Marp slide deck） | ✅  |     ✅     |
 | Markdown → PDF (16:9 簡報)                | ✅  |     ✅     |
 | Markdown → PPTX (可編輯簡報)              | ✅  |     ✅     |
-| YAML front matter 樣式萃取與注入          | ✅  |     ✅     |
+| YAML front matter 的 `style:` 樣式       | ✅  |     ✅     |
 | **指定任意檔案路徑轉檔**                  | ❌  |     ✅     |
 | **Mermaid 圖表渲染**                      | ❌  |     ✅     |
 | CJK 中文字型支援                          | ✅  |     ✅     |
@@ -189,13 +189,13 @@ theme: classic
 ```json
 {
   "markdown.marp.themes": [
-    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@v2.1.0/themes/classic.css"
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/classic.css"
   ],
   "markdown.marp.html": "all"
 }
 ```
 
-`markdown.marp.themes` 也可以填工作區裡的相對路徑，例如 `themes/classic.css`。`markdown.marp.html` 設成 `all` 才會渲染簡報裡的內嵌 HTML（卡片、流程圖都是 HTML），請只對自己信任的檔案這樣設。
+`@main` 會跟著最新版更新，想固定版本可以把 `@main` 換成某個 commit 的雜湊值。`markdown.marp.themes` 也可以填工作區裡的相對路徑，例如 `themes/classic.css`。`markdown.marp.html` 設成 `all` 才會渲染簡報裡的內嵌 HTML（卡片、流程圖都是 HTML），請只對自己信任的檔案這樣設。
 
 ### 匯出前檢查（check）
 
@@ -214,8 +214,8 @@ npm run check -- data/slides.md --json
 
 - 每一條發現都印出頁碼、行號、規則和說明；有 error 時 exit code 是 1，用法錯誤是 2。
 - `--strict` 讓 R5 變 error，`--no-browser` 跳過 R1，`--theme-set <路徑>` 指定額外的主題。
-- R1 需要瀏覽器，依序找環境變數 `CHROME_PATH`、系統上的 Chrome 或 Edge，不會另外下載。找不到時會印出「R1 沒有檢查」，這不等於通過。
-- 想檢查的簡報放在可寫入的資料夾：R1 會在輸入檔旁邊產生一個暫存 HTML，量完就刪。
+- R1 需要瀏覽器，不會另外下載。有設環境變數 `CHROME_PATH` 就只用它指定的瀏覽器，路徑不存在時不會改找別的；沒設才找系統上的 Chrome 或 Edge。找不到時會印出「R1 沒有檢查」，這不等於通過。
+- R1 會在輸入檔旁邊產生一個暫存 HTML，量完就刪，所以簡報要放在可寫入的資料夾。
 
 ---
 
@@ -248,11 +248,6 @@ md-to-slides/
 │   ├── ARCHITECTURE.md    # 專案架構說明
 │
 ├── data/                   # Markdown 原始內容
-│
-├── assets/                 # 靜態資源
-│   ├── css/
-│   ├── fonts/
-│   └── diagrams/           # Mermaid 渲染 PNG（build artifact）
 │
 ├── .github/workflows/
 │   └── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）

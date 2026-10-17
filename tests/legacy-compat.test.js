@@ -25,7 +25,15 @@ test('舊稿（沒有 theme、樣式內嵌在 style:）的 HTML 輸出跟 2.0 �
     const baseline = normalizeNewlines(
       fs.readFileSync(path.join(fixturesDir, 'baseline', 'legacy-inline-style.html'), 'utf-8')
     );
-    assert.equal(actual === baseline, true, '輸出與 2.0 基準不同');
+    if (actual !== baseline) {
+      let i = 0;
+      while (i < actual.length && actual[i] === baseline[i]) i++;
+      const around = (s) => JSON.stringify(s.slice(Math.max(0, i - 120), i + 120));
+      assert.fail(
+        `輸出與 2.0 基準不同（長度 ${actual.length} vs ${baseline.length}，第一個差異在第 ${i} 字元）\n` +
+          `實際：${around(actual)}\n基準：${around(baseline)}`
+      );
+    }
   } finally {
     fs.rmSync(out, { recursive: true, force: true });
   }
