@@ -1,0 +1,71 @@
+/* mono 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/mono.css。
+   黑白配單一強調色、大量留白，適合設計感簡報與產品說明。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 0px;
+  /* 間距 */
+  --theme-slide-padding: 52px 72px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #fafafa;
+  --theme-surface: #ffffff;
+  --theme-surface-sunken: #eeeeee;
+  --theme-row-alt: #eeeeee;
+  --theme-code-bg: #ececec;
+  --theme-cmd-bg: #eeeeee;
+  --theme-opdef-bg: #e9eff7;
+  --theme-placeholder-bg: #e2d2bc;
+  /* 文字 */
+  --theme-text: #111111;
+  --theme-heading: #111111;
+  --theme-text-soft: #404040;
+  --theme-text-mid: #323232;
+  --theme-muted: #575757;
+  --theme-subtle: #606060;
+  --theme-faint: #6a6a6a;
+  --theme-code-text: #111111;
+  --theme-strong: #b3261e;
+  --theme-em: #0b57d0;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #fafafa;
+  --theme-on-dark-soft: #d7d7d7;
+  /* 邊框與線 */
+  --theme-border: #d5d5d5;
+  --theme-border-dashed: #a8a8a8;
+  --theme-line: #c7c7c7;
+  --theme-divider: #e7e7e7;
+  --theme-divider-soft: #e3e3e3;
+  /* 強調與語意色 */
+  --theme-primary: #0b57d0;
+  --theme-green: #2f6f3e;
+  --theme-red: #b3261e;
+  --theme-orange: #9a5b00;
+  --theme-purple: #5b3f8c;
+  --theme-gray: #6e6e6e;
+  --theme-yellow: #f1c40f;
+  --theme-amber: #945700;
+  --theme-orange-deep: #9a5b00;
+  --theme-red-deep: #ac241d;
+  /* 淡底 */
+  --theme-primary-tint: #dbe5f5;
+  --theme-green-tint: #e0e8e2;
+  --theme-red-tint: #f1dedd;
+  --theme-orange-tint: #eee5da;
+  /* 陰影 */
+  --theme-shadow: 0 0 0 1px #d5d5d5;
+  --theme-shadow-flat: 0 0 0 1px #d5d5d5;
+  --theme-shadow-thin: 0 0 0 1px #d5d5d5;
+  --theme-shadow-row: 0 0 0 1px #d5d5d5;
+  /* 裝飾 */
+  --theme-deco-image: none;
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; letter-spacing: 0.01em; }
+a { color: var(--theme-primary); }

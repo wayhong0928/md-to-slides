@@ -77,6 +77,43 @@ jobs:
       - name: Verify HTML output exists
         run: test -f output/content.example.html
 
+      # D6：Ubuntu 沒有預設的中文字型。裝 Noto CJK，用三個主題（襯線標題、大字、深色底）build PDF，
+      # 再用 pdffonts 確認每份 PDF 都嵌入了 Noto CJK 字型，沒有就讓 job 失敗。
+      - name: Install CJK fonts and poppler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk poppler-utils
+          fc-list :lang=zh-tw family | head -n 5
+
+      - name: Build showcase PDFs (scholar, classroom, midnight)
+        run: |
+          mkdir -p output/font-check
+          for theme in scholar classroom midnight; do
+            sed "s/^theme:.*/theme: ${theme}/" examples/showcase.md > "output/font-check/showcase-${theme}.md"
+            npm run build -- "output/font-check/showcase-${theme}.md" --out output/font-check --stem "${theme}" --format pdf
+            test -s "output/font-check/${theme}.pdf"
+          done
+
+      - name: Verify Noto CJK fonts are embedded in the PDFs
+        run: |
+          status=0
+          for theme in scholar classroom midnight; do
+            echo "== ${theme}.pdf =="
+            pdffonts "output/font-check/${theme}.pdf" | tee "output/font-check/${theme}.fonts.txt"
+            if ! grep -qi 'noto.*cjk\|notosans\|notoserif' "output/font-check/${theme}.fonts.txt"; then
+              echo "::error::${theme}.pdf 沒有嵌入 Noto CJK 字型"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Upload font-check PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: font-check-pdfs
+          path: output/font-check/*.pdf
+          retention-days: 7
+
       - name: Upload output artifacts
         uses: actions/upload-artifact@v4
         with:

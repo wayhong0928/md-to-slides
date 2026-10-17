@@ -41,9 +41,15 @@ test('舊稿（沒有 theme、樣式內嵌在 style:）的 HTML 輸出跟 2.0 �
   }
 });
 
-// AC-3：v2.1 的舊稿用 col，v2.2 的輸出必須跟 v2.1.0 逐字相同。
-// 基準檔是在動任何程式碼之前，用 v2.1.0（commit 5e98c599b58f02228de889385643699a83aec5b1，工作樹乾淨）build 出來的。
-test('舊稿（theme: classic、用 col）的 HTML 輸出跟 2.1.0 基準一致，check 只出 info', async () => {
+// v2.1 的舊稿用 col，換版後的輸出必須跟基準逐字相同。
+// 基準檔 2.3.0 重產：2.3.0 把 themes/src/_base.css 寫死的顏色、陰影、等寬字型
+// 與兩個內距改成 --theme-* token，classic 的每個 token 值都等於原本寫死的值。
+// classic 的 HTML 會內嵌整份 classic.css，所以逐字比對一定會變，這是基準重產的唯一理由。
+// 畫面與 2.2.0 逐像素相同：examples/showcase.md、legacy-col.md、theme-classic.md 三份用 classic
+// 在 Chrome 逐頁截圖，共 39 張，重產前後逐位元組比對 39/39 相同（T1 截圖比對）。
+// 基準檔 2.2.0 以前是在動任何程式碼之前，用 v2.1.0（commit 5e98c599b58f02228de889385643699a83aec5b1，工作樹乾淨）build 出來的。
+// 2.1.0 起的斷言（class「col」的 R4 info、不出 class 警告）一條都沒動。
+test('舊稿（theme: classic、用 col）的 HTML 輸出跟 2.3.0 重產的基準一致，check 只出 info', async () => {
   const out = mkTmp();
   try {
     const result = await runBuild([
@@ -64,7 +70,7 @@ test('舊稿（theme: classic、用 col）的 HTML 輸出跟 2.1.0 基準一致�
       while (i < actual.length && actual[i] === baseline[i]) i++;
       const around = (s) => JSON.stringify(s.slice(Math.max(0, i - 120), i + 120));
       assert.fail(
-        `輸出與 2.1.0 基準不同（長度 ${actual.length} vs ${baseline.length}，第一個差異在第 ${i} 字元）\n` +
+        `輸出與基準不同（長度 ${actual.length} vs ${baseline.length}，第一個差異在第 ${i} 字元）\n` +
           `實際：${around(actual)}\n基準：${around(baseline)}`
       );
     }

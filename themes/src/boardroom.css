@@ -1,0 +1,74 @@
+/* boardroom 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/boardroom.css。
+   深海軍藍配金色、大數字，適合商務提案與季報。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 6px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #0b1f3a;
+  --theme-surface: #14335c;
+  --theme-surface-sunken: #21344d;
+  --theme-row-alt: #182b45;
+  --theme-code-bg: #21344d;
+  --theme-cmd-bg: #1d3049;
+  --theme-opdef-bg: #24303a;
+  --theme-placeholder-bg: #403a3e;
+  /* 文字 */
+  --theme-text: #e8eef7;
+  --theme-heading: #f0d78c;
+  --theme-text-soft: #bcc5d1;
+  --theme-text-mid: #c9d1dd;
+  --theme-muted: #a6b0be;
+  --theme-subtle: #9da8b7;
+  --theme-faint: #949faf;
+  --theme-code-text: #e8eef7;
+  --theme-strong: #ff8a80;
+  --theme-em: #d9aa3d;
+  --theme-on-accent: #0b1f3a;
+  --theme-on-dark: #0b1f3a;
+  --theme-on-dark-soft: #2d3b46;
+  /* 邊框與線 */
+  --theme-border: #3c4d64;
+  --theme-border-dashed: #5f6e82;
+  --theme-line: #49596f;
+  --theme-divider: #263851;
+  --theme-divider-soft: #2a3c54;
+  /* 強調與語意色 */
+  --theme-primary: #d9aa3d;
+  --theme-green: #4ade80;
+  --theme-red: #ff8a80;
+  --theme-orange: #fb9a4b;
+  --theme-purple: #c4a5ff;
+  --theme-gray: #909bab;
+  --theme-yellow: #f5d04a;
+  --theme-amber: #fb9a4b;
+  --theme-orange-deep: #fb9a4b;
+  --theme-red-deep: #ff8a80;
+  /* 淡底 */
+  --theme-primary-tint: #30383b;
+  --theme-green-tint: #164147;
+  --theme-red-tint: #373247;
+  --theme-orange-tint: #36353d;
+  /* 陰影 */
+  --theme-shadow: 0 2px 10px rgba(0,0,0,.35);
+  --theme-shadow-flat: 0 2px 10px rgba(0,0,0,.30);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.30);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.35);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><rect x='0' y='0' width='10' height='540' fill='%23d9aa3d'/><rect x='0' y='528' width='960' height='12' fill='%23d9aa3d' fill-opacity='.35'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+h1, h2, h3 { font-weight: 700; }
+.stat-num { font-weight: 800; }
+/* showcase 的 SVG 寫死淺色方塊，文字預設黑色，深色底要給一塊淺色底板 */
+.loop-svg { background: #f5f6f8; border-radius: var(--theme-radius); }
+a { color: var(--theme-primary); }

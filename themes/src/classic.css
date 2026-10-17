@@ -1,14 +1,67 @@
-/* classic 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/classic.css。 */
+/* classic 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/classic.css。
+   token 的完整清單與用途見 themes/TOKENS.md。classic 的每個值都等於 2.2.0 時寫死在 _base.css 的值。 */
 section {
+  /* 字型 */
   --theme-font: 'Helvetica Neue', '微軟正黑體', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'JetBrains Mono', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, monospace;
+  /* 字級與形狀 */
   --theme-font-size: 26px;
   --theme-radius: 8px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
   --theme-bg: #f5f6f8;
+  --theme-surface: #ffffff;
+  --theme-surface-sunken: #eef1f4;
+  --theme-row-alt: #edf0f2;
+  --theme-code-bg: #eef0f3;
+  --theme-cmd-bg: #f4f6f8;
+  --theme-opdef-bg: #f0f4f8;
+  --theme-placeholder-bg: #fff3cd;
+  /* 文字 */
   --theme-text: #1a252f;
   --theme-heading: #2c3e50;
+  --theme-text-soft: #445566;
+  --theme-text-mid: #3d4e5f;
+  --theme-muted: #5d6d7e;
+  --theme-subtle: #7f8c8d;
+  --theme-faint: #95a5a6;
+  --theme-code-text: #1f2937;
+  --theme-strong: #c0392b;
+  --theme-em: #1a6fa8;
+  --theme-on-accent: #ffffff;
+  --theme-on-dark: #ecf0f1;
+  --theme-on-dark-soft: #bdc3c7;
+  /* 邊框與線 */
+  --theme-border: #d5dce4;
+  --theme-border-dashed: #9aa5b1;
+  --theme-line: #c0cdd8;
+  --theme-divider: #eef1f4;
+  --theme-divider-soft: #e5e9ee;
+  /* 強調與語意色 */
   --theme-primary: #2980b9;
   --theme-green: #27ae60;
   --theme-red: #e74c3c;
   --theme-orange: #e67e22;
   --theme-purple: #8e44ad;
+  --theme-gray: #6b7c8d;
+  --theme-yellow: #f1c40f;
+  --theme-amber: #b9770e;
+  --theme-orange-deep: #d4710a;
+  --theme-red-deep: #c0392b;
+  /* 淡底 */
+  --theme-primary-tint: #eaf4fb;
+  --theme-green-tint: #eafaf1;
+  --theme-red-tint: #fdedec;
+  --theme-orange-tint: #fef9e7;
+  /* 陰影 */
+  --theme-shadow: 0 2px 8px rgba(0,0,0,.08);
+  --theme-shadow-flat: 0 2px 8px rgba(0,0,0,.06);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.06);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.08);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><circle cx='960' cy='0' r='140' fill='none' stroke='%232980b9' stroke-width='2.5' opacity='.10'/><circle cx='960' cy='0' r='90' fill='none' stroke='%232980b9' stroke-width='1.5' opacity='.08'/><g transform='rotate(-18 40 500)'><rect x='-20' y='460' width='90' height='90' rx='8' fill='%232980b9' fill-opacity='.07'/><rect x='0' y='482' width='60' height='60' rx='8' fill='%232980b9' fill-opacity='.05'/></g></svg>");
 }

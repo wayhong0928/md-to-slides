@@ -1,0 +1,72 @@
+/* midnight 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/midnight.css。
+   深色底、青綠高光，適合技術分享與夜間場合。 */
+section {
+  /* 字型 */
+  --theme-font: 'Microsoft JhengHei', '微軟正黑體', 'PingFang TC', 'Noto Sans CJK TC', 'Noto Sans TC', sans-serif;
+  --theme-font-heading: var(--theme-font);
+  --theme-font-mono: Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'Noto Sans Mono CJK TC', monospace;
+  --theme-font-mono-label: 'JetBrains Mono', Consolas, 'Cascadia Mono', Menlo, monospace;
+  /* 字級與形狀 */
+  --theme-font-size: 26px;
+  --theme-radius: 8px;
+  /* 間距 */
+  --theme-slide-padding: 44px 60px;
+  --theme-card-padding: 14px 16px;
+  /* 底色 */
+  --theme-bg: #0d1117;
+  --theme-surface: #161b22;
+  --theme-surface-sunken: #23272d;
+  --theme-row-alt: #1a1e24;
+  --theme-code-bg: #23272d;
+  --theme-cmd-bg: #1e2329;
+  --theme-opdef-bg: #11282b;
+  --theme-placeholder-bg: #3f3024;
+  /* 文字 */
+  --theme-text: #e6edf3;
+  --theme-heading: #7ee3d4;
+  --theme-text-soft: #bbc1c7;
+  --theme-text-mid: #c8ced4;
+  --theme-muted: #a5abb1;
+  --theme-subtle: #9ca2a8;
+  --theme-faint: #94999f;
+  --theme-code-text: #e6edf3;
+  --theme-strong: #ff7b72;
+  --theme-em: #2dd4bf;
+  --theme-on-accent: #04211d;
+  --theme-on-dark: #0d1117;
+  --theme-on-dark-soft: #1e3033;
+  /* 邊框與線 */
+  --theme-border: #3d4147;
+  --theme-border-dashed: #5f656b;
+  --theme-line: #4a4f55;
+  --theme-divider: #272b31;
+  --theme-divider-soft: #2b3036;
+  /* 強調與語意色 */
+  --theme-primary: #2dd4bf;
+  --theme-green: #4ade80;
+  --theme-red: #ff7b72;
+  --theme-orange: #f0a050;
+  --theme-purple: #c0a0ff;
+  --theme-gray: #8f959b;
+  --theme-yellow: #f5d04a;
+  --theme-amber: #f0a050;
+  --theme-orange-deep: #f0a050;
+  --theme-red-deep: #ff7b72;
+  /* 淡底 */
+  --theme-primary-tint: #133435;
+  --theme-green-tint: #18362a;
+  --theme-red-tint: #392427;
+  --theme-orange-tint: #362b21;
+  /* 陰影 */
+  --theme-shadow: 0 2px 10px rgba(0,0,0,.35);
+  --theme-shadow-flat: 0 2px 10px rgba(0,0,0,.30);
+  --theme-shadow-thin: 0 1px 4px rgba(0,0,0,.30);
+  --theme-shadow-row: 0 1px 4px rgba(0,0,0,.35);
+  /* 裝飾 */
+  --theme-deco-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 960 540'><circle cx='960' cy='0' r='180' fill='none' stroke='%232dd4bf' stroke-width='2' opacity='.25'/><circle cx='960' cy='0' r='120' fill='none' stroke='%232dd4bf' stroke-width='1.2' opacity='.18'/></svg>");
+}
+
+/* 裝飾：只動外觀，不動版面 */
+/* showcase 的 SVG 寫死淺色方塊，文字預設黑色，深色底要給一塊淺色底板 */
+.loop-svg { background: #f5f6f8; border-radius: var(--theme-radius); }
+a { color: var(--theme-primary); }

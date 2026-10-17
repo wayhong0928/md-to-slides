@@ -34,6 +34,28 @@ test('theme: classic 三種格式都能 build，HTML 帶得到 classic 的主色
   }
 });
 
+test('8 個內建主題各 build 一次 HTML，HTML 帶得到該主題自己的底色 token', async () => {
+  const showcase = fs.readFileSync(path.join(__dirname, '..', 'examples', 'showcase.md'), 'utf-8');
+  const work = mkTmp();
+  try {
+    for (const id of ['classic', 'scholar', 'classroom', 'mono', 'boardroom', 'pitch', 'editorial', 'midnight']) {
+      const bg = fs
+        .readFileSync(path.join(__dirname, '..', 'themes', 'src', `${id}.css`), 'utf-8')
+        .match(/--theme-bg:\s*(#[0-9a-f]{3,6})/i)[1];
+      const md = path.join(work, `${id}.md`);
+      fs.writeFileSync(md, showcase.replace(/^theme:\s*\S+/m, `theme: ${id}`));
+      const out = path.join(work, `out-${id}`);
+      const result = await runBuild([md, '--out', out, '--stem', id, '--format', 'html']);
+      assert.equal(result.code, 0, `${id}：${result.output}`);
+      const html = fs.readFileSync(path.join(out, `${id}.html`), 'utf-8');
+      assert.ok(html.includes(`--theme-bg: ${bg}`), `${id} 的 HTML 應該帶 --theme-bg: ${bg}`);
+      assert.match(html, /cover-title/);
+    }
+  } finally {
+    fs.rmSync(work, { recursive: true, force: true });
+  }
+});
+
 test('--theme-set 可以加使用者自己的主題', async () => {
   const work = mkTmp();
   try {

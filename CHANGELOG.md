@@ -1,5 +1,27 @@
 # 更動日誌
 
+## [2.3.0] - 2026-10-17
+
+### 新增
+- 7 個內建主題：`scholar`、`classroom`、`mono`、`boardroom`、`pitch`、`editorial`、`midnight`，加上原本的 `classic` 共 8 個。frontmatter 寫 `theme: <名稱>` 就能換，版型和 class 名稱完全不變，只換外觀
+- 主題 token 從 classic 的一小組擴成 53 個 `--theme-*`：字型（內文、標題、等寬、等寬標籤）、字級、圓角、兩種內距、全部顏色、陰影和裝飾圖。清單與用途見 `themes/TOKENS.md`
+- `npm run contrast`：對每個主題的 49 組前景與背景配對算 WCAG 對比，一般文字要 4.5、大字要 3。未達標 exit 1 並指出是哪一組。classic 有 15 組沿用舊色的例外，登記在 `themes/TOKENS.md`，腳本會核對例外的數值有沒有變
+- `npm run thumbnails`：用 Chrome 把每個主題的 showcase 逐頁截圖，輸出 `output/thumbnails/<id>.png` 和 8 個主題各 6 頁的 `all.png`。要有 Chrome 或 Edge，沒有就說明原因並 exit 1
+- `npm run themes -- --check` 多檢查一項：每個主題都要宣告 `themes/TOKENS.md` 表格列出的全部 token，缺的會列出名稱
+
+### 改動
+- `themes/src/_base.css` 的顏色、陰影、內距、等寬字型和裝飾圖全部改成 `var(--theme-*)`，只剩 `.term` 終端機視窗那 8 行維持固定值。標題另外多一條 `font-family: var(--theme-font-heading)`
+- classic 的每個 token 值都等於原本寫死的值。用 39 張截圖（showcase 36 頁、legacy-col 1 頁、theme-classic 2 頁）逐位元比對，2.3.0 與 2.2.0 完全相同
+- `tests/fixtures/baseline/legacy-col.html` 重新產生，因為它內嵌 classic.css。`legacy-compat` 的斷言沒有改，只改了測試標題與失敗訊息
+- CI 的 Ubuntu 工作多裝 `fonts-noto-cjk`，用 scholar、classroom、midnight 各建一份 PDF，再用 `pdffonts` 確認有嵌入 Noto 字型，沒有就失敗
+
+### 不變
+- 沒寫 `theme:` 的簡報照舊不套任何主題。命令列參數、輸出路徑、class 名稱都和 2.2.0 相同。
+
+### 已知限制
+- classic 的 `--theme-font` 維持原本的 `'Helvetica Neue', '微軟正黑體', sans-serif`，沒有加 Noto 備援字型。加了之後在裝有 Noto Sans TC 的機器上，showcase 第 26 頁的減號（U+2212）會換字型，逐位元比對就不再相同。7 個新主題都有完整的中文備援清單。
+
+---
 ## [2.2.0] - 2026-10-17
 
 ### 新增

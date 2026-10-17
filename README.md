@@ -8,7 +8,7 @@
 
 ## Features
 
-| 功能                                      | v1  | v2.2（當前） |
+| 功能                                      | v1  | v2.3（當前） |
 | ----------------------------------------- | :-: | :--------: |
 | Markdown → HTML 投影片（Marp slide deck） | ✅  |     ✅     |
 | Markdown → PDF (16:9 簡報)                | ✅  |     ✅     |
@@ -17,7 +17,7 @@
 | **指定任意檔案路徑轉檔**                  | ❌  |     ✅     |
 | **Mermaid 圖表渲染**                      | ❌  |     ✅     |
 | CJK 中文字型支援                          | ✅  |     ✅     |
-| **`classic` 內建主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
+| **內建 8 個主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
 | **相對路徑圖片（HTML、PDF、PPTX）**       | ❌  |     ✅     |
 | **`check` 匯出前版面檢查（R1–R5）**       | ❌  |     ✅     |
 
@@ -111,7 +111,7 @@ npm run clean
 | `--out, -o <dir>`   | 輸出目錄                              | `output`        |
 | `--stem, -s <name>` | 輸出檔名主幹                          | 取自輸入檔名    |
 | `--format <list>`   | 輸出格式（逗號分隔：`html,pdf,pptx`） | `html,pdf,pptx` |
-| `--theme-set <path>` | 額外的主題 CSS 檔或資料夾，可重複（內建 `classic` 一律可用） | —               |
+| `--theme-set <path>` | 額外的主題 CSS 檔或資料夾，可重複（內建 8 個主題一律可用） | —               |
 | `--help, -h`        | 顯示說明                              | —               |
 
 ### npm scripts 捷徑
@@ -130,6 +130,10 @@ npm test
 # 重新產生主題 / 檢查主題產物是不是最新
 npm run themes
 npm run themes -- --check
+
+# 檢查 8 個主題的文字對比 / 產生縮圖總表（要 Chrome 或 Edge）
+npm run contrast
+npm run thumbnails
 
 # 匯出前檢查
 npm run check -- data/slides.md
@@ -167,20 +171,44 @@ npm run audit:prod
 不論成功或失敗，都刪除暫存檔 ✓
 ````
 
-### 主題（classic）
+### 主題
 
-內建 `classic` 主題，卡片、統計數字、提示框、流程圖等元件都已經寫好，frontmatter 只要一行：
+內建 8 個主題，卡片、統計數字、提示框、流程圖等元件都已經寫好，frontmatter 只要一行：
 
 ```markdown
 ---
 marp: true
-theme: classic
+theme: scholar
 ---
 ```
 
-- 不寫 `theme:` 的簡報照 Marp 預設處理，不會套 `classic`。
-- 顏色、字型、字級、圓角是 CSS 變數（`--theme-primary`、`--theme-font` 等），要換配色可以在 frontmatter 的 `style:` 覆寫，或用 `--theme-set` 加自己的主題。
-- `themes/classic.css` 由 `themes/src/` 合併產生，改了 `themes/src/` 之後執行 `npm run themes`；`npm run themes -- --check` 只比對產物是不是最新。
+| 主題 | 底色 | 特色 | 適合場合 |
+| ---- | ---- | ---- | ---- |
+| `classic` | 淺灰白 | 原本的預設外觀，2.3.0 輸出的 39 張截圖與 2.2.0 逐位元相同 | 沿用舊簡報 |
+| `scholar` | 米色 | 襯線標題 | 論文口試、研討會 |
+| `classroom` | 淡黃 | 字大、圓角大 | 上課、教學 |
+| `mono` | 白 | 圓角為 0，陰影改成細框線，無裝飾圖 | 要列印或黑白輸出 |
+| `boardroom` | 深藍 | 深色底搭金色 | 對主管或客戶報告 |
+| `pitch` | 淡紫白 | 紫色強調 | 提案、比賽 |
+| `editorial` | 暖米色 | 襯線標題，磚紅強調 | 讀書會、分享會 |
+| `midnight` | 近黑 | 深色底搭青綠色 | 技術分享、暗室投影 |
+
+字型照下面的順序找，找到第一個裝了的就用：
+
+| 平台 | 內文 | 襯線標題（scholar、editorial） |
+| ---- | ---- | ---- |
+| Windows | 微軟正黑體 | Georgia（英數）、新細明體（中文） |
+| macOS | 蘋方（PingFang TC） | Georgia（英數）、宋體（Songti TC） |
+| Linux | Noto Sans CJK TC（要先裝 `fonts-noto-cjk`） | Noto Serif CJK TC |
+
+macOS 那一列是照字型清單推的，沒有在 Mac 上實測。classic 的字型清單是 `'Helvetica Neue', '微軟正黑體', sans-serif`，沒有 Noto 備援，在 Linux 上中文用哪個字型由系統的 sans-serif 設定決定。
+
+換主題只換外觀，版型與 class 名稱都不變，同一份 Markdown 可以直接換 `theme:` 重新輸出。`npm run thumbnails` 會把 8 個主題的前幾頁排成 `output/thumbnails/all.png` 對照。
+
+- 不寫 `theme:` 的簡報照 Marp 預設處理，不會套任何內建主題。
+- 顏色、字型、字級、圓角是 CSS 變數（`--theme-primary`、`--theme-font` 等，共 53 個，說明在 [themes/TOKENS.md](themes/TOKENS.md)），要換配色可以在 frontmatter 的 `style:` 覆寫，或用 `--theme-set` 加自己的主題。
+- `themes/<主題>.css` 由 `themes/src/` 合併產生，改了 `themes/src/` 之後執行 `npm run themes`；`npm run themes -- --check` 比對產物是不是最新，也會檢查每個主題的 token 有沒有宣告齊全。
+- `npm run contrast` 對每個主題的 49 組前景與背景配對算對比，一般文字要 4.5、大字要 3。classic 有 15 組沿用舊色的例外，登記在 `themes/TOKENS.md`。
 
 #### 在 VS Code 預覽（Marp for VS Code）
 
@@ -189,11 +217,20 @@ theme: classic
 ```json
 {
   "markdown.marp.themes": [
-    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/classic.css"
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/classic.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/scholar.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/classroom.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/mono.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/boardroom.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/pitch.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/editorial.css",
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@main/themes/midnight.css"
   ],
   "markdown.marp.html": "all"
 }
 ```
+
+陣列裡列了 8 個主題，簡報的 `theme:` 寫哪個就用哪個；只用其中幾個的話，刪掉不需要的網址即可。
 
 `@main` 會跟著最新版更新，想固定版本可以把 `@main` 換成某個 commit 的雜湊值。`markdown.marp.themes` 也可以填工作區裡的相對路徑，例如 `themes/classic.css`。`markdown.marp.html` 設成 `all` 才會渲染簡報裡的內嵌 HTML（卡片、流程圖都是 HTML），請只對自己信任的檔案這樣設。
 
@@ -250,8 +287,9 @@ md-to-slides/
 │       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
 │
 ├── themes/
-│   ├── src/                       # _base.css（版型）、classic.css（token）
-│   └── classic.css                # 產生的單檔主題（進版控）
+│   ├── src/                       # _base.css（版型）、<主題>.css（token）×8
+│   ├── <主題>.css                 # 產生的單檔主題 ×8（進版控）
+│   └── TOKENS.md                  # 53 個 token 的說明、對比配對表、classic 例外
 │
 ├── catalog/                       # 版型目錄（35 個版型＋_utilities.md）
 ├── examples/
@@ -261,6 +299,8 @@ md-to-slides/
 │   ├── build-themes.js            # 合併主題
 │   ├── validate-catalog.js        # 驗證版型目錄
 │   ├── build-showcase.js          # 產生 examples/showcase.md
+│   ├── check-contrast.js          # 8 個主題的 WCAG 對比檢查
+│   ├── build-thumbnails.js        # 8 個主題的縮圖總表（要 Chrome）
 │   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件
@@ -329,7 +369,8 @@ nvm install 18 && nvm use 18
 - **v1**：Markdown → HTML / PDF / PPTX，固定讀取 `content.md`
 - **v2**：任意路徑輸入、Mermaid 圖表渲染、單一 data/ 資料區
 - **v2.1**：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
-- **v2.2**（當前）：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
+- **v2.2**：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
+- **v2.3**（當前）：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
 
 ---
 

@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.2)
+# 專案架構說明 (v2.3)
 
 ## 目錄結構
 
@@ -18,8 +18,9 @@ md-to-slides/
 │       └── render-html.js           # 本機圖片複製與改寫、Marp 呼叫、HTML 輸出
 │
 ├── themes/
-│   ├── src/                  # _base.css（版型與元件）、classic.css（token）
-│   └── classic.css           # scripts/build-themes.js 產生的單檔主題
+│   ├── src/                  # _base.css（版型與元件，只用 var(--theme-*)）、<主題>.css（token）×8
+│   ├── <主題>.css            # scripts/build-themes.js 產生的單檔主題 ×8
+│   └── TOKENS.md             # 53 個 token、49 組對比配對、classic 例外表
 │
 ├── catalog/                  # 版型目錄：<包名>/<id>.md ×35＋_utilities.md
 ├── examples/
@@ -29,6 +30,8 @@ md-to-slides/
 │   ├── build-themes.js       # 合併主題；--check 比對產物是不是最新
 │   ├── validate-catalog.js   # 驗證版型目錄
 │   ├── build-showcase.js     # 產生 examples/showcase.md；--check 比對是不是最新
+│   ├── check-contrast.js     # 每個主題的 WCAG 對比檢查；--tokens 指定另一份 TOKENS.md
+│   ├── build-thumbnails.js   # 8 個主題的縮圖總表（puppeteer-core，要 Chrome 或 Edge）
 │   └── run-tests.js
 │
 ├── tests/                    # 測試套件
@@ -128,6 +131,16 @@ findings（頁碼、行號、規則、等級、說明）＋ skipped（沒檢查�
 `npm run catalog`（`scripts/validate-catalog.js`）逐檔檢查上面的規則，並確認「所有版型的 classes＋_utilities.md 兩段＋別名舊名」的集合，跟 `themes/src/_base.css` 解析出來的 class 集合完全相同。任何一邊多或少都 exit 1，並指出是哪個檔案的哪個問題。`src/catalog/index.js` 的 `loadCatalog()` 在目錄存在時不丟例外，檔案層級的問題收在回傳的 `problems`；目錄不存在會丟 `ENOENT`，R4 接住後退回解析主題 CSS。
 
 `npm run showcase`（`scripts/build-showcase.js`）把每個版型的範例依包別、檔名排序接成 `examples/showcase.md`，頁與頁之間 `---` 前後各留一個空行，避免 R2 黏頁。
+
+### 主題與 token
+
+`themes/src/_base.css` 只寫結構，所有顏色、陰影、內距、字型和裝飾圖都讀 `var(--theme-*)`。唯一保留固定值的是 `.term` 終端機視窗（8 行），它刻意不跟著主題換色。每個 `themes/src/<主題>.css` 在一個 `section { }` 區塊宣告全部 53 個 token，`scripts/build-themes.js` 把基底和 token 合併成 `themes/<主題>.css` 並加上 `@theme` 標記。
+
+- `npm run themes -- --check` 除了比對產物是不是最新，也讀 `themes/TOKENS.md` 的 token 表，主題少宣告就 exit 1。`_base.css` 新增 token 時要同時登記到 TOKENS.md，否則這項檢查抓不到，訊息格式是「X.css 缺少 N 個 token：…」。
+- `npm run contrast`（`scripts/check-contrast.js`）依 `themes/TOKENS.md` 的 49 組配對算 WCAG 對比，一般文字門檻 4.5、大字 3。classic 沿用舊色，有 15 組低於門檻，登記在 TOKENS.md 的例外表；腳本會用現在的算值核對例外表，數值對不上也算失敗。
+- classic 的每個 token 值等於 2.2.0 寫死的值。`legacy-compat` 的基準 `legacy-col.html` 內嵌 classic.css，改了 classic.css 就要重產。
+- 標題字型單獨用 `--theme-font-heading`，等寬字型分內文（`--theme-font-mono`）和標籤（`--theme-font-mono-label`）兩個。
+- CI 的 Ubuntu 工作裝 `fonts-noto-cjk`，建 scholar、classroom、midnight 的 PDF，用 `pdffonts` 確認有嵌入 Noto 字型。
 
 ### R4 與版型目錄
 
@@ -252,6 +265,8 @@ ls -la output/
 | `npm run check`        | 匯出前檢查 R1–R5（`-- <檔案>`）          |
 | `npm run catalog`      | 驗證版型目錄                             |
 | `npm run showcase`     | 產生 examples/showcase.md；加 `-- --check` 只比對 |
+| `npm run contrast`     | 檢查 8 個主題的文字對比                  |
+| `npm run thumbnails`   | 產生 output/thumbnails/（要 Chrome 或 Edge） |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |
 | `npm run audit:prod`   | 正式環境依賴檢查                         |

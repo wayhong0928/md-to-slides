@@ -44,6 +44,23 @@ function buildTheme(name, srcDir) {
   ].join('\n');
 }
 
+// themes/TOKENS.md 列出的全部 token 名稱：從開頭到「固定不換」那段之前，每個表格列第一欄的 `--theme-xxx`。
+function listRequiredTokens(themesDir) {
+  const file = path.join(themesDir, 'TOKENS.md');
+  if (!fs.existsSync(file)) return null;
+  const text = normalize(fs.readFileSync(file, 'utf-8'));
+  const end = text.indexOf('## 固定不換');
+  const head = end < 0 ? text : text.slice(0, end);
+  const names = [];
+  for (const m of head.matchAll(/^\|\s*`(--theme-[a-z0-9-]+)`\s*\|/gm)) names.push(m[1]);
+  return [...new Set(names)];
+}
+
+function declaredTokens(css) {
+  const withoutComments = css.replace(/\/\*[\s\S]*?\*\//g, '');
+  return new Set([...withoutComments.matchAll(/(--theme-[a-z0-9-]+)\s*:/g)].map((m) => m[1]));
+}
+
 function main(argv) {
   const { check, root } = parseArgs(argv);
   const themesDir = path.join(root, 'themes');
@@ -74,16 +91,28 @@ function main(argv) {
   }
 
   if (check) {
+    const required = listRequiredTokens(themesDir);
+    if (!required || required.length === 0) {
+      problems.push('themes/TOKENS.md 不存在或沒有列出 token，無法檢查 token 是否齊全');
+    } else {
+      for (const name of names) {
+        const declared = declaredTokens(fs.readFileSync(path.join(srcDir, `${name}.css`), 'utf-8'));
+        const missing = required.filter((token) => !declared.has(token));
+        if (missing.length > 0) {
+          problems.push(`${name}.css 缺少 ${missing.length} 個 token：${missing.join(', ')}`);
+        }
+      }
+    }
     if (problems.length > 0) {
       problems.forEach((p) => console.error(`✗ ${p}`));
       return 1;
     }
-    console.log(`✓ ${names.length} 個主題的產物都是最新的`);
+    console.log(`✓ ${names.length} 個主題的產物都是最新的，token 都齊（${required.length} 個）`);
   }
   return 0;
 }
 
-module.exports = { buildTheme, listThemeNames, main };
+module.exports = { buildTheme, listThemeNames, listRequiredTokens, main };
 
 if (require.main === module) {
   process.exitCode = main(process.argv.slice(2));
