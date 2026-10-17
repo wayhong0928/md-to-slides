@@ -171,8 +171,8 @@ sections:
 # 今天的流程
 
 <div class="toc-grid">
-<div class="toc-item"><span class="no">01</span><span class="t">概念與示範<small>倉庫、提交、分支</small></span><span class="pg">p.3</span></div>
-<div class="toc-item"><span class="no">02</span><span class="t">練習一<small>建立第一個倉庫</small></span><span class="pg">p.7</span></div>
+<div class="toc-item"><span class="no">01</span><span class="t">概念與示範<small>儲存庫、提交、分支</small></span><span class="pg">p.3</span></div>
+<div class="toc-item"><span class="no">02</span><span class="t">練習一<small>建立第一個儲存庫</small></span><span class="pg">p.7</span></div>
 <div class="toc-item"><span class="no">03</span><span class="t">進階技巧<small>請 AI 幫忙寫提交訊息</small></span><span class="pg">p.8</span></div>
 <div class="toc-item"><span class="no">04</span><span class="t">練習二<small>兩人合作改同一份檔案</small></span><span class="pg">p.11</span></div>
 </div>
@@ -187,10 +187,10 @@ sections:
 
 ---
 
-# 倉庫存歷史，提交記一步，分支分頭做
+# 儲存庫存歷史，提交記一步，分支分頭做
 
 <div class="tri">
-<div class="card card-blue"><h3>倉庫</h3><p class="who">專題的資料夾</p><b class="k">repository</b><p>所有檔案和修改紀錄都放在這裡</p></div>
+<div class="card card-blue"><h3>儲存庫</h3><p class="who">專題的資料夾</p><b class="k">repository</b><p>所有檔案和修改紀錄都放在這裡</p></div>
 <div class="card card-green"><h3>提交</h3><p class="who">存一個版本</p><b class="k">commit</b><p>每做完一小步就存一次，寫清楚改了什麼</p></div>
 <div class="card card-orange"><h3>分支</h3><p class="who">平行的工作線</p><b class="k">branch</b><p>各自在分支上改，改好再合回主線</p></div>
 </div>
@@ -200,7 +200,7 @@ sections:
 # 三個指令完成第一次提交
 
 <div class="steps">
-<div class="st"><div class="n">1</div><div class="cmd">git init</div><div class="cmd say">把資料夾變成倉庫</div></div>
+<div class="st"><div class="n">1</div><div class="cmd">git init</div><div class="cmd say">把資料夾變成儲存庫</div></div>
 <div class="st"><div class="n">2</div><div class="cmd">git add 報告.md</div><div class="cmd say">選要存進這個版本的檔案</div></div>
 <div class="st"><div class="n">3</div><div class="cmd">git commit -m "加入大綱"</div><div class="cmd say">存成一個版本並寫說明</div></div>
 </div>
@@ -216,26 +216,26 @@ sections:
 <pre>$ <span class="c">git log --oneline</span>
 <span class="ok">a1b2c3d 加入第二章初稿</span>
 <span class="ok">9f8e7d6 加入大綱</span>
-<span class="dim">(END)</span></pre>
+<span class="dim">紀錄超過一個畫面時會分頁顯示</span></pre>
 </div>
 </div>
 <div class="column">
 <div class="note-list">
 <div class="n"><b class="num">1</b><span>最新的提交在最上面</span></div>
 <div class="n"><b class="num">2</b><span>前面七碼是版本編號</span></div>
-<div class="n"><b class="num">3</b><span>按 q 離開</span></div>
+<div class="n"><b class="num">3</b><span>分頁顯示時按 q 離開</span></div>
 </div>
 </div>
 </div>
 
 ---
 
-# 練習一：建立第一個倉庫
+# 練習一：建立第一個儲存庫
 
 <span class="timer">⏱ 10 分鐘</span>
 
 <div class="flow-step"><h3>開資料夾</h3><p>新建一個叫「期末專題」的資料夾</p></div>
-<div class="flow-step"><h3>建倉庫</h3><p>在資料夾裡執行 git init</p></div>
+<div class="flow-step"><h3>建儲存庫</h3><p>在資料夾裡執行 git init</p></div>
 <div class="flow-step"><h3>存版本</h3><p>新增一份大綱檔，提交一次</p></div>
 
 <div class="done">git log 看得到一筆提交就可以舉手</div>
@@ -267,7 +267,7 @@ sections:
 
 <div class="tip">每次提交前跑 git status，確認只加了要加的檔案</div>
 <div class="warning">兩個人改同一行會衝突，先講好誰改哪一段</div>
-<div class="danger">不要把密碼或金鑰檔案提交進倉庫</div>
+<div class="danger">不要把密碼或金鑰檔案提交進儲存庫</div>
 
 ---
 

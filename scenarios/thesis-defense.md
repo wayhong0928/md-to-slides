@@ -98,7 +98,7 @@ sections:
 
 <div class="opdef"><span class="construct-badge">【填：構念一】</span><br>【填：操作型定義，用什麼量表、幾題、怎麼計分】</div>
 <div class="opdef"><span class="construct-badge">【填：構念二】</span><br>【填：操作型定義，用什麼量表、幾題、怎麼計分】</div>
-<div class="opdef"><span class="construct-badge">【填：構念三】</span><br>【填：操作型定義，資料來源與樣本數】</div>
+<div class="opdef"><span class="construct-badge">【填：構念三】</span><br>【填：操作型定義，用什麼量表、幾題、怎麼計分】</div>
 
 ---
 
@@ -115,7 +115,7 @@ sections:
 <ul class="lst">
 <li><span class="y">✔</span><b>H1</b>【填：假說敘述】<span>【填：證據，係數與顯著性】</span></li>
 <li><span class="y">✔</span><b>H2</b>【填：假說敘述】<span>【填：證據，係數與顯著性】</span></li>
-<li><span class="x">✘</span><b>H3</b>【填：假說敘述，不支持的用 ✘】<span>【填：證據，係數與顯著性】</span></li>
+<li><span class="x">✘</span><b>H3</b>【填：假說敘述。支持的話，前面的 ✘ 改成 ✔，class 從 x 改成 y】<span>【填：證據，係數與顯著性】</span></li>
 </ul>
 
 ---
@@ -185,7 +185,7 @@ sections:
 # 報告大綱
 
 <div class="toc-grid">
-<div class="toc-item"><span class="no">01</span><span class="t">研究背景<small>使用率下滑與研究缺口</small></span><span class="pg">p.3</span></div>
+<div class="toc-item"><span class="no">01</span><span class="t">研究背景<small>使用率偏低與研究缺口</small></span><span class="pg">p.3</span></div>
 <div class="toc-item"><span class="no">02</span><span class="t">研究方法<small>研究架構與問卷設計</small></span><span class="pg">p.6</span></div>
 <div class="toc-item"><span class="no">03</span><span class="t">研究結果<small>三條假說的檢定</small></span><span class="pg">p.9</span></div>
 <div class="toc-item"><span class="no">04</span><span class="t">結論<small>貢獻、建議與限制</small></span><span class="pg">p.12</span></div>
@@ -244,11 +244,11 @@ sections:
 
 ---
 
-# 三個構念的測量方式
+# 主要構念的測量，有效樣本 312 份
 
 <div class="opdef"><span class="construct-badge">車況品質</span><br>自編量表 4 題，李克特五點，取平均</div>
 <div class="opdef"><span class="construct-badge">使用滿意度</span><br>改編既有量表 3 題，李克特五點，取平均</div>
-<div class="opdef"><span class="construct-badge">持續使用意願</span><br>改編既有量表 3 題，線上問卷有效樣本 312 份</div>
+<div class="opdef"><span class="construct-badge">持續使用意願</span><br>改編既有量表 3 題，李克特五點，取平均</div>
 
 ---
 
@@ -274,9 +274,9 @@ sections:
 
 | 路徑 | 係數 | p 值 | 結果 |
 |---|---|---|---|
-| 車況品質 → 滿意度 | 0.41 | &lt; .001 | 支持 |
-| 取還便利性 → 滿意度 | 0.18 | .004 | 支持 |
-| 滿意度 → 持續使用 | 0.52 | &lt; .001 | 支持 |
+| 車況品質 → 滿意度 | 0.41 | &lt; .001 | 支持 H1 |
+| 取還便利性 → 滿意度 | 0.18 | .004 | 顯著，沒有列為假說 |
+| 滿意度 → 持續使用 | 0.52 | &lt; .001 | 支持 H2 |
 
 ---
 

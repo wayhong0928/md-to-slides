@@ -196,13 +196,13 @@ sections:
 
 ---
 
-# 一季內完成試辦與評估
+# 7 月準備，8 到 10 月試辦一季
 
 <div class="timeline">
 <div class="tl-step"><div class="tl-dot">1</div><div class="tl-label"><strong>7 月</strong><span>系統設定與店員訓練</span></div></div>
 <div class="tl-step"><div class="tl-dot">2</div><div class="tl-label"><strong>8 月</strong><span>三家門市上線</span></div></div>
-<div class="tl-step"><div class="tl-dot">3</div><div class="tl-label"><strong>9 月</strong><span>收集等候時間與營收</span></div></div>
-<div class="tl-step"><div class="tl-dot">4</div><div class="tl-label"><strong>10 月</strong><span>決定是否推到全部門市</span></div></div>
+<div class="tl-step"><div class="tl-dot">3</div><div class="tl-label"><strong>9 到 10 月</strong><span>收集等候時間與營收</span></div></div>
+<div class="tl-step"><div class="tl-dot">4</div><div class="tl-label"><strong>11 月</strong><span>決定是否推到全部門市</span></div></div>
 </div>
 
 ---

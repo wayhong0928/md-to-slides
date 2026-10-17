@@ -103,7 +103,7 @@ sections:
 <div class="bar"><i></i><i></i><i></i> 【填：終端機視窗名稱】</div>
 <pre>$ <span class="c">【填：指令】</span>
 <span class="ok">【填：成功的輸出】</span>
-<span class="dim">【填：次要提示】</span> <span class="mark">【填：要強調的部分】</span></pre>
+<span class="dim">【填：灰色小字，補充說明輸出】</span> <span class="mark">【填：用重點色標出的關鍵字】</span></pre>
 </div>
 </div>
 <div class="column">
@@ -173,7 +173,7 @@ sections:
 
 <div class="toc-grid">
 <div class="toc-item"><span class="no">01</span><span class="t">問題<small>每次推送都要等 8 分鐘</small></span><span class="pg">p.3</span></div>
-<div class="toc-item"><span class="no">02</span><span class="t">做法<small>平行執行加快取</small></span><span class="pg">p.6</span></div>
+<div class="toc-item"><span class="no">02</span><span class="t">做法<small>平行執行加只跑改到的測試</small></span><span class="pg">p.6</span></div>
 <div class="toc-item"><span class="no">03</span><span class="t">成效<small>兩週的數字</small></span><span class="pg">p.9</span></div>
 <div class="toc-item extra"><span class="no">附</span><span class="t">參考資料</span><span class="pg">p.10</span></div>
 </div>
@@ -190,7 +190,7 @@ sections:
 
 # 每次推送等 8 分鐘，一天浪費一小時
 
-- 單元測試 1,400 個，全部依序跑
+- 單元測試 1,400 個，設定關掉了平行，全部依序跑
 - 每人每天推送約 8 次
 - 測試慢到大家開始跳過測試直接推送
 
@@ -198,13 +198,13 @@ sections:
 
 ---
 
-# 測試依序執行，CPU 大半時間閒著
+# 平行被關掉，多顆 CPU 核心只用到一顆
 
 <svg class="loop-svg" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
 <rect x="40" y="170" width="220" height="100" rx="12" fill="#eaf4fb" stroke="#2980b9" stroke-width="2"/>
 <text x="150" y="228" text-anchor="middle" font-size="24">1,400 個測試</text>
 <rect x="540" y="170" width="220" height="100" rx="12" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
-<text x="650" y="228" text-anchor="middle" font-size="24">一顆 CPU 核心</text>
+<text x="650" y="228" text-anchor="middle" font-size="24">只用到一顆核心</text>
 <line x1="260" y1="220" x2="540" y2="220" stroke="#445566" stroke-width="3"/>
 <text x="400" y="205" text-anchor="middle" font-size="20">一個接一個跑</text>
 </svg>
@@ -221,19 +221,19 @@ sections:
 
 <!-- _class: codecol dense -->
 
-# 設定檔改兩行就能平行跑
+# 刪掉一行設定，測試檔改回平行跑
 
 ```js
 // vitest.config.js
 export default {
   test: {
-    pool: 'threads',
-    fileParallelism: true,
+    // 以前為了共用資料庫關掉平行，這行刪掉
+    // fileParallelism: false,
   },
 };
 ```
 
-- 每個測試檔分到不同執行緒
+- Vitest 預設就把測試檔分給多個 worker 同時跑
 - 共用資料庫的測試要先改成各自建資料
 
 ---
@@ -244,8 +244,8 @@ export default {
 <div class="column">
 <div class="term" style="background:#1e1e1e;border-left:none;padding:0;margin:0;font-size:inherit;color:#d4d4d4;">
 <div class="bar"><i></i><i></i><i></i> 終端機</div>
-<pre>$ <span class="c">npx vitest --changed</span>
-<span class="ok">✓ 86 passed (1m 52s)</span>
+<pre>$ <span class="c">npx vitest run --changed</span>
+<span class="ok">Tests  86 passed (86)</span>
 <span class="dim">其餘測試檔沒有執行</span> <span class="mark">只跑改到的部分</span></pre>
 </div>
 </div>
