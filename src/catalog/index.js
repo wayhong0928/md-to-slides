@@ -216,6 +216,7 @@ module.exports = {
   REQUIRED_FIELDS,
   loadCatalog,
   parseEntry,
+  extractSection,
   parseUtilities,
   classesUsedIn,
   definedClasses,

@@ -18,6 +18,8 @@
     "test": "node scripts/run-tests.js",
     "themes": "node scripts/build-themes.js",
     "catalog": "node scripts/validate-catalog.js",
+    "scenarios": "node scripts/validate-scenarios.js",
+    "starter": "node scripts/build-starter.js",
     "showcase": "node scripts/build-showcase.js",
     "contrast": "node scripts/check-contrast.js",
     "thumbnails": "node scripts/build-thumbnails.js",
