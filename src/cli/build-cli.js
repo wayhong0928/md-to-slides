@@ -2,12 +2,19 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
 const { preprocessMermaid } = require('../steps/preprocess-mermaid');
-const { renderHtml } = require('../steps/render-html');
+const { renderHtml, runMarp, themeSetArgs } = require('../steps/render-html');
 
-function getNpxCommand() {
-  return 'npx';
+// 套件自帶的主題（classic 等），每次 build 都會加進 --theme-set。
+// 逐檔傳入 themes/*.css 而不是整個資料夾：Marp 會遞迴掃資料夾，掃到 themes/src/_base.css 會警告。
+const BUILTIN_THEMES_DIR = path.resolve(__dirname, '..', '..', 'themes');
+
+function getBuiltinThemeFiles() {
+  return fs
+    .readdirSync(BUILTIN_THEMES_DIR)
+    .filter((file) => file.endsWith('.css'))
+    .sort()
+    .map((file) => path.join(BUILTIN_THEMES_DIR, file));
 }
 
 function maybeBreakpoint(label) {
@@ -18,7 +25,7 @@ function maybeBreakpoint(label) {
 }
 
 function parseArgs(argv) {
-  const args = { input: null, out: 'output', stem: null, formats: ['html', 'pdf', 'pptx'] };
+  const args = { input: null, out: 'output', stem: null, formats: ['html', 'pdf', 'pptx'], themeSets: [] };
   const positional = [];
 
   for (let i = 0; i < argv.length; i++) {
@@ -31,6 +38,8 @@ function parseArgs(argv) {
       args.stem = argv[++i];
     } else if (a === '--format' && argv[i + 1]) {
       args.formats = argv[++i].split(',').map((f) => f.trim().toLowerCase());
+    } else if (a === '--theme-set' && argv[i + 1]) {
+      args.themeSets.push(argv[++i]);
     } else if (!a.startsWith('-')) {
       positional.push(a);
     }
@@ -51,6 +60,7 @@ Options:
   --out,  -o <dir>       輸出目錄（預設 output）
   --stem, -s <name>      輸出檔名主幹（預設取自輸入檔名）
   --format   <formats>   輸出格式，逗號分隔：html,pdf,pptx（預設全部）
+  --theme-set <path>     額外的主題 CSS 檔或資料夾，可重複（內建 classic 一律可用）
   --help, -h             顯示說明
 
 範例：
@@ -58,16 +68,17 @@ Options:
   node build.js data/slides.md --out output/slides
   node build.js data/note.md --format html
   node build.js data/report.md -s report -o output/report
+  node build.js data/slides.md --theme-set my-themes
 `.trim());
 }
 
-function run(command, args, label) {
+// 失敗時用 throw 而不是 process.exit：main 的 finally 才有機會刪掉暫存檔。
+function run(marpArgs, label) {
   console.log(`\n▶ ${label}`);
-  const result = spawnSync(command, args, { stdio: 'inherit', shell: process.platform === 'win32' });
+  const result = runMarp(marpArgs);
   if (result.error || result.status !== 0) {
     if (result.error) console.error(`❌ 執行失敗：${result.error.message}`);
-    console.error(`❌ 失敗：${label}`);
-    process.exit(1);
+    throw new Error(`失敗：${label}`);
   }
 }
 
@@ -105,9 +116,20 @@ function main(argv) {
     process.exit(1);
   }
 
+  const userThemeSets = args.themeSets.map((p) => path.resolve(p));
+  const missingTheme = userThemeSets.find((p) => !fs.existsSync(p));
+  if (missingTheme) {
+    console.error(`❌ 找不到 --theme-set 指定的路徑：${missingTheme}`);
+    process.exit(1);
+  }
+  const themeSets = [...getBuiltinThemeFiles(), ...userThemeSets];
+
   const stem = args.stem || path.basename(args.input, path.extname(args.input));
   const outputDir = args.out;
-  const tempMd = path.join(outputDir, '._temp_render.md');
+  // 暫存檔放在輸入檔旁邊：相對路徑的圖片、內嵌 HTML 才找得到；檔名帶 pid，並行 build 不會互相覆蓋。
+  const inputDir = path.dirname(path.resolve(args.input));
+  const tempName = `.md-to-slides-${stem.replace(/[\\/:*?"<>|]/g, '_')}-${process.pid}.md`;
+  const tempMd = path.join(inputDir, tempName);
   const diagramsDir = path.join(outputDir, 'assets', 'diagrams');
 
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
@@ -119,51 +141,63 @@ function main(argv) {
   console.log(`📤 輸出：${outputDir}/${stem}.*`);
   console.log(`🖨  格式：${args.formats.join(', ')}`);
 
-  maybeBreakpoint('build-cli:before-preprocess');
+  const cleanup = () => fs.rmSync(tempMd, { force: true });
+  const onSigint = () => {
+    cleanup();
+    process.exit(130);
+  };
+  process.once('SIGINT', onSigint);
 
-  console.log('\n▶ Mermaid 前處理');
+  let failed = false;
   try {
-    preprocessMermaid({
-      input: args.input,
-      output: tempMd,
-      diagramsDir,
-      imagePathPrefix: './assets/diagrams',
-    });
-  } catch (err) {
-    console.error(`❌ Mermaid 前處理失敗：${err.message}`);
-    process.exit(1);
-  }
+    maybeBreakpoint('build-cli:before-preprocess');
 
-  if (args.formats.includes('html')) {
-    maybeBreakpoint('build-cli:before-html');
-    console.log(`\n▶ HTML → ${outputDir}/${stem}.html`);
+    console.log('\n▶ Mermaid 前處理');
     try {
-      renderHtml({ inputFile: tempMd, outputDir, stem });
+      preprocessMermaid({
+        input: args.input,
+        output: tempMd,
+        diagramsDir,
+      });
     } catch (err) {
-      console.error(`❌ HTML 渲染失敗：${err.message}`);
-      process.exit(1);
+      throw new Error(`Mermaid 前處理失敗：${err.message}`);
     }
+
+    if (args.formats.includes('html')) {
+      maybeBreakpoint('build-cli:before-html');
+      console.log(`\n▶ HTML → ${outputDir}/${stem}.html`);
+      try {
+        renderHtml({ inputFile: tempMd, outputDir, stem, themeSets });
+      } catch (err) {
+        throw new Error(`HTML 渲染失敗：${err.message}`);
+      }
+    }
+
+    for (const format of ['pdf', 'pptx']) {
+      if (!args.formats.includes(format)) continue;
+      maybeBreakpoint(`build-cli:before-${format}`);
+      run(
+        [
+          tempMd,
+          '-o',
+          `${outputDir}/${stem}.${format}`,
+          ...themeSetArgs(themeSets),
+          '--allow-local-files',
+          '--html',
+          '--no-stdin',
+        ],
+        `${format.toUpperCase().padEnd(4)} → ${outputDir}/${stem}.${format}`
+      );
+    }
+  } catch (err) {
+    console.error(`❌ ${err.message}`);
+    failed = true;
+  } finally {
+    cleanup();
+    process.removeListener('SIGINT', onSigint);
   }
 
-  if (args.formats.includes('pdf')) {
-    maybeBreakpoint('build-cli:before-pdf');
-    run(
-      getNpxCommand(),
-      ['marp', tempMd, '-o', `${outputDir}/${stem}.pdf`, '--allow-local-files', '--html', '--no-stdin'],
-      `PDF  → ${outputDir}/${stem}.pdf`
-    );
-  }
-
-  if (args.formats.includes('pptx')) {
-    maybeBreakpoint('build-cli:before-pptx');
-    run(
-      getNpxCommand(),
-      ['marp', tempMd, '-o', `${outputDir}/${stem}.pptx`, '--allow-local-files', '--html', '--no-stdin'],
-      `PPTX → ${outputDir}/${stem}.pptx`
-    );
-  }
-
-  if (fs.existsSync(tempMd)) fs.unlinkSync(tempMd);
+  if (failed) process.exit(1);
 
   console.log('\n╔═══════════════════════════════════════════╗');
   console.log(`║  ✅ 完成！輸出位置：${outputDir}/`);
@@ -171,6 +205,8 @@ function main(argv) {
 }
 
 module.exports = {
+  BUILTIN_THEMES_DIR,
+  getBuiltinThemeFiles,
   parseArgs,
   validateFormats,
   main,

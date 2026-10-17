@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.0)
+# 專案架構說明 (v2.1)
 
 ## 目錄結構
 
@@ -6,12 +6,22 @@
 md-to-slides/
 ├── src/                      # 核心模組（生產程式碼）
 │   ├── cli/
-│   │   └── build-cli.js      # CLI 入口 - 參數解析 + 建置流程編排
-│   ├── steps/
-│   │   ├── preprocess-mermaid.js    # 前置處理：Mermaid block → PNG
-│   │   └── render-html.js           # HTML 渲染：Markdown → HTML + CSS 注入
-│   └── utils/
-│       └── helpers.js               # 共用工具函式
+│   │   ├── build-cli.js      # CLI 入口 - 參數解析 + 建置流程編排
+│   │   └── check-cli.js      # check 指令入口
+│   ├── check/
+│   │   ├── index.js                 # checkFile、splitSlides
+│   │   └── rules/                   # R1–R5，每條規則一個檔案
+│   └── steps/
+│       ├── preprocess-mermaid.js    # 前置處理：Mermaid block → PNG
+│       └── render-html.js           # 本機圖片複製與改寫、Marp 呼叫、HTML 輸出
+│
+├── themes/
+│   ├── src/                  # _base.css（版型與元件）、classic.css（token）
+│   └── classic.css           # scripts/build-themes.js 產生的單檔主題
+│
+├── scripts/
+│   ├── build-themes.js       # 合併主題；--check 比對產物是不是最新
+│   └── run-tests.js
 │
 ├── tests/                    # 測試套件
 │   ├── build-cli.test.js            # CLI 參數解析單元測試
@@ -41,14 +51,14 @@ md-to-slides/
 ├── package.json             # 依賴定義 + npm scripts
 ├── package-lock.json        # 依賴鎖定檔
 ├── .gitignore               # Git 忽略清單
-├|| CHANGELOG.md             # 版本歷史 (維護者指南)
+├── CHANGELOG.md             # 版本歷史 (維護者指南)
 ├── RELEASE.md               # 發布指南 (維護者指南)
 └── README.md                # 主入口文件
 ```
 
 ---
 
-## 建置流程 (v2.0)
+## 建置流程 (v2.1)
 
 ### 單檔轉檔流程
 
@@ -57,33 +67,50 @@ md-to-slides/
          │
          ▼
 [src/cli/build-cli.js]  ← 統一入口
-    ├─ 解析 --out / --stem / --format 參數
+    ├─ 解析 --out / --stem / --format / --theme-set 參數
     ├─ 驗證輸入檔案與格式
-    └─ 調度 preprocess-mermaid.js 與轉檔工具
+    ├─ 組出 --theme-set：themes/*.css（內建）＋使用者指定的路徑
+    └─ 調度 preprocess-mermaid.js 與轉檔工具；結束時（成功或失敗）刪除暫存檔
          │
          ▼
 [src/steps/preprocess-mermaid.js]
     ├─ extractMermaidBlocks()  ← 掃描 ```mermaid 區塊
     ├─ renderDiagram()         ← mmdc (Mermaid CLI) 轉 PNG
-    ├─ replaceMermaidBlocksWithImages()  ← 替換為 ![image](path)
-  └─ 輸出：output/.work/_temp_render.md + output/assets/diagrams/*.png
+    ├─ replaceMermaidBlocksWithImages()  ← 替換為 ![image](path)，路徑相對於暫存檔所在資料夾
+    └─ 輸出：<輸入檔資料夾>/.md-to-slides-<stem>-<pid>.md + <out>/assets/diagrams/*.png
          │
          ▼
-output/.work/_temp_render.md
+<輸入檔資料夾>/.md-to-slides-<stem>-<pid>.md
     │
-    ├─→ [marp-cli] ──────────────→ output/report.pdf    (PDF 簡報)
-    ├─→ [marp-cli] ──────────────→ output/report.pptx   (PPTX 簡報)
+    ├─→ [marp-cli --theme-set] ──→ <out>/report.pdf    (PDF 簡報)
+    ├─→ [marp-cli --theme-set] ──→ <out>/report.pptx   (PPTX 簡報)
     │
     └─→ [src/steps/render-html.js]
-         ├─ extractCustomStyles()     ← 萃取 YAML front matter 樣式
-          ├─ Marp CLI                  ← 轉換 Markdown → HTML
-         ├─ 注入自訂 CSS
+         ├─ rewriteLocalImages()      ← 本機圖片複製到 <out>/assets/images/ 並改寫路徑
+         ├─ Marp CLI --theme-set      ← 轉換 Markdown → HTML
          └─ 複製 assets/ 目錄
             │
             ▼
-            output/report.html (靜態 HTML 網頁)
+            <out>/report.html (靜態 HTML 網頁)
 
-清除 output/.work ✓
+刪除暫存檔 ✓
+````
+
+暫存檔放在輸入檔旁邊，是為了讓 PDF、PPTX 裡的相對路徑圖片和內嵌 HTML 解析得到；檔名帶 pid，同時 build 不會互相覆蓋。
+
+### check 流程
+
+````
+<input.md>
+    │
+    ▼
+[src/cli/check-cli.js] → [src/check/index.js] checkFile()
+    ├─ parseDocument()      ← 切頁、標出程式碼區塊／HTML 註解／frontmatter
+    ├─ R2 黏頁、R3 破圖、R4 未定義 class、R5 未填佔位   （純文字，不需要瀏覽器）
+    └─ R1 超框              ← Marp 輸出 HTML（暫存在輸入檔旁邊），puppeteer-core 量每頁
+    │
+    ▼
+findings（頁碼、行號、規則、等級、說明）＋ skipped（沒檢查的規則與原因）
 ````
 
 ---
@@ -128,20 +155,21 @@ preprocessMermaid(options); // 主導出函式
 
 ### src/steps/render-html.js
 
-**職責**：Markdown → HTML，含 CSS 注入
+**職責**：Markdown → HTML，含本機圖片處理
 
 ```javascript
 // 關鍵函式
-extractCustomStyles(content); // 從 YAML front matter 萃取 <style>
+rewriteLocalImages(content, options); // 複製本機圖片並改寫路徑
+runMarp(args); // 用 node 直接執行 marp-cli（不經 shell）
+themeSetArgs(themeSets); // 組出 --theme-set 參數
 renderHtml(options); // 主要 HTML 渲染邏輯
 ```
 
 **流程**：
 
-1. 清洗 YAML front matter（移除 Marp 專屬語法）
-2. 呼叫 Marp CLI 轉換 Markdown → HTML
-3. 提取自訂 CSS 並注入 `<head>`
-4. 複製 `assets/` 目錄至輸出位置
+1. 把 Markdown 圖片和 `<img src>` 指到的本機圖片複製到 `<out>/assets/images/`，改寫路徑（遠端網址、data URI、找不到的檔案不動）
+2. 呼叫 Marp CLI 轉換 Markdown → HTML（帶 `--theme-set`）
+3. 複製 `assets/` 目錄至輸出位置
 
 ---
 
@@ -155,6 +183,13 @@ renderHtml(options); // 主要 HTML 渲染邏輯
 | preprocess-mermaid.test.js | 單元 | 提取/替換 Mermaid 區塊     | —                     |
 | integration.test.js        | 整合 | 完整 PDF/HTML 流程         | 🗂️ output/            |
 | smoke-html-build.test.js   | 煙霧 | HTML 建置驗證              | 🗂️ output/test-smoke/ |
+| themes.test.js             | 單元 | 主題產生與 `--check`       | —                     |
+| theme-set.test.js          | 整合 | `--theme-set`、三種格式    | 暫存資料夾            |
+| temp-file.test.js          | 整合 | 暫存檔位置、並行、失敗清理 | 暫存資料夾            |
+| relative-image.test.js     | 整合 | 本機圖片、PDF/PPTX 找得到圖 | 暫存資料夾            |
+| legacy-compat.test.js      | 整合 | 舊稿輸出與 2.0 基準一致    | 暫存資料夾            |
+| check.test.js              | 單元 | splitSlides、R2–R5         | —                     |
+| check-cli.test.js          | 整合 | `check` 指令、R1、exit code | —                     |
 
 ### 執行方式
 
@@ -172,6 +207,8 @@ ls -la output/
 - `one-mermaid.md`：單一 Mermaid 區塊
 - `duplicate-mermaid-blocks.md`：多個 Mermaid 區塊（測試順序正確性）
 - `invalid-mermaid.md`：不合法 Mermaid 語法（測試錯誤處理）
+- `theme-classic.md`、`legacy-inline-style.md`、`relative-image/`、`check-bad.md`、`check-good.md`：主題、舊稿相容、相對路徑圖片、check 的測試資料（內容都是虛構的）
+- `baseline/legacy-inline-style.html`：2.0 對 `legacy-inline-style.md` 的輸出，舊稿相容測試拿它比對；Marp 升級後輸出變動時需要重新產生
 
 ---
 
@@ -186,6 +223,8 @@ ls -la output/
 | `npm run build:all`    | 轉檔 content.md 到三種格式               |
 | `npm run build:sample` | 快速預覽 content.example.md              |
 | `npm test`             | 執行所有測試                             |
+| `npm run themes`       | 合併 themes/src/ 產生 themes/<name>.css；加 `-- --check` 只比對 |
+| `npm run check`        | 匯出前檢查 R1–R5（`-- <檔案>`）          |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |
 | `npm run audit:prod`   | 正式環境依賴檢查                         |

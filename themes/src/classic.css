@@ -1,0 +1,14 @@
+/* classic 主題的 token。版型與 class 在 _base.css，用 npm run themes 合併成 themes/classic.css。 */
+section {
+  --theme-font: 'Helvetica Neue', '微軟正黑體', sans-serif;
+  --theme-font-size: 26px;
+  --theme-radius: 8px;
+  --theme-bg: #f5f6f8;
+  --theme-text: #1a252f;
+  --theme-heading: #2c3e50;
+  --theme-primary: #2980b9;
+  --theme-green: #27ae60;
+  --theme-red: #e74c3c;
+  --theme-orange: #e67e22;
+  --theme-purple: #8e44ad;
+}

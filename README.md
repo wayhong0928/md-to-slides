@@ -17,6 +17,9 @@
 | **指定任意檔案路徑轉檔**                  | ❌  |     ✅     |
 | **Mermaid 圖表渲染**                      | ❌  |     ✅     |
 | CJK 中文字型支援                          | ✅  |     ✅     |
+| **`classic` 內建主題、`--theme-set` 自訂主題** | ❌  |     ✅     |
+| **相對路徑圖片（HTML、PDF、PPTX）**       | ❌  |     ✅     |
+| **`check` 匯出前版面檢查（R1–R5）**       | ❌  |     ✅     |
 
 ---
 
@@ -74,6 +77,7 @@ npm install
 | ------------------------- | ------- | --------------------- |
 | `@marp-team/marp-cli`     | ^4.2.3  | Markdown → PDF / PPTX |
 | `@mermaid-js/mermaid-cli` | ^10.9.1 | Mermaid 圖表 → PNG    |
+| `puppeteer-core`          | ^24.40.0 | `check` 的 R1 超框量測 |
 
 ---
 
@@ -107,6 +111,7 @@ npm run clean
 | `--out, -o <dir>`   | 輸出目錄                              | `output`        |
 | `--stem, -s <name>` | 輸出檔名主幹                          | 取自輸入檔名    |
 | `--format <list>`   | 輸出格式（逗號分隔：`html,pdf,pptx`） | `html,pdf,pptx` |
+| `--theme-set <path>` | 額外的主題 CSS 檔或資料夾，可重複（內建 `classic` 一律可用） | —               |
 | `--help, -h`        | 顯示說明                              | —               |
 
 ### npm scripts 捷徑
@@ -122,38 +127,95 @@ npm run build:html -- data/note.md
 # 執行測試
 npm test
 
+# 重新產生主題 / 檢查主題產物是不是最新
+npm run themes
+npm run themes -- --check
+
+# 匯出前檢查
+npm run check -- data/slides.md
+
 # 僅檢查正式環境依賴安全
 npm run audit:prod
 ```
 
-### 建置流程（v2.0）
+### 建置流程（v2.1）
 
 ````text
 <input.md>  (例：data/slides.md)
     │
     ▼
-[src/cli/build-cli.js]  ← 統一入口 (解析參數、驗證)
+[src/cli/build-cli.js]  ← 統一入口 (解析參數、驗證、組出 --theme-set)
     │
     ▼
 [src/steps/preprocess-mermaid.js]  ← Mermaid block → PNG
     ├─ 掃描 ```mermaid 區塊
-    ├─ 呼叫 mmdc 渲染為 PNG → assets/diagrams/
-    └─ 輸出 ._temp_render.md（已替換為圖片路徑）
+    ├─ 呼叫 mmdc 渲染為 PNG → <out>/assets/diagrams/
+    └─ 輸出 <輸入檔資料夾>/.md-to-slides-<stem>-<pid>.md（已替換為圖片路徑）
     │
     ▼
-._temp_render.md
+.md-to-slides-<stem>-<pid>.md  （在輸入檔旁邊，相對路徑的圖片找得到）
     │
-    ├─ [src/steps/render-html.js] ─────► output/<stem>.html
-    │      ├─ 由 Marp 直接輸出 slide deck HTML
-    │      ├─ 套用 YAML front matter 的樣式設定
+    ├─ [src/steps/render-html.js] ─────► <out>/<stem>.html
+    │      ├─ 把本機圖片複製到 <out>/assets/images/ 並改寫路徑
+    │      ├─ 由 Marp 輸出 slide deck HTML（帶 --theme-set）
     │      └─ 複製 assets/ 至輸出目錄
     │
-    ├─ [marp CLI] ────────────────────► output/<stem>.pdf
-    └─ [marp CLI] ────────────────────► output/<stem>.pptx
+    ├─ [marp CLI] ────────────────────► <out>/<stem>.pdf   （帶 --theme-set）
+    └─ [marp CLI] ────────────────────► <out>/<stem>.pptx  （帶 --theme-set）
     │
     ▼
-清除 ._temp_render.md ✓
+不論成功或失敗，都刪除暫存檔 ✓
 ````
+
+### 主題（classic）
+
+內建 `classic` 主題，卡片、統計數字、提示框、流程圖等元件都已經寫好，frontmatter 只要一行：
+
+```markdown
+---
+marp: true
+theme: classic
+---
+```
+
+- 不寫 `theme:` 的簡報照 Marp 預設處理，不會套 `classic`。
+- 顏色、字型、字級、圓角是 CSS 變數（`--theme-primary`、`--theme-font` 等），要換配色可以在 frontmatter 的 `style:` 覆寫，或用 `--theme-set` 加自己的主題。
+- `themes/classic.css` 由 `themes/src/` 合併產生，改了 `themes/src/` 之後執行 `npm run themes`；`npm run themes -- --check` 只比對產物是不是最新。
+
+#### 在 VS Code 預覽（Marp for VS Code）
+
+在 `.vscode/settings.json` 加上：
+
+```json
+{
+  "markdown.marp.themes": [
+    "https://cdn.jsdelivr.net/gh/wayhong0928/md-to-slides@v2.1.0/themes/classic.css"
+  ],
+  "markdown.marp.html": "all"
+}
+```
+
+`markdown.marp.themes` 也可以填工作區裡的相對路徑，例如 `themes/classic.css`。`markdown.marp.html` 設成 `all` 才會渲染簡報裡的內嵌 HTML（卡片、流程圖都是 HTML），請只對自己信任的檔案這樣設。
+
+### 匯出前檢查（check）
+
+```bash
+npm run check -- data/slides.md
+npm run check -- data/slides.md --json
+```
+
+| 規則 | 檢查什麼 | 等級 |
+| ---- | -------- | ---- |
+| R1 超框 | 用 Marp 產生 HTML，在瀏覽器裡量每一頁，內容元素超出投影片範圍 | error |
+| R2 黏頁 | 以 `<` 開頭的 HTML 行，下一行直接接 `---`（Markdown 會把 `---` 吃掉，兩頁黏成一頁） | error |
+| R3 破圖 | Markdown 圖片、`<img src>`、CSS `url()` 指到的本機檔案找不到 | 前兩種 error，CSS `url()` 是 warning |
+| R4 未定義 class | `class="…"`、`<!-- _class: … -->` 用到的 class，在主題 CSS 和 frontmatter `style:` 裡都沒有 | warning |
+| R5 未填佔位 | 程式碼區塊和 HTML 註解以外出現 `【…】` | warning（`--strict` 變 error） |
+
+- 每一條發現都印出頁碼、行號、規則和說明；有 error 時 exit code 是 1，用法錯誤是 2。
+- `--strict` 讓 R5 變 error，`--no-browser` 跳過 R1，`--theme-set <路徑>` 指定額外的主題。
+- R1 需要瀏覽器，依序找環境變數 `CHROME_PATH`、系統上的 Chrome 或 Edge，不會另外下載。找不到時會印出「R1 沒有檢查」，這不等於通過。
+- 想檢查的簡報放在可寫入的資料夾：R1 會在輸入檔旁邊產生一個暫存 HTML，量完就刪。
 
 ---
 
@@ -163,10 +225,20 @@ npm run audit:prod
 md-to-slides/
 ├── src/
 │   ├── cli/
-│   │   └── build-cli.js           # 統一 CLI 入口 (v2.0)
+│   │   ├── build-cli.js           # 統一 CLI 入口
+│   │   └── check-cli.js           # check 指令入口
+│   ├── check/                     # R1–R5 檢查規則
 │   └── steps/
 │       ├── preprocess-mermaid.js  # Mermaid block → PNG
-│       └── render-html.js         # HTML 渲染 + CSS 注入
+│       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
+│
+├── themes/
+│   ├── src/                       # _base.css（版型）、classic.css（token）
+│   └── classic.css                # 產生的單檔主題（進版控）
+│
+├── scripts/
+│   ├── build-themes.js            # 合併主題
+│   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件
 │   ├── *.test.js
@@ -183,7 +255,7 @@ md-to-slides/
 │   └── diagrams/           # Mermaid 渲染 PNG（build artifact）
 │
 ├── .github/workflows/
-│   └── ci.yml              # GitHub Actions CI（Node 18 gate + Node 20 compatibility）
+│   └── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）
 │
 ├── package.json
 ├── .gitignore
@@ -219,6 +291,9 @@ sudo apt-get install -y libnss3 libatk-bridge2.0-0 libcups2 libxcomposite1 libxd
 export PUPPETEER_ARGS='--no-sandbox --disable-setuid-sandbox'
 ```
 
+### 輸入資料夾不能寫入
+build 會在輸入檔旁邊放暫存檔 `.md-to-slides-<stem>-<pid>.md`（結束時刪除），`check` 的 R1 也會放一個暫存 HTML。唯讀資料夾請先複製到可寫入的位置再執行。萬一程式被強制中斷留下殘檔，檔名都以 `.md-to-slides-` 開頭，可以直接刪掉。
+
 ### Mermaid 圖表渲染失敗但流程繼續
 
 `preprocess-mermaid.js` 採「失敗不中斷」策略：渲染失敗的圖表會保留原始 code block，其餘正常繼續。請查看 terminal 的 ❌ 訊息修正語法後重新執行。
@@ -234,7 +309,8 @@ nvm install 18 && nvm use 18
 ## Roadmap
 
 - **v1**：Markdown → HTML / PDF / PPTX，固定讀取 `content.md`
-- **v2**（當前）：任意路徑輸入、Mermaid 圖表渲染、單一 data/ 資料區
+- **v2**：任意路徑輸入、Mermaid 圖表渲染、單一 data/ 資料區
+- **v2.1**（當前）：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
 
 ---
 

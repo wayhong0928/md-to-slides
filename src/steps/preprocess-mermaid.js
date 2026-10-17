@@ -145,12 +145,21 @@ function replaceMermaidBlocksWithImages(content, imagePaths) {
   return result;
 }
 
+// 圖片路徑要讓「輸出的 Markdown」（暫存檔）找得到圖，所以取相對於暫存檔所在資料夾的路徑。
+// build-cli 把暫存檔放在輸入檔旁邊，圖放在 <out>/assets/diagrams/，兩者通常不在同一層。
+function defaultImagePathPrefix(output, diagramsDir) {
+  const relative = path.relative(path.dirname(path.resolve(output)), path.resolve(diagramsDir));
+  const normalized = relative.split(path.sep).join('/');
+  if (path.isAbsolute(relative)) return normalized; // 不同磁碟機，只能用絕對路徑
+  return normalized.startsWith('..') ? normalized : `./${normalized}`;
+}
+
 function preprocessMermaid(options) {
   const {
     input,
     output,
     diagramsDir = path.join('assets', 'diagrams'),
-    imagePathPrefix = './assets/diagrams',
+    imagePathPrefix = defaultImagePathPrefix(output, diagramsDir),
     imageFormat = 'png',
     imageWidth = 1600,
     bgColor = 'white',
@@ -228,6 +237,7 @@ function main(argv) {
 }
 
 module.exports = {
+  defaultImagePathPrefix,
   ensureDir,
   removeDir,
   extractMermaidBlocks,

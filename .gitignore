@@ -29,6 +29,7 @@ build/Release
 # Temp files
 content-processed.md
 ._temp_render.md
+.md-to-slides-*
 
 # Coverage
 coverage/
