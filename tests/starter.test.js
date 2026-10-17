@@ -19,12 +19,13 @@ test.after(() => fs.rmSync(outDir, { recursive: true, force: true }));
 
 const read = (dir, name) => fs.readFileSync(path.join(dir, name), 'utf-8');
 
-test('產生 6 個組合，每份都有起手包的 7 種檔案與 zip', () => {
+test('產生 6 個組合，每份都有起手包的 8 種檔案與 zip', () => {
   assert.equal(built.length, 6);
   for (const b of built) {
-    for (const name of ['slides.md', 'example.md', 'AGENTS.md', 'prompts.md', '.github/copilot-instructions.md', '.vscode/settings.json']) {
+    for (const name of ['slides.md', 'example.md', 'AGENTS.md', 'CLAUDE.md', 'prompts.md', '.github/copilot-instructions.md', '.vscode/settings.json']) {
       assert.equal(fs.existsSync(path.join(b.dir, name)), true, `${b.name} 缺少 ${name}`);
     }
+    assert.match(read(b.dir, 'CLAUDE.md'), /^@AGENTS\.md$/m);
     assert.equal(fs.readdirSync(path.join(b.dir, 'themes')).length, listThemes().length);
     assert.equal(fs.existsSync(b.zip), true);
   }

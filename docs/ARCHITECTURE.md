@@ -170,7 +170,7 @@ R4 判斷 class 有沒有定義時分兩種主題。內建主題（repo 的 `the
 
 `npm run scenarios`（`scripts/validate-scenarios.js`）逐檔檢查：欄位齊全、id 是 kebab-case 且等於檔名、主題的 CSS 存在、`sections` 的版型都在目錄裡、兩段的頁數都等於 `slides` 加總、兩段用到的 class 都屬於列出的版型或工具 class、填空版至少有一個佔位而且全部是 `【填：…】`、範例版沒有 `【`。
 
-`src/starter/index.js` 把一個場合和一個主題組成起手包。`slides.md`、`example.md` 是填空版、範例版前面加上 `marp: true`、`theme:`、`paginate: true` 的 frontmatter；`AGENTS.md` 與 `.github/copilot-instructions.md` 都由 `starter/rules.md` 產生，`{{THEMES}}`、`{{LAYOUTS}}` 換成主題清單與目錄的版型表，兩檔逐位元相同；`.vscode/settings.json` 用相對路徑列出 8 個主題並設 `markdown.marp.html: "all"`。範本讀進來時一律把 CRLF 轉成 LF。產生資料夾時只覆寫起手包自己的檔案，不清空資料夾。zip 用 `zlib.deflateRawSync` 加自己算的 CRC32，時間戳固定，同樣的內容每次產生的 zip 逐位元相同。CI 的 Ubuntu 工作會產生 6 份 zip 並用 `unzip -t` 檢查。
+`src/starter/index.js` 把一個場合和一個主題組成起手包。`slides.md`、`example.md` 是填空版、範例版前面加上 `marp: true`、`theme:`、`paginate: true` 的 frontmatter；`AGENTS.md` 與 `.github/copilot-instructions.md` 都由 `starter/rules.md` 產生，`{{THEMES}}`、`{{LAYOUTS}}` 換成主題清單與目錄的版型表，兩檔逐位元相同；`CLAUDE.md` 只有標題、一句說明和 `@AGENTS.md`，給在家目錄底下不會直接讀 `AGENTS.md` 的 Claude Code（Windows、v2.1.302 實測）；`.vscode/settings.json` 用相對路徑列出 8 個主題並設 `markdown.marp.html: "all"`。範本讀進來時一律把 CRLF 轉成 LF。產生資料夾時只覆寫起手包自己的檔案，不清空資料夾。zip 用 `zlib.deflateRawSync` 加自己算的 CRC32，時間戳固定，同樣的內容每次產生的 zip 逐位元相同。CI 的 Ubuntu 工作會產生 6 份 zip 並用 `unzip -t` 檢查。
 
 ---
 

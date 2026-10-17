@@ -56,6 +56,8 @@ function renderRules({ catalog = loadCatalog(), themes = listThemes() } = {}) {
   return template.replace('{{LAYOUTS}}', renderLayouts(catalog)).replace('{{THEMES}}', renderThemes(themes));
 }
 
+const CLAUDE_MD = '# Claude Code 專案指示\n\n規則寫在 AGENTS.md，跟 .github/copilot-instructions.md 是同一份，這裡用匯入的方式讀進來。\n\n@AGENTS.md\n';
+
 const frontmatter = (theme) => `---\nmarp: true\ntheme: ${theme}\npaginate: true\n---\n\n`;
 
 // 回傳 [{ name, data }]，name 是相對於起手包資料夾的路徑（用 / 分隔），依名稱排序
@@ -71,6 +73,9 @@ function starterFiles(scenario, theme, { catalog = loadCatalog(), themesDir = TH
     { name: 'slides.md', data: frontmatter(theme) + scenario.blank.trimEnd() + '\n' },
     { name: 'example.md', data: frontmatter(theme) + scenario.example.trimEnd() + '\n' },
     { name: 'AGENTS.md', data: rules },
+    // Claude Code 在家目錄底下（例如下載資料夾）會因為 ~/.claude/CLAUDE.md 而不讀 AGENTS.md（2.1.302 實測），
+    // 所以另外放一份只匯入 AGENTS.md 的 CLAUDE.md。官方文件說保留匯入不會讓 AGENTS.md 讀兩次。
+    { name: 'CLAUDE.md', data: CLAUDE_MD },
     { name: '.github/copilot-instructions.md', data: rules },
     { name: 'prompts.md', data: readTemplate('prompts.md') },
     { name: '.vscode/settings.json', data: JSON.stringify(settings, null, 2) + '\n' },

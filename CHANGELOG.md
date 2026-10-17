@@ -3,8 +3,8 @@
 ## [2.4.0] - 2026-10-17
 
 ### 新增
-- 填空範本起手包：`npm run starter` 產生 5 個場合（論文口試、課堂報告、工作坊、商業提案、技術分享）與推薦主題的 6 個組合，輸出到 `output/starters/`，加 `--zip` 另外打包。每份有 `slides.md`（要填的範本）、`example.md`（填好虛構內容的樣子）、`prompts.md`（六段 prompt）、`AGENTS.md`、`.github/copilot-instructions.md`、`.vscode/settings.json` 和 8 個主題的 CSS
-- `AGENTS.md` 與 `.github/copilot-instructions.md` 由 `starter/rules.md` 產生，兩檔逐位元相同，版型清單從 `catalog/` 填入
+- 填空範本起手包：`npm run starter` 產生 5 個場合（論文口試、課堂報告、工作坊、商業提案、技術分享）與推薦主題的 6 個組合，輸出到 `output/starters/`，加 `--zip` 另外打包。每份有 `slides.md`（要填的範本）、`example.md`（填好虛構內容的樣子）、`prompts.md`（六段 prompt）、`AGENTS.md`、`.github/copilot-instructions.md`、`CLAUDE.md`、`.vscode/settings.json` 和 8 個主題的 CSS
+- `AGENTS.md` 與 `.github/copilot-instructions.md` 由 `starter/rules.md` 產生，兩檔逐位元相同，版型清單從 `catalog/` 填入。`CLAUDE.md` 只用 `@AGENTS.md` 匯入同一份規則，因為 Windows 上的 Claude Code v2.1.302 在家目錄底下沒有直接讀 `AGENTS.md`
 - 場合範本 `scenarios/<id>.md`，每個有填空版與範例版。`npm run scenarios` 檢查版型 id、主題、頁數、class 和佔位格式，有問題 exit 1 並指出檔案
 - zip 不加依賴，用 Node 內建的 zlib 寫，同樣的內容每次產生的 zip 逐位元相同
 - CI 的 Ubuntu 工作多一步，產生 6 份起手包 zip 並用 `unzip -t` 檢查
