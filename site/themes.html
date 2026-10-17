@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>主題 · md-to-slides 樣式畫廊</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" id="theme-css">
+</head>
+<body data-page="themes">
+  <header class="g-header">
+    <a class="g-brand" href="index.html">md-to-slides 樣式畫廊</a>
+    <nav aria-label="網站頁面">
+      <a href="index.html">場合範本</a>
+      <a href="layouts.html">版型</a>
+      <a href="themes.html" aria-current="page">主題</a>
+    </nav>
+  </header>
+  <main>
+    <h1>主題</h1>
+    <p class="g-lead">已經有自己的簡報、只想換外觀，就挑一個主題，把下面的設定貼進 VS Code。</p>
+    <div class="g-controls">
+      <label>主題
+        <select id="theme"></select>
+      </label>
+    </div>
+    <p id="note" class="g-muted"></p>
+    <p id="error" class="g-error" role="alert" hidden></p>
+
+    <h2>VS Code 設定</h2>
+    <p class="g-muted">貼進專案的 <code>.vscode/settings.json</code>，再把投影片開頭 frontmatter 的 <code>theme:</code> 改成 <code id="theme-id">…</code>。主題網址固定在 commit <code id="pinned">…</code>，之後這個 repo 改了主題，已經貼上的設定也不會跟著變。<code>markdown.marp.html</code> 讓版型用到的 HTML 標籤能顯示，只在信任的工作區生效，第一次打開資料夾時請選信任（見 <a href="https://github.com/marp-team/marp-vscode#workspace-trust">Marp for VS Code 的說明</a>）。</p>
+    <pre id="snippet"></pre>
+    <div class="g-actions">
+      <button type="button" id="copy-snippet" class="g-button">複製設定</button>
+      <span id="snippet-status" class="g-status" aria-live="polite"></span>
+    </div>
+
+    <h2>預覽</h2>
+    <p class="g-muted">examples/showcase.md 的前 6 頁。</p>
+    <div id="preview" class="g-preview g-preview-grid"></div>
+
+    <h2>Token</h2>
+    <p class="g-muted">每個主題都要定義的 CSS 變數（<code>themes/TOKENS.md</code>），值取自 <code>themes/src/</code> 裡這個主題的檔案。</p>
+    <div class="g-table-wrap">
+      <table id="tokens">
+        <thead><tr><th scope="col">Token</th><th scope="col">用途</th><th scope="col">值</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+  <footer>用 md-to-slides 的 <code>npm run site</code> 產生（commit <code id="commit">…</code>）。原始碼在 <a href="https://github.com/wayhong0928/md-to-slides">GitHub</a>。</footer>
+  <script src="site.js"></script>
+</body>
+</html>

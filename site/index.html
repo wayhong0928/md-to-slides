@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>場合範本 · md-to-slides 樣式畫廊</title>
+  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" id="theme-css">
+</head>
+<body data-page="scenarios">
+  <header class="g-header">
+    <a class="g-brand" href="index.html">md-to-slides 樣式畫廊</a>
+    <nav aria-label="網站頁面">
+      <a href="index.html" aria-current="page">場合範本</a>
+      <a href="layouts.html">版型</a>
+      <a href="themes.html">主題</a>
+    </nav>
+  </header>
+  <main>
+    <h1>場合範本</h1>
+    <p class="g-lead">選一個場合和主題，看整份範例版。下載的起手包用 VS Code 打開就能改，裡面有填空版、範例版和給 AI 助理看的規則檔。</p>
+    <div class="g-controls">
+      <label>場合
+        <select id="scenario"></select>
+      </label>
+      <label>主題
+        <select id="theme"></select>
+      </label>
+      <a id="download" class="g-button" href="#">下載起手包</a>
+    </div>
+    <p id="summary" class="g-muted" aria-live="polite"></p>
+    <p id="error" class="g-error" role="alert" hidden></p>
+    <div id="preview" class="g-preview"></div>
+  </main>
+  <footer>用 md-to-slides 的 <code>npm run site</code> 產生（commit <code id="commit">…</code>）。原始碼在 <a href="https://github.com/wayhong0928/md-to-slides">GitHub</a>。</footer>
+  <script src="site.js"></script>
+</body>
+</html>

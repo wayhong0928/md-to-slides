@@ -1,5 +1,23 @@
 # 更動日誌
 
+## [2.5.0] - 2026-10-17
+
+### 新增
+- 樣式畫廊：`npm run site` 在 `output/site/` 產生靜態網站，有場合範本、版型、主題三頁。預覽是 build 時用 marp-core 渲染好的投影片，主題 CSS 每個主題一份。場合範本頁可以下載 5 個場合配 8 個主題共 40 份起手包 zip，版型頁可以複製 35 個版型的骨架，主題頁列出 53 個 token 的值，另給一段 VS Code 設定，主題網址用 jsDelivr，版本固定在產生網站時的 commit
+- `.github/workflows/pages.yml` 把樣式畫廊部署到 GitHub Pages，只能手動執行
+- CI 的 Ubuntu 工作多一步，產生樣式畫廊並核對頁面、主題 CSS、場合預覽和 zip 的數量
+- `tests/site.test.js` 檢查產生的檔案、zip 跟 `npm run starter` 的產出逐位元相同，並用瀏覽器實際打開三頁，測切換、下載、複製、375px 寬的畫面，以及淺色和深色的文字對比
+
+### 改動
+- `src/starter/index.js` 抽出 `starterZip()`，只產生 zip 的內容、不寫資料夾，給樣式畫廊用。它和 `npm run starter -- --zip` 共用產生檔案與打包的函式（`starterFiles()`、`zipFiles()`），場合檔與主題相同時，產生的 zip 跟 2.4.0 逐位元相同。論文口試範例這版有改，它的 zip 會跟 2.4.0 不同
+- devDependencies 加上 `@marp-team/marp-core` ^4.3.0。它原本就由 marp-cli 帶進來，安裝的版本沒變
+- 論文口試範例把取還便利性改成控制變數，RQ1 只問車況品質，研究問題跟假說對得上
+- README 的 Claude Code 段落改寫讀不到 `AGENTS.md` 的說明
+
+### 不變
+- `build`、`check`、`starter` 的參數，`build`、`check` 的輸出，8 個主題和版型 class 都跟 2.4.0 相同
+
+---
 ## [2.4.0] - 2026-10-17
 
 ### 新增

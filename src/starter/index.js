@@ -86,6 +86,15 @@ function starterFiles(scenario, theme, { catalog = loadCatalog(), themesDir = TH
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// zip 裡的檔案都放在 <場合>-<主題>/ 底下，解開就是一個資料夾
+const zipFiles = (name, files) => createZip(files.map((f) => ({ name: `${name}/${f.name}`, data: f.data })));
+
+// 只產生 zip 的內容，不寫資料夾（樣式畫廊用）。回傳 { name, data }
+function starterZip(scenario, theme, { catalog } = {}) {
+  const name = `${scenario.id}-${theme}`;
+  return { name, data: zipFiles(name, starterFiles(scenario, theme, { catalog })) };
+}
+
 // 產生一個起手包資料夾（out/<場合>-<主題>/），zip 為 true 時另外寫 out/<場合>-<主題>.zip。
 // 回傳 { name, dir, zip, files }
 function buildStarter(scenario, theme, { outDir, zip = false, catalog } = {}) {
@@ -101,7 +110,7 @@ function buildStarter(scenario, theme, { outDir, zip = false, catalog } = {}) {
   let zipPath = null;
   if (zip) {
     zipPath = path.join(outDir, `${name}.zip`);
-    fs.writeFileSync(zipPath, createZip(files.map((f) => ({ name: `${name}/${f.name}`, data: f.data }))));
+    fs.writeFileSync(zipPath, zipFiles(name, files));
   }
   return { name, dir, zip: zipPath, files: files.map((f) => f.name) };
 }
@@ -111,4 +120,4 @@ function allCombos(loaded = loadScenarios()) {
   return loaded.scenarios.flatMap((s) => s.themes.map((theme) => ({ scenario: s, theme })));
 }
 
-module.exports = { renderRules, starterFiles, buildStarter, allCombos, listThemes, THEME_NOTES };
+module.exports = { renderRules, starterFiles, starterZip, buildStarter, allCombos, listThemes, THEME_NOTES };

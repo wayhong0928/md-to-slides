@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.4)
+# 專案架構說明 (v2.5)
 
 ## 目錄結構
 
@@ -18,6 +18,8 @@ md-to-slides/
 │   ├── starter/
 │   │   ├── index.js                 # 組出起手包的檔案清單、寫資料夾
 │   │   └── zip.js                   # 不加依賴的 zip 寫入（deflate＋CRC32）
+│   ├── site/
+│   │   └── render.js                # 樣式畫廊的 marp-core 渲染
 │   └── steps/
 │       ├── preprocess-mermaid.js    # 前置處理：Mermaid block → PNG
 │       └── render-html.js           # 本機圖片複製與改寫、Marp 呼叫、HTML 輸出
@@ -30,6 +32,7 @@ md-to-slides/
 ├── catalog/                  # 版型目錄：<包名>/<id>.md ×35＋_utilities.md
 ├── scenarios/                # 場合範本：<id>.md ×5
 ├── starter/                  # 起手包規則來源 rules.md、prompts.md
+├── site/                     # 樣式畫廊的頁面：3 頁 HTML、site.css、site.js
 ├── examples/
 │   └── showcase.md           # 由 scripts/build-showcase.js 產生，每個版型一頁
 │
@@ -41,6 +44,7 @@ md-to-slides/
 │   ├── build-thumbnails.js   # 8 個主題的縮圖總表（puppeteer-core，要 Chrome 或 Edge）
 │   ├── validate-scenarios.js # 驗證場合範本
 │   ├── build-starter.js      # 產生起手包資料夾與 zip
+│   ├── build-site.js         # 產生樣式畫廊到 output/site/
 │   └── run-tests.js
 │
 ├── tests/                    # 測試套件
@@ -61,7 +65,8 @@ md-to-slides/
 │
 ├── output/                   # 建置產物（自動生成）
 ├── .github/workflows/        # CI/CD 流程
-│   └── ci.yml               # GitHub Actions 工作流程
+│   ├── ci.yml               # GitHub Actions 工作流程
+│   └── pages.yml            # 部署樣式畫廊到 GitHub Pages（手動執行）
 │
 ├── package.json             # 依賴定義 + npm scripts
 ├── package-lock.json        # 依賴鎖定檔
@@ -171,6 +176,19 @@ R4 判斷 class 有沒有定義時分兩種主題。內建主題（repo 的 `the
 `npm run scenarios`（`scripts/validate-scenarios.js`）逐檔檢查：欄位齊全、id 是 kebab-case 且等於檔名、主題的 CSS 存在、`sections` 的版型都在目錄裡、兩段的頁數都等於 `slides` 加總、兩段用到的 class 都屬於列出的版型或工具 class、填空版至少有一個佔位而且全部是 `【填：…】`、範例版沒有 `【`。
 
 `src/starter/index.js` 把一個場合和一個主題組成起手包。`slides.md`、`example.md` 是填空版、範例版前面加上 `marp: true`、`theme:`、`paginate: true` 的 frontmatter；`AGENTS.md` 與 `.github/copilot-instructions.md` 都由 `starter/rules.md` 產生，`{{THEMES}}`、`{{LAYOUTS}}` 換成主題清單與目錄的版型表，兩檔逐位元相同；`CLAUDE.md` 只有標題、一句說明和 `@AGENTS.md`，給沒有直接讀 `AGENTS.md` 的 Claude Code 工作階段（在一台 Windows 電腦上用 v2.1.302 測試時遇過，原因還沒確認）；`.vscode/settings.json` 用相對路徑列出 8 個主題並設 `markdown.marp.html: "all"`。範本讀進來時一律把 CRLF 轉成 LF。產生資料夾時只覆寫起手包自己的檔案，不清空資料夾。zip 用 `zlib.deflateRawSync` 加自己算的 CRC32，時間戳固定，同樣的內容每次產生的 zip 逐位元相同。CI 的 Ubuntu 工作會產生 6 份 zip 並用 `unzip -t` 檢查。
+
+### 樣式畫廊
+
+`npm run site`（`scripts/build-site.js`）把 `site/` 的三頁 HTML、`site.css`、`site.js` 照抄到 `output/site/`，其他檔案從版型目錄、場合範本和主題產生：
+
+- `data/site.json`：commit、場合、主題（含 token 的值與 VS Code 設定）、token 清單、版型與包名，三頁共用。
+- `data/css/<主題>.css`：marp-core 產生的主題 CSS，只作用在 `div.marpit` 裡。
+- `data/scenarios/<場合>/<主題>.html`：範例版的 inline SVG 投影片，共 40 份。
+- `data/layouts/<主題>.json`：每個版型的範例渲染後的 HTML，鍵是版型 id。
+- `data/themes/<主題>.html`：`examples/showcase.md` 的前 6 頁。
+- `starters/<場合>-<主題>.zip`：`starterZip()` 產生，跟 `npm run starter -- --zip` 共用 `starterFiles()` 與 `zipFiles()`。
+
+`src/site/render.js` 用 marp-core（`html: true`、`inlineSVG: true`、`script: false`）渲染，主題從 `themes/` 讀進來，原本的 frontmatter 換成只有 `theme` 和 `paginate`。網站的 class 一律加 `g-` 前綴，`html`、`body` 以外的元素選擇器加 `:not(.marpit *)`，才不會改到投影片裡同名的 class 與元素。頁面裡的網址都是相對路徑，放在 GitHub Pages 的 `/md-to-slides/` 底下也能用。`tests/site.test.js` 用 puppeteer-core 開一個掛在 `/md-to-slides/` 的本機伺服器實測三頁。
 
 ---
 
@@ -291,6 +309,7 @@ ls -la output/
 | `npm run contrast`     | 檢查 8 個主題的文字對比                  |
 | `npm run scenarios`    | 驗證場合範本                             |
 | `npm run starter`      | 產生起手包到 output/starters/；加 `-- --zip` 另外打包 |
+| `npm run site`         | 產生樣式畫廊到 output/site/              |
 | `npm run thumbnails`   | 產生 output/thumbnails/（要 Chrome 或 Edge） |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |

@@ -139,9 +139,10 @@ npm run thumbnails
 # 匯出前檢查
 npm run check -- data/slides.md
 
-# 驗證場合範本 / 產生填空範本起手包
+# 驗證場合範本 / 產生填空範本起手包 / 產生樣式畫廊
 npm run scenarios
 npm run starter
+npm run site
 
 # 僅檢查正式環境依賴安全
 npm run audit:prod
@@ -312,13 +313,34 @@ thesis-defense-scholar/
 
 - GitHub Copilot（VS Code）：專案層級的指示檔可以是 `.github/copilot-instructions.md` 或 `AGENTS.md`。兩份都讀到時同樣的規則會出現兩次，官方建議移除重複的指示。見 [Use custom instructions in VS Code](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)。
 - Codex：開工前讀 `AGENTS.md`，從專案根目錄一路讀到工作目錄，合計上限預設 32 KiB。起手包的 `AGENTS.md` 約 8 KB。見 [Custom instructions with AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)。
-- Claude Code：讀起手包的 `CLAUDE.md`，再透過裡面的 `@AGENTS.md` 匯入規則。官方文件寫 v2.1.277 以上在工作目錄和上層目錄都沒有 `CLAUDE.md` 時會直接讀 `AGENTS.md`，而且 `~/.claude/CLAUDE.md` 不算在內；但在一台 Windows 電腦上用 v2.1.302 測試（`claude -p --setting-sources project,local`），資料夾放在家目錄底下的 `AppData\Local\Temp` 裡時，`AGENTS.md` 沒有被讀到。那個帳號有 `~/.claude/CLAUDE.md`，推測跟它有關。官方文件說 `~/.claude/CLAUDE.md` 不算，也說工作目錄上層的 `.claude/CLAUDE.md` 算，資料夾在家目錄底下時兩條會重疊，文件沒有說哪條優先。所以起手包多放這個 `CLAUDE.md`。官方文件說用 `CLAUDE.md` 匯入 `AGENTS.md` 不會讓它讀兩次。見 [How Claude remembers your project](https://code.claude.com/docs/en/memory#agents-md)。
+- Claude Code：讀起手包的 `CLAUDE.md`，再透過裡面的 `@AGENTS.md` 匯入規則。官方文件寫 v2.1.277 以上在工作目錄和上層目錄都沒有 `CLAUDE.md` 時會直接讀 `AGENTS.md`，而且 `~/.claude/CLAUDE.md` 不算在內；但在一台 Windows 電腦上用 v2.1.302 測試（`claude -p --setting-sources project,local`），資料夾放在家目錄底下的 `AppData\Local\Temp` 裡時，`AGENTS.md` 沒有被讀到。官方文件另外列了幾種只讀 `CLAUDE.md` 的情況，例如從 v2.1.276 以前升級後的第一個工作階段。這次是什麼原因還沒確認，所以起手包多放這個 `CLAUDE.md`。官方文件說用 `CLAUDE.md` 匯入 `AGENTS.md` 不會讓它讀兩次。見 [How Claude remembers your project](https://code.claude.com/docs/en/memory#agents-md)。
 
 在 VS Code 打開時，要開整個資料夾，不要只開 `slides.md`，`.vscode/settings.json` 才會生效。VS Code 問要不要信任這個資料夾時選信任。沒有信任的資料夾裡，Marp for VS Code 只提供基本預覽，HTML 元件一律不顯示，`themes/` 的自訂主題也不會載入（見 [Marp for VS Code 的 Workspace Trust 說明](https://github.com/marp-team/marp-vscode#workspace-trust)）。
 
 起手包裡沒有 `check`。要檢查版面，可以把填好的 `slides.md` 拿回本工具跑 `npm run check`，或至少在 VS Code 搜尋 `【填：`，確認都填完了。
 
 場合範本放在 `scenarios/<id>.md`，一個檔案有 frontmatter（場合 id、中文名、推薦主題、每段用哪些版型與幾頁）和「填空版」「範例版」兩段。`npm run scenarios` 會檢查版型 id 都在目錄裡、頁數等於各段加總、用到的 class 屬於列出的版型、填空版的佔位都寫成 `【填：…】`、範例版沒有 `【`。規則檔的來源是 `starter/rules.md`，版型清單由產生腳本從 `catalog/` 填入。
+
+### 樣式畫廊（site）
+
+`npm run site` 會在 `output/site/` 產生一個靜態網站，有三頁：
+
+- 場合範本（`index.html`）：選場合和主題，看整份範例版，下載對應的起手包 zip。5 個場合配 8 個主題，共 40 份。
+- 版型（`layouts.html`）：35 個版型各一張卡片，可以換主題預覽，按「複製語法」複製骨架。
+- 主題（`themes.html`）：看主題的預覽和 53 個 token 的值，複製一段 VS Code 設定，直接套用這個 repo 的主題。
+
+預覽是 build 時用 marp-core 渲染好的投影片，瀏覽器裡不跑 Marp。起手包 zip 跟 `npm run starter -- <場合> --theme <主題> --zip` 產生的檔案逐位元相同。
+
+網站用 fetch 讀 `data/` 底下的檔案，直接點兩下 HTML 打開會讀不到，要用本機 http 伺服器開，例如：
+
+```bash
+npm run site
+python -m http.server 8000 --directory output/site   # 再開 http://localhost:8000/
+```
+
+主題頁的 VS Code 設定用 jsDelivr 的網址，版本固定在產生網站時的 commit（CI 用 `GITHUB_SHA`，本機用 `git rev-parse HEAD`）。在本機產生的話，那個 commit 要先 push，jsDelivr 才抓得到。設定裡的 `markdown.marp.html` 只在信任的工作區生效，見上一節的 Workspace Trust 說明。
+
+`.github/workflows/pages.yml` 把網站部署到 GitHub Pages，只能手動執行。第一次用之前，要先到 repo 的 Settings → Pages 把 Source 設成 GitHub Actions。網站會在 `https://<帳號>.github.io/md-to-slides/` 底下，頁面裡的網址都是相對路徑。
 
 ---
 
@@ -334,6 +356,7 @@ md-to-slides/
 │   ├── catalog/                   # 讀取版型目錄（check 與腳本共用）
 │   ├── scenarios/                 # 讀取場合範本
 │   ├── starter/                   # 產生起手包資料夾與 zip
+│   ├── site/                      # 樣式畫廊的 marp-core 渲染
 │   └── steps/
 │       ├── preprocess-mermaid.js  # Mermaid block → PNG
 │       └── render-html.js         # 本機圖片複製與改寫 + HTML 渲染
@@ -346,6 +369,7 @@ md-to-slides/
 ├── catalog/                       # 版型目錄（35 個版型＋_utilities.md）
 ├── scenarios/                     # 場合範本 ×5（填空版＋範例版）
 ├── starter/                       # 起手包的規則來源 rules.md 與 prompts.md
+├── site/                          # 樣式畫廊的頁面（3 頁 HTML、site.css、site.js）
 ├── examples/
 │   └── showcase.md                # 由 npm run showcase 產生
 │
@@ -357,6 +381,7 @@ md-to-slides/
 │   ├── build-thumbnails.js        # 8 個主題的縮圖總表（要 Chrome）
 │   ├── validate-scenarios.js      # 驗證場合範本
 │   ├── build-starter.js           # 產生起手包
+│   ├── build-site.js              # 產生樣式畫廊
 │   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件
@@ -369,7 +394,8 @@ md-to-slides/
 ├── data/                   # Markdown 原始內容
 │
 ├── .github/workflows/
-│   └── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）
+│   ├── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）
+│   └── pages.yml           # 部署樣式畫廊到 GitHub Pages（手動執行）
 │
 ├── package.json
 ├── .gitignore
@@ -427,7 +453,8 @@ nvm install 18 && nvm use 18
 - **v2.1**：`classic` 主題與 `--theme-set`、相對路徑圖片、`check` 匯出前檢查、CI 加 Windows
 - **v2.2**：版型目錄 `catalog/`（35 個版型）、`examples/showcase.md`、`check` 的 R4 依目錄給相近 class 建議
 - **v2.3**：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
-- **v2.4**（當前）：5 個場合的填空範本起手包（`npm run starter`）、`npm run scenarios`、`check` 的 R5 分成兩級
+- **v2.4**：5 個場合的填空範本起手包（`npm run starter`）、`npm run scenarios`、`check` 的 R5 分成兩級
+- **v2.5**（當前）：樣式畫廊（`npm run site`，場合範本、版型、主題三頁）、手動執行的 GitHub Pages 部署
 
 ---
 

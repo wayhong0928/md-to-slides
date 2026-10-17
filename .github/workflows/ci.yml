@@ -89,6 +89,16 @@ jobs:
           done
           test "$count" -eq 6
 
+      # v2.5 樣式畫廊：產生網站，核對 3 頁、8 份主題 CSS、40 份場合預覽，starters/ 底下只有 40 個 zip
+      - name: Build style gallery
+        run: |
+          npm run site
+          test "$(ls output/site/*.html | wc -l)" -eq 3
+          test "$(ls output/site/data/css | wc -l)" -eq 8
+          test "$(find output/site/data/scenarios -name '*.html' | wc -l)" -eq 40
+          test "$(ls output/site/starters | wc -l)" -eq 40
+          test "$(ls output/site/starters/*.zip | wc -l)" -eq 40
+
       # D6：Ubuntu 沒有預設的中文字型。裝 Noto CJK，用三個主題（襯線標題、大字、深色底）build PDF，
       # 再用 pdffonts 確認每份 PDF 都嵌入了 Noto CJK 字型，沒有就讓 job 失敗。
       - name: Install CJK fonts and poppler

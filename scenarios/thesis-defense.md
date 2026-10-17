@@ -213,7 +213,7 @@ sections:
 
 # 本研究要回答三個問題
 
-<div class="card-accent"><b>RQ1</b>　車況與便利性會不會影響滿意度？</div>
+<div class="card-accent"><b>RQ1</b>　車況品質會不會影響滿意度？</div>
 <div class="card-accent"><b>RQ2</b>　滿意度會不會帶動持續使用意願？</div>
 <div class="card-accent"><b>RQ3</b>　替代交通方式多的人，關係會不會變弱？</div>
 
@@ -227,12 +227,12 @@ sections:
 
 ---
 
-# 車況與便利性經由滿意度影響持續使用
+# 車況經由滿意度影響持續使用
 
 <div class="hflow">
 <div class="hcol">
 <div class="hbox blue"><b>車況品質</b><span>煞車、輪胎、座椅</span></div>
-<div class="hbox blue"><b>取還便利性</b><span>站點距離與空位</span></div>
+<div class="hbox blue"><b>取還便利性</b><span>控制變數，站點距離與空位</span></div>
 </div>
 <div class="harrow">➜</div>
 <div class="hbox orange"><b>使用滿意度</b><span>整體感受</span></div>
@@ -275,7 +275,7 @@ sections:
 | 路徑 | 係數 | p 值 | 結果 |
 |---|---|---|---|
 | 車況品質 → 滿意度 | 0.41 | &lt; .001 | 支持 H1 |
-| 取還便利性 → 滿意度 | 0.18 | .004 | 顯著，沒有列為假說 |
+| 取還便利性 → 滿意度 | 0.18 | .004 | 控制變數，顯著 |
 | 滿意度 → 持續使用 | 0.52 | &lt; .001 | 支持 H2 |
 
 ---

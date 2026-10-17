@@ -1,0 +1,200 @@
+/* md-to-slides 樣式畫廊（SDD-v2.5）。網站本身的樣式；投影片預覽的樣式是 marp-core 產生的 data/css/<主題>.css，只作用在 div.marpit 裡。
+   網站的 class 一律加 g- 前綴，元素選擇器加 :not(.marpit *)，才不會改到投影片裡的同名 class 與元素。 */
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --surface: #f4f6f9;
+  --border: #d5dae2;
+  --text: #1d2330;
+  --muted: #4a5363;
+  --accent: #1f5fbf;
+  --accent-text: #ffffff;
+  --code-bg: #eef1f5;
+  --error-bg: #fdecec;
+  --error-text: #8a1c1c;
+  --radius: 8px;
+  --gutter: 16px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171c;
+    --surface: #1d2129;
+    --border: #353b47;
+    --text: #e6e9ee;
+    --muted: #b4bcc8;
+    --accent: #7fb2ff;
+    --accent-text: #14171c;
+    --code-bg: #232833;
+    --error-bg: #3a1d1d;
+    --error-text: #ffc9c9;
+  }
+}
+
+*:not(.marpit *) { box-sizing: border-box; }
+
+html, body { margin: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  line-height: 1.6;
+}
+
+a:not(.marpit *) { color: var(--accent); }
+
+.g-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding: 12px var(--gutter);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.g-header .g-brand { color: var(--text); font-weight: 700; text-decoration: none; }
+
+.g-header nav { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.g-header nav a { color: var(--text); text-decoration: none; padding: 2px 0; }
+.g-header nav a[aria-current="page"] { color: var(--accent); border-bottom: 2px solid var(--accent); }
+
+main:not(.marpit *) { max-width: 1100px; margin: 0 auto; padding: 16px var(--gutter) 48px; }
+
+h1:not(.marpit *) { font-size: 1.6rem; margin: 8px 0; }
+h2:not(.marpit *) { font-size: 1.25rem; margin: 32px 0 12px; }
+h3:not(.marpit *) { font-size: 1.05rem; margin: 0; }
+
+.g-lead, .g-muted { color: var(--muted); }
+
+.g-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin: 16px 0;
+}
+
+.g-controls label { display: flex; flex-direction: column; gap: 4px; font-size: 0.9rem; color: var(--text); }
+
+.g-controls select {
+  min-width: 12rem;
+  max-width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+/* a.g-button 要蓋過 a:not(.marpit *) 的連結顏色 */
+a.g-button, button.g-button {
+  display: inline-block;
+  padding: 7px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font: inherit;
+  font-size: 0.95rem;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.g-button:focus-visible, .g-controls select:focus-visible, a:not(.marpit *):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.g-error {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+code:not(.marpit *), pre:not(.marpit *) { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; }
+code:not(.marpit *) { overflow-wrap: anywhere; }
+
+pre:not(.marpit *) {
+  margin: 8px 0;
+  padding: 12px;
+  overflow-x: auto;
+  border-radius: var(--radius);
+  background: var(--code-bg);
+  color: var(--text);
+}
+
+/* 投影片預覽：marp-core 的 inline SVG，一張一張往下排，寬度跟著容器縮放。
+   字型、行高、顏色先還原成瀏覽器預設，跟 npm run build 產生的 HTML 一樣，不繼承網站的設定。 */
+.g-preview { font: initial; color: initial; text-align: initial; }
+
+.g-preview .marpit > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.g-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: 16px;
+}
+
+.g-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.g-card > p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.g-card .g-preview .marpit > svg { margin-bottom: 8px; }
+.g-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.g-status { font-size: 0.85rem; color: var(--muted); }
+
+.g-card details summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; }
+
+.g-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+
+.g-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.g-table-wrap th, .g-table-wrap td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; color: var(--text); }
+.g-table-wrap th { background: var(--surface); }
+.g-table-wrap td code { white-space: nowrap; }
+
+.g-swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-right: 6px;
+  vertical-align: -0.15em;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+.g-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+  gap: 0 16px;
+}
+
+.g-preview-grid .marpit { display: contents; }
+
+footer:not(.marpit *) {
+  padding: 16px var(--gutter) 32px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
