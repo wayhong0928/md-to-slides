@@ -48,8 +48,11 @@ function renderThemes(themes) {
 }
 
 // 產生 AGENTS.md 的內容（也是 .github/copilot-instructions.md 的內容）
+// Windows 上 git 可能把範本轉成 CRLF，一律轉回 LF，起手包裡的檔案不會混用換行
+const readTemplate = (name) => fs.readFileSync(path.join(STARTER_DIR, name), 'utf-8').replace(/\r\n/g, '\n');
+
 function renderRules({ catalog = loadCatalog(), themes = listThemes() } = {}) {
-  const template = fs.readFileSync(path.join(STARTER_DIR, 'rules.md'), 'utf-8');
+  const template = readTemplate('rules.md');
   return template.replace('{{LAYOUTS}}', renderLayouts(catalog)).replace('{{THEMES}}', renderThemes(themes));
 }
 
@@ -69,7 +72,7 @@ function starterFiles(scenario, theme, { catalog = loadCatalog(), themesDir = TH
     { name: 'example.md', data: frontmatter(theme) + scenario.example.trimEnd() + '\n' },
     { name: 'AGENTS.md', data: rules },
     { name: '.github/copilot-instructions.md', data: rules },
-    { name: 'prompts.md', data: fs.readFileSync(path.join(STARTER_DIR, 'prompts.md'), 'utf-8') },
+    { name: 'prompts.md', data: readTemplate('prompts.md') },
     { name: '.vscode/settings.json', data: JSON.stringify(settings, null, 2) + '\n' },
     ...themes.map((t) => ({ name: `themes/${t}.css`, data: fs.readFileSync(path.join(themesDir, `${t}.css`)) })),
   ];

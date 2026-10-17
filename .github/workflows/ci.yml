@@ -77,6 +77,18 @@ jobs:
       - name: Verify HTML output exists
         run: test -f output/content.example.html
 
+      # v2.4 起手包：產生全部場合與主題組合的 zip，用 unzip -t 確認每份都能正常解開
+      - name: Build starter packs and test zips
+        run: |
+          npm run scenarios
+          npm run starter -- --zip
+          count=0
+          for z in output/starters/*.zip; do
+            unzip -t "$z"
+            count=$((count + 1))
+          done
+          test "$count" -eq 6
+
       # D6：Ubuntu 沒有預設的中文字型。裝 Noto CJK，用三個主題（襯線標題、大字、深色底）build PDF，
       # 再用 pdffonts 確認每份 PDF 都嵌入了 Noto CJK 字型，沒有就讓 job 失敗。
       - name: Install CJK fonts and poppler
