@@ -18,6 +18,7 @@
   </header>
   <main>
     <h1>場合範本</h1>
+    <p><strong>用 Markdown 寫簡報。挑一個場合和主題，就有一份排好頁面的範例可以改，改完可以輸出成 HTML、PDF 或 PPTX。</strong></p>
     <p class="g-lead">選一個場合和主題，看整份範例版。下載的起手包用 VS Code 打開就能改，裡面有填空版、範例版和給 AI 助理看的規則檔。</p>
     <div class="g-controls">
       <label>場合
@@ -31,6 +32,64 @@
     <p id="summary" class="g-muted" aria-live="polite"></p>
     <p id="error" class="g-error" role="alert" hidden></p>
     <div id="preview" class="g-preview"></div>
+<section class="fam fam-pains" aria-labelledby="fam-pains-h">
+<h2 id="fam-pains-h">你是不是卡在這裡</h2>
+<div class="fam-pain-grid">
+<div class="fam-pain"><b>每次都從空白投影片開始</b><q>口試簡報要放哪幾頁？順序怎麼排？</q><p>12 個場合各有一份排好頁面的範本，要填的地方寫成【填：…】，另附一份填好虛構內容的範例。</p><p class="fam-go"><a href="#scenario">選場合</a></p></div>
+<div class="fam-pain"><b>版面調來調去</b><q>字對不齊，每頁配色都不一樣。</q><p>內容寫在 Markdown，版面交給版型和主題，換主題不用一頁一頁重排。</p><p class="fam-go"><a href="layouts.html">版型</a><a href="themes.html">主題</a></p></div>
+<div class="fam-pain"><b>讓 AI 幫忙填，版面就亂掉</b><q>請 AI 改簡報，它把版型也改了。</q><p>起手包附給 AI 看的規則檔，寫明可用版型、每頁字數上限和不能改的地方，Copilot、Codex、Claude Code 都讀得到。</p><p class="fam-go"><a href="https://github.com/wayhong0928/md-to-slides#填空範本起手包starter">起手包內容</a></p></div>
+</div>
+</section>
+
+<!-- family:flow:start -->
+<link rel="stylesheet" href="family.css">
+<div class="fam fam-flow" role="region" aria-labelledby="fam-flow-h">
+<h2 id="fam-flow-h">在整套論文流程的哪一站</h2>
+<a class="fam-guide" style="--i:0" href="https://wayhong0928.github.io/mis-thesis-guide/"><b>論文指南</b><span>每一站該怎麼做，都有一頁說明</span></a>
+<ol class="fam-stages">
+<li class="fam-stage" style="--i:1"><b>找題目</b><a class="fam-chip" href="https://github.com/wayhong0928/mis-thesis-skills">thesis-toolkit</a></li>
+<li class="fam-stage" style="--i:2"><b>讀文獻</b><a class="fam-chip" href="https://wayhong0928.github.io/thesis-notes-template/">論文筆記庫範本</a></li>
+<li class="fam-stage" style="--i:3"><b>設計與分析</b><a class="fam-chip" href="https://wayhong0928.github.io/thesis-notes-template/">論文筆記庫範本</a></li>
+<li class="fam-stage" style="--i:4"><b>寫論文</b><a class="fam-chip" href="https://github.com/wayhong0928/mis-thesis-skills">thesis-toolkit</a></li>
+<li class="fam-stage fam-on" style="--i:5"><b>口試與修訂</b><span class="fam-chip fam-here" aria-current="page">md-to-slides<em class="fam-tag">你在這裡</em></span></li>
+</ol>
+<div class="fam-base" style="--i:6"><b>每一站都用得到的 AI 工作環境</b><a class="fam-chip" href="https://wayhong0928.github.io/claude-workflow-template/">Claude Code 工作流 template</a><a class="fam-chip" href="https://wayhong0928.github.io/ai-agent-notes/">AI Agent 筆記</a></div>
+<p class="fam-more"><a href="https://wayhong0928.github.io/mis-thesis-guide/pages/ai-thesis-stages.html">看整套流程怎麼走</a></p>
+</div>
+<!-- family:flow:end -->
+
+<section class="fam fam-install" aria-labelledby="fam-install-h">
+<h2 id="fam-install-h">怎麼開始</h2>
+<div class="fam-box">
+<ul>
+<li><strong>只改範本</strong>：上面選好場合和主題，按「下載起手包」，解壓縮後用 VS Code 打開整個資料夾，裝 Marp for VS Code 就能預覽。VS Code 問要不要信任資料夾時選信任，不然主題不會載入。</li>
+<li><strong>要輸出 PDF 或 PPTX</strong>：需要 Node.js 18 以上，照 <a href="https://github.com/wayhong0928/md-to-slides#quick-start">README 的 Quick Start</a> 裝好，一行指令輸出三種格式。</li>
+</ul>
+</div>
+</section>
+
+<section class="fam fam-limits" aria-labelledby="fam-limits-h">
+<h2 id="fam-limits-h">限制</h2>
+<div class="fam-box">
+<p>範例版的內容是虛構的，數字和案例都要換成你自己的。起手包裡沒有版面檢查，填完先在 VS Code 搜尋「【填：」確認都填了；要完整檢查，把 slides.md 拿回本工具跑 <code>npm run check</code>。</p>
+</div>
+</section>
+
+<!-- family:cards:start -->
+<div class="fam fam-cards" role="region" aria-labelledby="fam-cards-h">
+<h2 id="fam-cards-h">同一套的工具</h2>
+<div class="fam-grid">
+<a class="fam-card" href="https://wayhong0928.github.io/mis-thesis-guide/"><small>網站</small><b>論文指南</b><span>研究方法、論文寫作和口試，每一站該怎麼做的說明。</span></a>
+<a class="fam-card" href="https://github.com/wayhong0928/mis-thesis-skills"><small>Claude Code 外掛</small><b>thesis-toolkit</b><span>幫你收斂題目、稽核研究問題、檢查學術寫法的 SKILL。</span></a>
+<a class="fam-card" href="https://wayhong0928.github.io/thesis-notes-template/"><small>Obsidian 範本</small><b>論文筆記庫範本</b><span>文獻筆記、構念卡和假說推導放在同一個筆記庫，寫第二、三章時直接取材。</span></a>
+<div class="fam-card fam-here" aria-current="page"><small>簡報工具</small><b>md-to-slides</b><span>用 Markdown 寫簡報，挑場合和主題就有一份範例可以改。</span><em class="fam-tag">你在這裡</em></div>
+<a class="fam-card" href="https://wayhong0928.github.io/claude-workflow-template/"><small>Claude Code 設定</small><b>Claude Code 工作流 template</b><span>開場接上次進度，產出交給另一個 agent 驗收，論文跨很多 session 也不會斷。</span></a>
+<a class="fam-card" href="https://wayhong0928.github.io/ai-agent-notes/"><small>網站</small><b>AI Agent 筆記</b><span>Claude、Codex 這類 AI 代理工具的概念、設定和協作方式。</span></a>
+</div>
+</div>
+<script src="family.js" defer></script>
+<!-- family:cards:end -->
+
   </main>
   <footer>用 md-to-slides 的 <code>npm run site</code> 產生（commit <code id="commit">…</code>）。原始碼在 <a href="https://github.com/wayhong0928/md-to-slides">GitHub</a>。</footer>
   <script src="site.js"></script>
