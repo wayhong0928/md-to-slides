@@ -3,7 +3,7 @@
   "version": "2.6.0",
   "description": "Convert Markdown to HTML, PDF, and PPTX using Marp — with Mermaid support, custom CSS injection, and CJK support.",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=22.0.0",
     "npm": ">=9.0.0"
   },
   "packageManager": "npm@10",

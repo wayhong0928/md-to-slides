@@ -39,7 +39,7 @@ node src/cli/build-cli.js data/slides.md
 # 輸出至 output/slides.html, output/slides.pdf, output/slides.pptx
 ```
 
-> **環境需求**：Node.js v18+  
+> **環境需求**：Node.js v22+  
 > **完整架構說明**：見 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ---
@@ -50,7 +50,7 @@ node src/cli/build-cli.js data/slides.md
 
 | 軟體    | 版本     | 驗證指令  |
 | ------- | -------- | --------- |
-| Node.js | v18.0.0+ | `node -v` |
+| Node.js | v22.0.0+ | `node -v` |
 | npm     | v9.0.0+  | `npm -v`  |
 
 ### Linux / macOS 額外依賴
@@ -438,7 +438,7 @@ md-to-slides/
 ├── data/                   # Markdown 原始內容
 │
 ├── .github/workflows/
-│   ├── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）
+│   ├── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 22、24）
 │   └── pages.yml           # 部署樣式畫廊到 GitHub Pages（手動執行）
 │
 ├── package.json
@@ -485,7 +485,7 @@ build 會在輸入檔旁邊放暫存檔 `.md-to-slides-<stem>-<pid>.md`（結束
 ### Node.js 版本過低
 
 ```bash
-nvm install 18 && nvm use 18
+nvm install 22 && nvm use 22
 ```
 
 ---

@@ -13,9 +13,6 @@ concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   test:
     name: Test (${{ matrix.os }}, Node ${{ matrix.node-version }})
@@ -25,14 +22,14 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [18, 22]
+        node-version: [22, 24]
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
@@ -44,7 +41,7 @@ jobs:
         run: npm test
 
   smoke-build:
-    name: Smoke build and audit (Node 18)
+    name: Smoke build and audit (Node 22)
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     needs: test
@@ -54,12 +51,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 18
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -140,14 +137,14 @@ jobs:
           exit $status
 
       - name: Upload font-check PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: font-check-pdfs
           path: output/font-check/*.pdf
           retention-days: 7
 
       - name: Upload output artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: smoke-output
           path: output/
