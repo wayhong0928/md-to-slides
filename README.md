@@ -39,7 +39,7 @@ node src/cli/build-cli.js data/slides.md
 # 輸出至 output/slides.html, output/slides.pdf, output/slides.pptx
 ```
 
-> **環境需求**：Node.js v18+  
+> **環境需求**：Node.js v22+  
 > **完整架構說明**：見 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
 ---
@@ -50,7 +50,7 @@ node src/cli/build-cli.js data/slides.md
 
 | 軟體    | 版本     | 驗證指令  |
 | ------- | -------- | --------- |
-| Node.js | v18.0.0+ | `node -v` |
+| Node.js | v22.0.0+ | `node -v` |
 | npm     | v9.0.0+  | `npm -v`  |
 
 ### Linux / macOS 額外依賴
@@ -385,6 +385,26 @@ python -m http.server 8000 --directory output/site   # 再開 http://localhost:8
 
 `.github/workflows/pages.yml` 把網站部署到 GitHub Pages，只能手動執行。第一次用之前，要先到 repo 的 Settings → Pages 把 Source 設成 GitHub Actions。網站會在 `https://<帳號>.github.io/md-to-slides/` 底下，頁面裡的網址都是相對路徑。
 
+### Claude Code plugin
+
+這個 repo 同時是 Claude Code 的 plugin marketplace，裡面有一個 plugin（`plugin/`），內含簡報 skill `make-slides`。裝好以後，在 Claude Code 說「幫我做一份簡報」，它會先問場合、聽眾、時長與輸出形式，依場合排整份簡報的骨架，再從 35 個版型排每一頁。輸出分兩條路：
+
+- Marp 路線：產出 md-to-slides 的 Marp Markdown，20 個主題任選，交付前跑 `check`。
+- 大綱路線：產出純文字大綱，交給 Claude Slides 或 Claude Design 渲染，外觀由你在 claude.ai 的設計系統決定。
+
+安裝（照 Claude Code 官方 plugin 文件的寫法）：
+
+```text
+/plugin marketplace add wayhong0928/md-to-slides
+/plugin install md-to-slides@md-to-slides
+```
+
+或在終端機執行 `claude plugin marketplace add wayhong0928/md-to-slides` 與 `claude plugin install md-to-slides@md-to-slides`。裝好後也可以直接叫用 `/md-to-slides:make-slides`。
+
+Marp 路線要轉成 PDF、HTML、PPTX，或交付前跑 `check`，需要 clone 本 repo 並 `npm install`；`check` 的超框檢查（R1）要電腦上有 Chrome 或 Edge。沒有 repo 時，skill 會改做文字檢查並明講沒跑 `check`。細節見 [plugin/README.md](plugin/README.md)。
+
+skill 的 `references/marp-rules.md`、`layouts.md`、`scenarios.md` 由 `npm run skill` 從 `catalog/`、`scenarios/`、`starter/rules.md` 產生，跟起手包的 `AGENTS.md` 同源，不要手改；改了來源之後重跑 `npm run skill`，`npm run skill -- --check` 只比對不寫檔。
+
 ---
 
 ## Project Structure
@@ -416,6 +436,13 @@ md-to-slides/
 ├── examples/
 │   └── showcase.md                # 由 npm run showcase 產生
 │
+├── .claude-plugin/
+│   └── marketplace.json           # Claude Code marketplace，列出 plugin/
+├── plugin/                        # Claude Code plugin：簡報 skill make-slides
+│   ├── .claude-plugin/plugin.json
+│   ├── README.md
+│   └── skills/make-slides/        # SKILL.md、references/（三份由 npm run skill 產生）、範例
+│
 ├── scripts/
 │   ├── build-themes.js            # 合併主題
 │   ├── validate-catalog.js        # 驗證版型目錄
@@ -426,6 +453,7 @@ md-to-slides/
 │   ├── validate-scenarios.js      # 驗證場合範本
 │   ├── build-starter.js           # 產生起手包
 │   ├── build-site.js              # 產生樣式畫廊
+│   ├── build-skill.js             # 產生 plugin 的三份 reference
 │   └── run-tests.js
 │
 ├── tests/                  # Node 內建 test runner 套件
@@ -438,7 +466,7 @@ md-to-slides/
 ├── data/                   # Markdown 原始內容
 │
 ├── .github/workflows/
-│   ├── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 18、22）
+│   ├── ci.yml              # GitHub Actions CI（Ubuntu、Windows × Node 22、24）
 │   └── pages.yml           # 部署樣式畫廊到 GitHub Pages（手動執行）
 │
 ├── package.json
@@ -485,7 +513,7 @@ build 會在輸入檔旁邊放暫存檔 `.md-to-slides-<stem>-<pid>.md`（結束
 ### Node.js 版本過低
 
 ```bash
-nvm install 18 && nvm use 18
+nvm install 22 && nvm use 22
 ```
 
 ---
@@ -499,7 +527,8 @@ nvm install 18 && nvm use 18
 - **v2.3**：8 個內建主題、53 個 `--theme-*` token、`npm run contrast`、`npm run thumbnails`
 - **v2.4**：5 個場合的填空範本起手包（`npm run starter`）、`npm run scenarios`、`check` 的 R5 分成兩級
 - **v2.5**：樣式畫廊（`npm run site`，場合範本、版型、主題三頁）、手動執行的 GitHub Pages 部署
-- **v2.6**（當前）：主題增加到 20 個、場合增加到 12 個、`npm run matrix` 全組合檢查、畫廊的品牌色欄位
+- **v2.6**：主題增加到 20 個、場合增加到 12 個、`npm run matrix` 全組合檢查、畫廊的品牌色欄位
+- **v2.8**（當前）：Claude Code plugin（簡報 skill `make-slides`）、`npm run skill`、Node 最低版本升到 22
 
 ---
 

@@ -1,5 +1,22 @@
 # 更動日誌
 
+## [2.8.0] - 2026-10-31
+
+### 新增
+- Claude Code plugin：repo 本身是 marketplace（`.claude-plugin/marketplace.json`），`plugin/` 裡有簡報 skill `make-slides`。安裝是 `/plugin marketplace add wayhong0928/md-to-slides` 加 `/plugin install md-to-slides@md-to-slides`，叫用是 `/md-to-slides:make-slides`。skill 先問場合、聽眾、時長與輸出形式，依場合排整份簡報的骨架，從 35 個版型排每一頁，輸出分兩條路：md-to-slides 的 Marp Markdown（交付前跑 `check`），或交給 Claude Slides、Claude Design 的純文字大綱
+- `plugin/skills/make-slides/references/`：Marp 規則與主題清單、35 個版型、12 個場合的骨架，以及結論式標題、降噪與張數粗估、視覺用語、Claude Slides 與 Claude Design 的官方說明，另有 5 份 Marp 範例與 2 份大綱範例（內容全部虛構）
+- `npm run skill`（`scripts/build-skill.js`）：從 `catalog/`、`scenarios/`、`starter/rules.md` 產生 `marp-rules.md`、`layouts.md`、`scenarios.md`，`-- --check` 只比對，過期就 exit 1。規則跟起手包的 `AGENTS.md` 同源
+- `tests/skill.test.js`：產物是最新的、`marp-rules.md` 跟 12 個場合起手包的 `AGENTS.md` 逐字相同、SKILL.md 的長度限制、manifest 與版號一致、Marp 範例通過 `check`、大綱範例不帶 Marp class
+- CI 的 Ubuntu 工作多三步：`npm run skill -- --check`、對 Marp 範例跑 `check` 並確認 R1 沒被略過、安裝 Claude Code CLI 跑 `claude plugin validate`
+
+### 改動
+- Node 最低版本從 18 升到 22：`package.json` 的 `engines.node` 改 `>=22.0.0`，CI 的測試矩陣從 Node 18、22、24 改成 22、24，「Smoke build and audit」工作從 Node 18 改跑 Node 24，README、`docs/ARCHITECTURE.md` 與畫廊首頁的 Node 版本說明一併更新
+- `package.json`、`package-lock.json` 版號升到 2.8.0（沒有 2.7.0，版本號跳過）
+
+### 不變
+- `build`、`check` 的參數與輸出，主題、版型、場合與起手包的內容
+
+---
 ## [2.6.0] - 2026-10-17
 
 ### 新增

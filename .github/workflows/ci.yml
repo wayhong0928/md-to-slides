@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
-        node-version: [18, 22, 24]
+        node-version: [22, 24]
 
     steps:
       - name: Checkout repository
@@ -41,7 +41,7 @@ jobs:
         run: npm test
 
   smoke-build:
-    name: Smoke build and audit (Node 18)
+    name: Smoke build and audit (Node 24)
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     needs: test
@@ -56,7 +56,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: 18
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
@@ -105,6 +105,31 @@ jobs:
       # v2.6 全組合檢查：每個主題 × 每個版型跑 check 與對比，加上每個場合的推薦組合；找不到瀏覽器就失敗
       - name: Check all theme, layout and scenario combinations
         run: npm run matrix
+
+      # v2.8 簡報 skill：三份 reference 要跟 catalog/、scenarios/、starter/rules.md 同源；範例要通過 check，而且 R1 真的有跑
+      - name: Check skill references are up to date
+        run: npm run skill -- --check
+
+      - name: Check skill examples with browser (R1 must run)
+        run: |
+          count=0
+          for f in plugin/skills/make-slides/references/examples/*.md; do
+            head -n 2 "$f" | grep -q '^marp: true' || continue
+            echo "== $f"
+            node src/cli/check-cli.js "$f" --json > "$RUNNER_TEMP/check.json"
+            cat "$RUNNER_TEMP/check.json"
+            node -e "const r=JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')); if (r.skipped.length) { console.error('有規則被略過：', JSON.stringify(r.skipped)); process.exit(1); }" "$RUNNER_TEMP/check.json"
+            count=$((count + 1))
+          done
+          echo "Marp 範例 ${count} 份"
+          test "$count" -ge 3
+
+      - name: Validate Claude Code plugin
+        run: |
+          npm install -g @anthropic-ai/claude-code
+          claude --version
+          claude plugin validate .
+          claude plugin validate plugin
 
       # D6：Ubuntu 沒有預設的中文字型。裝 Noto CJK，用五個主題（襯線標題、大字、深色底、楷體標題、等寬字）build PDF，
       # 再用 pdffonts 確認每份 PDF 都嵌入了 Noto CJK 字型，沒有就讓 job 失敗。

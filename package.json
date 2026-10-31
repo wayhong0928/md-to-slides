@@ -1,9 +1,9 @@
 {
   "name": "md-to-slides",
-  "version": "2.6.0",
+  "version": "2.8.0",
   "description": "Convert Markdown to HTML, PDF, and PPTX using Marp — with Mermaid support, custom CSS injection, and CJK support.",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=22.0.0",
     "npm": ">=9.0.0"
   },
   "packageManager": "npm@10",
@@ -20,6 +20,7 @@
     "catalog": "node scripts/validate-catalog.js",
     "scenarios": "node scripts/validate-scenarios.js",
     "starter": "node scripts/build-starter.js",
+    "skill": "node scripts/build-skill.js",
     "site": "node scripts/build-site.js",
     "showcase": "node scripts/build-showcase.js",
     "contrast": "node scripts/check-contrast.js",

@@ -1,0 +1,14 @@
+{
+  "name": "md-to-slides",
+  "displayName": "md-to-slides 簡報",
+  "version": "2.8.0",
+  "description": "做簡報的 skill：35 個版型、12 個場合骨架、20 個 Marp 主題與視覺用語字典。輸出 md-to-slides 的 Marp Markdown，或交給 Claude Slides／Claude Design 的大綱。",
+  "author": {
+    "name": "wayhong0928",
+    "url": "https://github.com/wayhong0928"
+  },
+  "homepage": "https://github.com/wayhong0928/md-to-slides",
+  "repository": "https://github.com/wayhong0928/md-to-slides",
+  "license": "MIT",
+  "keywords": ["slides", "presentation", "marp", "markdown", "zh-TW"]
+}

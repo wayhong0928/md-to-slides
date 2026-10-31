@@ -1,4 +1,4 @@
-# 專案架構說明 (v2.6)
+# 專案架構說明 (v2.8)
 
 ## 目錄結構
 
@@ -33,6 +33,9 @@ md-to-slides/
 ├── scenarios/                # 場合範本：<id>.md ×12
 ├── starter/                  # 起手包規則來源 rules.md、prompts.md
 ├── site/                     # 樣式畫廊的頁面：3 頁 HTML、site.css、site.js
+├── .claude-plugin/
+│   └── marketplace.json      # repo 本身當 Claude Code marketplace，plugin 的 source 是 ./plugin
+├── plugin/                   # Claude Code plugin（簡報 skill make-slides），見「簡報 skill」一節
 ├── examples/
 │   └── showcase.md           # 由 scripts/build-showcase.js 產生，每個版型一頁
 │
@@ -46,6 +49,7 @@ md-to-slides/
 │   ├── validate-scenarios.js # 驗證場合範本
 │   ├── build-starter.js      # 產生起手包資料夾與 zip
 │   ├── build-site.js         # 產生樣式畫廊到 output/site/
+│   ├── build-skill.js        # 產生 plugin 的三份 reference；--check 只比對
 │   └── run-tests.js
 │
 ├── tests/                    # 測試套件
@@ -197,6 +201,29 @@ R4 判斷 class 有沒有定義時分兩種主題。內建主題（repo 的 `the
 
 `src/site/render.js` 用 marp-core（`html: true`、`inlineSVG: true`、`script: false`）渲染，主題從 `themes/` 讀進來，原本的 frontmatter 換成只有 `theme` 和 `paginate`。網站的 class 一律加 `g-` 前綴，`html`、`body` 以外的元素選擇器加 `:not(.marpit *)`，才不會改到投影片裡同名的 class 與元素。頁面裡的網址都是相對路徑，放在 GitHub Pages 的 `/md-to-slides/` 底下也能用。`tests/site.test.js` 用 puppeteer-core 開一個掛在 `/md-to-slides/` 的本機伺服器實測三頁。
 
+### 簡報 skill（Claude Code plugin）
+
+repo 根目錄的 `.claude-plugin/marketplace.json` 讓這個 repo 本身當 marketplace，列出一個 plugin，`source` 是 `./plugin`。`plugin/.claude-plugin/plugin.json` 的 `version` 寫死，跟 `package.json` 一起升，`tests/skill.test.js` 斷言兩者相同。plugin 裡只有一個 skill：`plugin/skills/make-slides/`。
+
+```
+plugin/skills/make-slides/
+├── SKILL.md                     # 手寫：先問四件事、排骨架、Marp 路線、大綱路線、寫作規則
+└── references/
+    ├── marp-rules.md            # 產生：starter/rules.md 經 renderRules()，從「## 不能改的東西」切到結尾
+    ├── layouts.md               # 產生：catalog/ 的 35 個版型
+    ├── scenarios.md             # 產生：scenarios/ 的 12 個場合
+    ├── writing.md               # 手寫：結論式標題、降噪、張數粗估
+    ├── visual-vocabulary.md     # 手寫：版面與元件的通用用語
+    ├── claude-design.md         # 手寫：Claude Slides 與 Claude Design 的官方說明
+    └── examples/                # 手寫、全部虛構：5 份 Marp 範例、2 份大綱、index.md
+```
+
+同源關係：`catalog/`、`scenarios/`、`starter/rules.md` 是唯一來源。`npm run skill`（`scripts/build-skill.js`）產生三份 reference，`--check` 只比對，過期就 exit 1；切點標題「## 不能改的東西」改名時，產生腳本直接報錯，不會產出空檔。`{{NOTICE}}` 在切點之前，所以 12 個場合的 `AGENTS.md` 切下來都一樣。
+
+`check` 沒有打包進 plugin（會帶 Marp 與 Puppeteer）。有 clone 本 repo 時，skill 呼叫 `node <repo>/src/cli/check-cli.js`；沒有時改做文字檢查並明講沒跑 `check`。
+
+`tests/skill.test.js` 檢查：產物是最新的、`marp-rules.md` 的規則段落跟 12 個場合起手包的 `AGENTS.md` 逐字相同、SKILL.md 的 frontmatter 與長度限制、SKILL.md 提到的 reference 都存在、manifest 名稱與版號一致、Marp 範例的主題存在且通過 `check`（`--no-browser`）、大綱範例不帶 Marp class 或色碼。R1 的瀏覽器檢查和 `claude plugin validate` 在 CI 的 Ubuntu 工作跑。
+
 ---
 
 ## 核心模組說明
@@ -279,6 +306,7 @@ renderHtml(options); // 主要 HTML 渲染邏輯
 | contrast.test.js           | 單元 | 對比公式、`var()` 解析、`npm run contrast` | —            |
 | matrix.test.js             | 整合 | `npm run matrix` 的通過與失敗判定（只用一個主題） | 暫存資料夾 |
 | site.test.js               | 整合 | 樣式畫廊的產物、預設選項、調色欄位、瀏覽器實測三頁 | 暫存資料夾 |
+| skill.test.js              | 整合 | plugin 的產物最新、規則同源、SKILL.md 限制、manifest 與版號、Marp 範例通過 check | — |
 
 ### 執行方式
 
@@ -321,6 +349,7 @@ ls -la output/
 | `npm run scenarios`    | 驗證場合範本                             |
 | `npm run starter`      | 產生起手包到 output/starters/；加 `-- --zip` 另外打包 |
 | `npm run site`         | 產生樣式畫廊到 output/site/              |
+| `npm run skill`        | 產生 plugin 的三份 reference；加 `-- --check` 只比對 |
 | `npm run thumbnails`   | 產生 output/thumbnails/（要 Chrome 或 Edge） |
 | `npm run clean`        | 清除 output/, assets/diagrams/, 臨時檔等 |
 | `npm run audit`        | 完整依賴檢查（含 dev）                   |

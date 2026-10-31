@@ -26,7 +26,7 @@
 
 3. **更新版本和 Changelog**
    ```bash
-   # 編輯 package.json version 欄位
+   # 編輯 package.json version 欄位，plugin/.claude-plugin/plugin.json 的 version 要一起改（tests/skill.test.js 會比對）
    # 新增條目到 CHANGELOG.md
    ```
 

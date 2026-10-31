@@ -1,0 +1,15 @@
+{
+  "name": "md-to-slides",
+  "description": "md-to-slides 的 Claude Code plugin",
+  "owner": {
+    "name": "wayhong0928",
+    "url": "https://github.com/wayhong0928"
+  },
+  "plugins": [
+    {
+      "name": "md-to-slides",
+      "source": "./plugin",
+      "description": "做簡報的 skill：版型目錄、場合骨架、主題與視覺用語，輸出 Marp Markdown 或 Claude Slides／Claude Design 大綱"
+    }
+  ]
+}
