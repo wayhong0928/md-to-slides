@@ -399,7 +399,7 @@ python -m http.server 8000 --directory output/site   # 再開 http://localhost:8
 /plugin install md-to-slides@md-to-slides
 ```
 
-或在終端機執行 `claude plugin marketplace add wayhong0928/md-to-slides` 與 `claude plugin install md-to-slides@md-to-slides`。裝好後也可以直接叫用 `/md-to-slides:make-slides`。
+在 Claude Code 裡執行 `/plugin install` 會先開出 plugin 詳細資料面板，選好安裝範圍才裝。或在終端機執行 `claude plugin marketplace add wayhong0928/md-to-slides` 與 `claude plugin install md-to-slides@md-to-slides`。裝好後也可以直接叫用 `/md-to-slides:make-slides`。
 
 Marp 路線要轉成 PDF、HTML、PPTX，或交付前跑 `check`，需要 clone 本 repo 並 `npm install`；`check` 的超框檢查（R1）要電腦上有 Chrome 或 Edge。沒有 repo 時，skill 會改做文字檢查並明講沒跑 `check`。細節見 [plugin/README.md](plugin/README.md)。
 

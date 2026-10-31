@@ -16,6 +16,8 @@
 /plugin install md-to-slides@md-to-slides
 ```
 
+`/plugin install` 會先開出 plugin 詳細資料面板，選好安裝範圍才裝。
+
 或在終端機：
 
 ```bash
